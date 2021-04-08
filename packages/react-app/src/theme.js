@@ -17,14 +17,14 @@ const _theme = createMuiTheme({
     typography: {
         body1: {
             fontFamily: 'Noto Sans, sans-serif',
-            fontSize: "5 rem",
+            fontSize: "1.6 rem",
             [breakpoints.down("xs")]: {
-              fontSize: "3rem"
+              fontSize: "1rem"
             }
         },
         body2: {
             fontFamily: 'Noto Sans, sans-serif',
-            fontSize: "3 rem",
+            fontSize: "1.2 rem",
             [breakpoints.down("xs")]: {
               fontSize: "1rem"
             }
@@ -34,39 +34,43 @@ const _theme = createMuiTheme({
             fontStyle: 'italic' 
         },
         h1: {
-            fontSize: "3 rem",
-            [breakpoints.down("xs")]: {
-              fontSize: "1.5rem"
-            }
-        },
-        h2: {
-            fontSize: "2.5 rem",
-            [breakpoints.down("xs")]: {
-              fontSize: "1.25rem"
-            }
-        },
-        h3: {
             fontSize: "2 rem",
             [breakpoints.down("xs")]: {
-              fontSize: "1rem"
-            }
+              fontSize: "1.6rem"
+            },
+            fontWeight:"bold"
+        },
+        h2: {
+            fontSize: "1.6 rem",
+            [breakpoints.down("xs")]: {
+              fontSize: "1.2rem"
+            },
+            fontStyle: 'italic',
+            fontWeight:"normal"
+        },
+        h3: {
+            fontSize: "1.4 rem",
+            [breakpoints.down("xs")]: {
+              fontSize: "1.2rem"
+            },
+
         },
         h4: {
-            fontSize: "3 rem",
+            fontSize: "1.2 rem",
             [breakpoints.down("xs")]: {
               fontSize: "1rem"
             }
         },
         h5: {
-            fontSize: "1.3 rem",
+            fontSize: "1 rem",
             [breakpoints.down("xs")]: {
-              fontSize: "0.7rem"
+              fontSize: "0.8rem"
             }
         },
         h6: {
-            fontSize: "1rem",
+            fontSize: "0.8rem",
             [breakpoints.down("xs")]: {
-              fontSize: "0.5rem"
+              fontSize: "0.6rem"
             }
         },
     
@@ -74,18 +78,18 @@ const _theme = createMuiTheme({
     palette: {
         type: 'dark',
         primary: {
-            main: '#00DFFD',
+            main: '#FF716C',
         },
         secondary: {
-          main: '#ffa686',
+          main: '#84A7E5',
         },
         background: {
             light: '#F6F9FA',
-            dark: '#2D2C2B'
+            dark: '#1B1B1B'
         },
         header: {
             light:'#F6F9FA',
-            dark: "#343434"
+            dark: "#1B1B1B"
         },
         paper: {
             light: '#FFFFFF',

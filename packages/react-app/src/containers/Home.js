@@ -14,20 +14,141 @@ import {
 
 } from '@material-ui/core'
 
+import { useWeb3React } from "@web3-react/core";
+
 import { theme } from '../theme'
 
+import Stage from '../components/stage/stage'
+import InfoCard from '../components/cards/InfoCard';
+import InvestCard from '../components/cards/InvestCard';
+
+import useGetAllStages from '../hooks/useGetAllStages';
+
+import useBalanceDai from '../hooks/useBalanceDai';
+import useBalanceUsdc from '../hooks/useBalanceUsdc';
+import useBalanceUsdt from '../hooks/useBalanceUsdt';
+import useBalanceOfly from '../hooks/useBalanceOfly';
+
+const BalanceHeader = (props) => {
+  
+  return(
+    <Grid 
+        container
+        spacing={5}
+        direction="row"
+        justify="center"
+        alignItems="center"
+        className={props.classes.container}
+        >
+          <Grid item xs>
+            <Paper elevation={1} className={props.classes.paper}>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                spacing={3}
+              >
+                <Grid item xs>
+                  <Typography variant="h6">
+                    {props.daiBal}
+                  </Typography>
+                </Grid>
+                <Grid item xs>
+                  <Typography variant="h6">
+                    DAI
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Paper>  
+          </Grid>
+          <Grid item xs>
+            <Paper elevation={1} className={props.classes.paper}>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                spacing={3}
+              >
+                <Grid item xs>
+                  <Typography variant="h6">
+                    {props.usdcBal}
+                  </Typography>
+                </Grid>
+                <Grid item xs>
+                  <Typography variant="h6">
+                    USDC
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Paper>  
+          </Grid>
+          <Grid item xs>
+            <Paper elevation={1} className={props.classes.paper}>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                spacing={3}
+              >
+                <Grid item xs>
+                  <Typography variant="h6">
+                    {props.usdtBal}
+                  </Typography>
+                </Grid>
+                <Grid item xs>
+                  <Typography variant="h6">
+                    USDT
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Paper>  
+          </Grid>
+          <Grid item xs>
+            <Paper elevation={1} className={props.classes.paper}>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                spacing={3}
+              >
+                <Grid item xs>
+                  <Typography variant="h6">
+                    {props.oflyBal}
+                  </Typography>
+                </Grid>
+                <Grid item xs>
+                  <Typography variant="h6">
+                    OFLY
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Paper>  
+          </Grid>
+      </Grid>
+  );
+}
 
 
 function Home(props) {
+  const { account, library, chainId } = useWeb3React();
 
-  const useStyles = makeStyles((_theme) => ({
-      container: {
+  const allStages = useGetAllStages();
+
+  const daiBal = useBalanceDai();
+  const usdcBal = useBalanceUsdc();
+  const usdtBal = useBalanceUsdt();
+  const oflyBal = useBalanceOfly();
+
+  const useStyles = makeStyles(() => ({
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        width: '100%',
         minHeight: '10vh',
-        padding: '70px',
         color: props.darkMode ? theme.palette.text.dark : theme.palette.text.light,
         backgroundColor: props.darkMode ? theme.palette.background.dark : theme.palette.background.light,
       },
-      paper: {
+    paper: {
         color: props.darkMode ? theme.palette.text.dark : theme.palette.text.light,
         backgroundColor: props.darkMode ? theme.palette.paper.dark : theme.palette.paper.light,
         padding: '50px'
@@ -36,55 +157,43 @@ function Home(props) {
   );
   const classes = useStyles();
 
+
+  React.useEffect(() => {
+    
+  }, [account, allStages]);
+
   return (
-    <Grid 
-      container 
-      spacing={3}
-      direction="row"
+    <Grid
+      container
+      spacing={10}
+      direction="column"
       justify="center"
       alignItems="center"
       className={classes.container}
     >
-      <Grid item xs>
-        <Paper elevation={1} className={classes.paper}>
-          <Typography variant="h6">
-            Lorum esLorem Ipsum is simply dummy text of the printing and typesetting industry. 
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-            when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-            It has survived not only five centuries, but also the leap into electronic typesetting, 
-            remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset 
-            sheets containing Lorem Ipsum passages, and more recently with desktop publishing software 
-            like Aldus PageMaker including versions of Lorem Ipsum.
-          </Typography>
-        </Paper>  
+      <Grid item xl>
+        <Typography variant="h2" gutterBottom style={{margin: '20px'}}>
+            O.Flights (OFLY) Token Sale
+        </Typography>
       </Grid>
-      <Grid item xs>
-        <Paper elevation={1} className={classes.paper}>
-          <Typography variant="h6">
-            Lorum esLorem Ipsum is simply dummy text of the printing and typesetting industry. 
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-            when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-            It has survived not only five centuries, but also the leap into electronic typesetting, 
-            remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset 
-            sheets containing Lorem Ipsum passages, and more recently with desktop publishing software 
-            like Aldus PageMaker including versions of Lorem Ipsum.
-          </Typography>
-        </Paper>  
+      <Grid item xl>
+        <Grid 
+          container
+          spacing={5}
+          direction="row"
+          justify="center"
+          alignItems="center"
+          className={classes.container}
+        >
+          <Grid item xs>
+            <InfoCard darkMode={props.darkMode}/>
+          </Grid>
+          <Grid item xs>
+            <InvestCard darkMode={props.darkMode}/>
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid item xs>
-        <Paper elevation={1} className={classes.paper}>
-          <Typography variant="h6">
-            Lorum esLorem Ipsum is simply dummy text of the printing and typesetting industry. 
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-            when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-            It has survived not only five centuries, but also the leap into electronic typesetting, 
-            remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset 
-            sheets containing Lorem Ipsum passages, and more recently with desktop publishing software 
-            like Aldus PageMaker including versions of Lorem Ipsum.
-          </Typography>
-        </Paper>  
-      </Grid>
-    </Grid>
+    </Grid>        
   );
 }
 

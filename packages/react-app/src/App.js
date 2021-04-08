@@ -36,6 +36,7 @@ function App() {
   const [ chainID, setChainID ] = React.useState();
   const useStyles = makeStyles((_theme) => ({
       container: {
+        minWidth: '100vw',
         minHeight: '100vh',
         backgroundColor: darkMode ? theme.palette.background.dark : theme.palette.background.light,
       }
@@ -49,21 +50,18 @@ function App() {
           <Grid 
             container
             direction="column"
-            justify="center"
+            justify="flex-start"
+            align="center"
             className={classes.container}
           >
-            <Grid item xs>
+            <Grid item xl>
               <Header 
-                title='Project'
-                nav1='nav1'
-                nav2='nav2'
-                nav3='nav3'
-                nav4='about'
+                title='O.FLIGHTS'
                 darkMode={darkMode}
                 action={() => {setDarkmode(!darkMode)}}
               />
             </Grid>
-            <Grid item xs>
+            <Grid item xl>
               <Switch>
                 <Route path="/" exact component={()=> <Home darkMode={darkMode}/>}/>
               </Switch>

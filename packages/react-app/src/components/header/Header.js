@@ -12,6 +12,8 @@ import { useWeb3React } from '@web3-react/core';
 
 import useBalance from '../../hooks/useBalance';
 
+import OflightLogo from '../../assets/o_flights_logo.webp'
+
 const Header = (props) => {
     const [ provider, loadWeb3Modal, logoutOfWeb3Modal] = useWeb3Modal();    
     const { account, library, chainId } = useWeb3React();
@@ -20,6 +22,7 @@ const Header = (props) => {
 
     const useStyles = makeStyles((theme) => ({
         header: {
+            maxWidth: '100vw',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -37,13 +40,21 @@ const Header = (props) => {
             },},
         wrapper: {
             display: 'flex',
+            flexWrap: 'nowrap',
             justifyContent: 'center',
         },
         button: {
             display: 'flex',
             justifyContent: 'center',
             
+        },
+        nowrapper: {
+            display: 'flex',
+            flexWrap: 'nowrap',
+            alignItems: 'center',
+            justifyContent: 'center',
         }
+        
     }));
 
     const classes = useStyles();
@@ -65,14 +76,12 @@ const Header = (props) => {
                     justify="space-between"
                     alignItems="center"
                 >
-                    <Grid item xs className={classes.wrapper}>
+                    <Grid item xs>
                         <Link href='/'> 
-                            <Typography className={classes.title} variant="body2" noWrap>
-                                {props.title}
-                            </Typography>
+                            <img src={OflightLogo}/>
                         </Link>
                     </Grid>
-                    <Grid item xs className={classes.wrapper}>
+                    <Grid item xs>
                         <Grid 
                             container
                             spacing={2}
@@ -80,21 +89,21 @@ const Header = (props) => {
                             justify="space-between"
                             alignItems="center"
                         >
-                            <Grid item xs className={classes.wrapper}>
+                            <Grid item xs >
                                 <Link href={`/${props.nav1}`}> 
                                     <Typography className={classes.title} variant="h5" noWrap>
                                         {props.nav1}
                                     </Typography>
                                 </Link>
                             </Grid>
-                            <Grid item xs className={classes.wrapper}>
+                            <Grid item xs >
                                 <Link href={`/${props.nav2}`} > 
                                     <Typography className={classes.title} variant="h5" noWrap>
                                         {props.nav2}
                                     </Typography>
                                 </Link>
                             </Grid>
-                            <Grid item xs className={classes.wrapper}>
+                            <Grid item xs>
                                 <Link href={`/${props.nav3}`} > 
                                     <Typography className={classes.title} variant="h5" noWrap>
                                         {props.nav3}
@@ -103,19 +112,20 @@ const Header = (props) => {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs className={classes.wrapper}>
+                    <Grid item xs >
                         <Grid 
                              container
-                             spacing={0}
+                             spacing={2}
                              direction="row"
                              justify="center"
                              alignItems="center"
+                             className={classes.nowrapper}
                         >
-                            <Grid item xs className={classes.wrapper}>
+                            <Grid item xs >
                                 <Button
                                     size="large"
                                     color="primary"
-                                    variant={!!account ? 'outlined' : 'disabled'}
+                                    variant='disabled'
                                     fullwidth={true}
                                 >
                                    <Typography variant="h6" noWrap className={classes.button}>
@@ -123,7 +133,7 @@ const Header = (props) => {
                                     </Typography>
                                 </Button> 
                             </Grid>
-                            <Grid item xs className={classes.wrapper}>
+                            <Grid item xs >
                                 <Button
                                     size="large"
                                     color="primary"
@@ -148,7 +158,7 @@ const Header = (props) => {
                                     }
                                 </Button>
                             </Grid>
-                            <Grid item xs className={classes.wrapper}>
+                            <Grid item xs >
                                 <Button
                                     size="large"
                                     color="primary"
@@ -157,7 +167,7 @@ const Header = (props) => {
                                     fullwidth={true}
                                 >
                                     <Typography variant="h6" noWrap className={classes.button}>
-                                        <NightsStayIcon/>
+                                        <NightsStayIcon fontSize='small'/>
                                     </Typography>
                                 </Button> 
                             </Grid>
