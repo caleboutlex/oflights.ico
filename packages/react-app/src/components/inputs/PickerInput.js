@@ -6,7 +6,8 @@ import {
     TextField,
     Menu,
     MenuItem,
-    Fade
+    Fade,
+    Typography
 } from '@material-ui/core'
 
 import {
@@ -16,12 +17,19 @@ import {
     makeStyles,
     createMuiTheme,
   } from '@material-ui/core/styles';
-  
+
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+
 import { useWeb3React } from '@web3-react/core';
 
 import daiLogo from '../../assets/coins/dai.png'
 import usdcLogo from '../../assets/coins/usdc.png'
 import usdtLogo from '../../assets/coins/usdt.png'
+
+import useGetBalanceDai from '../../hooks/useBalanceDai'
+import useGetBalanceUsdc from '../../hooks/useBalanceUsdc'
+import useGetBalanceUsdt from '../../hooks/useBalanceUsdt'
+
 import { theme } from '../../theme';
 
 
@@ -61,10 +69,17 @@ const CssTextField = withStyles({
 })(TextField);
 
 const PickerInput = (props) => {
-    const [ value, setValue ] = React.useState(0);
+    const { account, chainId, library } = useWeb3React();
     const [ anchorEl, setAnchorEl ] = React.useState(null);
-    const [ selected, setSelected ] = React.useState(daiLogo);
+    const [ selected, setSelected ] = React.useState();
+    const [ image, setImage ] = React.useState(daiLogo);
+    const [ balance, setBalance ] = React.useState();
 
+    const daiBalance = useGetBalanceDai();
+    const usdcBalance = useGetBalanceUsdc();
+    const usdtBalance = useGetBalanceUsdt();
+
+    
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -74,69 +89,106 @@ const PickerInput = (props) => {
     };
 
     const handleClickDai = () => {
-        setSelected(daiLogo);
+        setImage(daiLogo);
+        setBalance(Number(daiBalance).toFixed(4))
+        props.onClick('DAI')
         handleClose();
     }
     const handleClickUsdc = () => {
-        setSelected(usdcLogo);
+        setImage(usdcLogo);
+        setBalance(Number(usdcBalance).toFixed(4))
+        props.onClick('USDC')
         handleClose();
     }
     const handleClickUsdt = () => {
-        setSelected(usdtLogo);
+        setImage(usdtLogo);
+        setBalance(Number(usdtBalance).toFixed(4))
+        props.onClick('USDT')
         handleClose();
     }
+    
 
     const useStyles = makeStyles({
         textfield: {
-            margin: '10px 0 10px 0',
             color: props.darkMode ? theme.palette.text.dark : theme.palette.text.light
         },
         container: {
             display: 'flex',
             flexWrap: 'nowrap'
         },
+        label: {
+            display: 'flex',
+            direction: 'row',
+            justifyContent: 'flex-start'
+        },
+        menu:{
+            '& .MuiPaper-root': {
+                backgroundColor: props.darkMode ? theme.palette.paper.dark : theme.palette.paper.light
+            },
+        }
     });
     const classes = useStyles();
 
+    React.useEffect(() => {
+        if(!!account && daiBalance) {
+            console.log('Account connected')
+            setBalance(Number(daiBalance).toFixed(4));
+        }
+    }, [account, daiBalance]);
 
     return (
         <Grid 
             container
-            direction="row"
-            justify="space-between"
-            alignItems="center"
-            className={classes.container}
+            direction='column' 
         >
-            <Grid item xl >
-                <CssTextField
-                    id="input"
-                    variant='outlined'
-                    InputLabelProps={{
-                        shrink: true,
-                        className: classes.textfield
-                    }}
-                    size='small'
-                    type="number"
-                    onChange={(e)=> {setValue(e.target.value)}}
-                />
-            </Grid>
-            <Grid item xs>
-                <Button aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick}>
-                    <img src={selected} alt="payment" style={{maxWidth:"42px"}} />
-                </Button>
-                <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
+            <Grid item >
+                <Grid 
+                    container
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="center"
+                    className={classes.container}
                 >
-                    <MenuItem onClick={handleClickDai}><DAI/></MenuItem>
-                    <MenuItem onClick={handleClickUsdc}><USDC/></MenuItem>
-                    <MenuItem onClick={handleClickUsdt}><USDT/></MenuItem>
-                </Menu>
+                    <Grid item >
+                        <CssTextField
+                            id="input"
+                            variant='outlined'
+                            InputLabelProps={{
+                                shrink: true,
+                                className: classes.textfield
+                            }}
+                            size='small'
+                            type="number"
+                            onChange={props.onChange}
+                        />
+                    </Grid>
+                    <Grid item >
+                        <Button aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick}>
+                            <img src={image} alt="payment" style={{maxWidth:"42px"}} />
+                            <ArrowDropDownIcon size='small'/>
+                        </Button>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                            className={classes.menu}
+                        >
+                            <MenuItem onClick={handleClickDai} ><DAI/></MenuItem>
+                            <MenuItem onClick={handleClickUsdc}><USDC/></MenuItem>
+                            <MenuItem onClick={handleClickUsdt}><USDT/></MenuItem>
+                        </Menu>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item className={classes.label}>
+                <Typography variant="h6">
+                    Balance: {Number(balance).toFixed(4)}
+                </Typography>
             </Grid>
         </Grid>
+            
     )
 }
 

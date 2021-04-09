@@ -16,32 +16,35 @@ const _theme = createMuiTheme({
     },
     typography: {
         body1: {
-            fontFamily: 'Noto Sans, sans-serif',
+            fontFamily: 'Rajdhani, sans-serif',
             fontSize: "1.6 rem",
             [breakpoints.down("xs")]: {
               fontSize: "1rem"
             }
         },
         body2: {
-            fontFamily: 'Noto Sans, sans-serif',
+            fontFamily: 'Rajdhani, sans-serif',
             fontSize: "1.2 rem",
             [breakpoints.down("xs")]: {
               fontSize: "1rem"
             }
         },
         caption: {
+          fontFamily: 'Rajdhani, sans-serif',
             fontSize: '1.6em', 
             fontStyle: 'italic' 
         },
         h1: {
-            fontSize: "2 rem",
+          fontFamily: 'Rajdhani, sans-serif',
+            fontSize: "2.2 rem",
             [breakpoints.down("xs")]: {
               fontSize: "1.6rem"
             },
             fontWeight:"bold"
         },
         h2: {
-            fontSize: "1.6 rem",
+          fontFamily: 'Rajdhani, sans-serif',
+            fontSize: "2 rem",
             [breakpoints.down("xs")]: {
               fontSize: "1.2rem"
             },
@@ -49,6 +52,7 @@ const _theme = createMuiTheme({
             fontWeight:"normal"
         },
         h3: {
+          fontFamily: 'Rajdhani, sans-serif',
             fontSize: "1.4 rem",
             [breakpoints.down("xs")]: {
               fontSize: "1.2rem"
@@ -56,21 +60,24 @@ const _theme = createMuiTheme({
 
         },
         h4: {
+          fontFamily: 'Rajdhani, sans-serif',
+            fontSize: "1.4 rem",
+            [breakpoints.down("xs")]: {
+              fontSize: "1.2rem"
+            }
+        },
+        h5: {
+          fontFamily: 'Rajdhani, sans-serif',
             fontSize: "1.2 rem",
             [breakpoints.down("xs")]: {
               fontSize: "1rem"
             }
         },
-        h5: {
-            fontSize: "1 rem",
+        h6: {
+          fontFamily: 'Rajdhani, sans-serif',
+            fontSize: "1rem",
             [breakpoints.down("xs")]: {
               fontSize: "0.8rem"
-            }
-        },
-        h6: {
-            fontSize: "0.8rem",
-            [breakpoints.down("xs")]: {
-              fontSize: "0.6rem"
             }
         },
     

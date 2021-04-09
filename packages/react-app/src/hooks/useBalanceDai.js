@@ -5,7 +5,7 @@ import { getDAI, getUSDC, getUSDT, getOFLY } from '../utils'
 
 const useBalanceDai = () => {
     const { account, library, chainId } = useWeb3React()
-    const [balance, setBalance] = useState(0);
+    const [balance, setBalance] = useState();
 
     const dai = getDAI(library, chainId);
 

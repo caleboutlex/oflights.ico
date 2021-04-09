@@ -11,7 +11,8 @@ import {
   Paper,
   Grid, 
   Typography,
-
+  Button, 
+  ButtonGroup
 } from '@material-ui/core'
 
 import { useWeb3React } from "@web3-react/core";
@@ -144,7 +145,7 @@ function Home(props) {
         display: 'flex',
         flexWrap: 'wrap',
         width: '100%',
-        minHeight: '10vh',
+        minHeight: '50vh',
         color: props.darkMode ? theme.palette.text.dark : theme.palette.text.light,
         backgroundColor: props.darkMode ? theme.palette.background.dark : theme.palette.background.light,
       },
@@ -152,7 +153,10 @@ function Home(props) {
         color: props.darkMode ? theme.palette.text.dark : theme.palette.text.light,
         backgroundColor: props.darkMode ? theme.palette.paper.dark : theme.palette.paper.light,
         padding: '50px'
-      }
+      },
+    button: {
+        color: props.darkMode ? theme.palette.text.light : theme.palette.text.dark, 
+    }
     })
   );
   const classes = useStyles();
@@ -165,18 +169,27 @@ function Home(props) {
   return (
     <Grid
       container
-      spacing={10}
+      spacing={4}
       direction="column"
-      justify="center"
+      justify="flex-start"
       alignItems="center"
       className={classes.container}
     >
-      <Grid item xl>
+      <Grid item xs>
         <Typography variant="h2" gutterBottom style={{margin: '20px'}}>
             O.Flights (OFLY) Token Sale
         </Typography>
       </Grid>
-      <Grid item xl>
+      <Grid item xs>
+        <Button 
+          variant="contained" 
+          color="primary" 
+          className={classes.button}
+          href="https://fc5fdf55-4241-45fe-a274-d028d011ed78.filesusr.com/ugd/743b78_fecc2adf4c5a44bfa089d78a2abc5214.pdf"
+          target="_blank"
+        > OFLY Lightpaper </Button>
+      </Grid>
+      <Grid item xs>
         <Grid 
           container
           spacing={5}
@@ -193,8 +206,12 @@ function Home(props) {
           </Grid>
         </Grid>
       </Grid>
+      <Grid item xs>
+        <iframe width="720" height="350" src="https://www.youtube.com/embed/OM_5XRC91Og" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </Grid>
     </Grid>        
   );
 }
 
 export default Home;
+

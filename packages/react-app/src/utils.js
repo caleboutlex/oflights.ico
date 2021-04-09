@@ -1,5 +1,7 @@
 import { addresses, abis } from "@project/contracts";
 
+export const MAX_UINT= '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+
 export const getICOcontract = (library, chainId) => {
     let Contract;
     if(chainId === 56 ) {

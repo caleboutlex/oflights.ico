@@ -11,6 +11,7 @@ import { theme } from '../../theme'
 import { useWeb3React } from '@web3-react/core';
 
 import useBalance from '../../hooks/useBalance';
+import useBalanceOfly from '../../hooks/useBalanceOfly';
 
 import OflightLogo from '../../assets/o_flights_logo.webp'
 
@@ -19,6 +20,7 @@ const Header = (props) => {
     const { account, library, chainId } = useWeb3React();
 
     const accountBalance = useBalance();
+    const oflyBalance = useBalanceOfly();
 
     const useStyles = makeStyles((theme) => ({
         header: {
@@ -103,13 +105,6 @@ const Header = (props) => {
                                     </Typography>
                                 </Link>
                             </Grid>
-                            <Grid item xs>
-                                <Link href={`/${props.nav3}`} > 
-                                    <Typography className={classes.title} variant="h5" noWrap>
-                                        {props.nav3}
-                                    </Typography>
-                                </Link>
-                            </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs >
@@ -125,11 +120,23 @@ const Header = (props) => {
                                 <Button
                                     size="large"
                                     color="primary"
-                                    variant='disabled'
+                                    variant='outlined'
                                     fullwidth={true}
                                 >
                                    <Typography variant="h6" noWrap className={classes.button}>
-                                           {Number(accountBalance).toFixed(4)} Eth
+                                           {Number(accountBalance).toFixed(4)} BNB
+                                    </Typography>
+                                </Button> 
+                            </Grid>
+                            <Grid item xs >
+                                <Button
+                                    size="large"
+                                    color="primary"
+                                    variant='outlined'
+                                    fullwidth={true}
+                                >
+                                   <Typography variant="h6" noWrap className={classes.button}>
+                                           {Number(oflyBalance).toFixed(4)} OFLY
                                     </Typography>
                                 </Button> 
                             </Grid>

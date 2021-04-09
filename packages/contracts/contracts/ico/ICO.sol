@@ -136,6 +136,7 @@ contract ICO is Whitelist, Pausable {
         string memory _name, 
         bool _whitelisted
     ) public onlyOwner {
+
         // init the stage 
         addStage(_allocation, _limit, _rate, _name, _whitelisted);
 
