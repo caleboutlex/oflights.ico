@@ -71,7 +71,6 @@ const CssTextField = withStyles({
 const PickerInput = (props) => {
     const { account, chainId, library } = useWeb3React();
     const [ anchorEl, setAnchorEl ] = React.useState(null);
-    const [ selected, setSelected ] = React.useState();
     const [ image, setImage ] = React.useState(daiLogo);
     const [ balance, setBalance ] = React.useState();
 

@@ -10,10 +10,6 @@ module.exports = async function (deployer) {
     const accounts = await web3.eth.getAccounts();
     const addresses = { 
         dev: accounts[0],
-        alice: accounts[1],
-        bob: accounts[2], 
-        dave: accounts[3],
-        luke: accounts[4]
     };
 
     // Mock token deployment

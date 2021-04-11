@@ -7,13 +7,6 @@ import { theme } from '../../../theme';
 
 const WalletButton = ({ provider, loadWeb3Modal, logoutOfWeb3Modal }) => {
 
-    const useStyles = makeStyles((theme) => ({
-      
-        
-        })
-    );
-    const classes = useStyles();
-
     return (
         <div>
             <Button

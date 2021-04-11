@@ -38,13 +38,6 @@ const USDT = () => {
 };
 
 
-const options = [
-    'Show some love to Material-UI',
-    'Show all notification content',
-    'Hide sensitive notification content',
-    'Hide all notification content',
-  ];
-
 const BasicInput = (props) => {
     const [ value, setValue ] = React.useState(0);
     const [ anchorEl, setAnchorEl ] = React.useState(null);

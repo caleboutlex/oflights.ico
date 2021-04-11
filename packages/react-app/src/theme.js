@@ -91,22 +91,17 @@ const _theme = createMuiTheme({
           main: '#84A7E5',
         },
         background: {
-            light: '#F6F9FA',
-            dark: '#1B1B1B'
+            main: '#1B1B1B',
         },
         header: {
-            light:'#F6F9FA',
-            dark: "#1B1B1B"
+            main: "#1B1B1B"
         },
         paper: {
-            light: '#FFFFFF',
-            dark: '#3B3B3B'
+            main: '#3B3B3B'
         },
         text: {
             primary: "#fafafa",
             secondary: "#ffffff",
-            dark: "#fafafa",
-            light: "#3B3B3B",
         },
         error: {
             main: "#ef233c"

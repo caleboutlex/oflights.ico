@@ -14,6 +14,7 @@ import useBalance from '../../hooks/useBalance';
 import useBalanceOfly from '../../hooks/useBalanceOfly';
 
 import OflightLogo from '../../assets/o_flights_logo.webp'
+import { useStyles } from './Header.styles'
 
 const Header = (props) => {
     const [ provider, loadWeb3Modal, logoutOfWeb3Modal] = useWeb3Modal();    
@@ -21,43 +22,6 @@ const Header = (props) => {
 
     const accountBalance = useBalance();
     const oflyBalance = useBalanceOfly();
-
-    const useStyles = makeStyles((theme) => ({
-        header: {
-            maxWidth: '100vw',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            backgroundColor: props.darkMode ? theme.palette.header.dark : theme.palette.header.light,
-        },
-        title: {
-            display: 'none',
-            color: props.darkMode ? theme.palette.text.dark : theme.palette.text.light,
-            fontVariantCaps: 'all-small-caps',
-            '&:hover': {
-                color: theme.palette.primary,
-            },
-            [theme.breakpoints.up('sm')]: {
-                display: 'block',
-            },},
-        wrapper: {
-            display: 'flex',
-            flexWrap: 'nowrap',
-            justifyContent: 'center',
-        },
-        button: {
-            display: 'flex',
-            justifyContent: 'center',
-            
-        },
-        nowrapper: {
-            display: 'flex',
-            flexWrap: 'nowrap',
-            alignItems: 'center',
-            justifyContent: 'center',
-        }
-        
-    }));
 
     const classes = useStyles();
 
@@ -169,12 +133,10 @@ const Header = (props) => {
                                 <Button
                                     size="large"
                                     color="primary"
-                                    variant="outlined"
-                                    onClick={props.action}
-                                    fullwidth={true}
+                                    variant="outlined" 
                                 >
                                     <Typography variant="h6" noWrap className={classes.button}>
-                                        <NightsStayIcon fontSize='small'/>
+                                        Admin Panel
                                     </Typography>
                                 </Button> 
                             </Grid>
