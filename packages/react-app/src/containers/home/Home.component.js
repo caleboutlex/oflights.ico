@@ -7,44 +7,39 @@ import {
 import { useStyles } from './Home.styles'
 import { useWeb3React } from "@web3-react/core";
 
-import Stage from '../../components/stage/stage'
-import InfoCard from '../../components/cards/InfoCard/InfoCard.component';
-import InvestCard from '../../components/cards/InvestCard/InvestCard.component';
+import InfoCard from '../../components/cards/infocard/InfoCard.component';
+import InvestCard from '../../components/cards/investcard/InvestCard.component';
 
-import useGetAllStages from '../../hooks/useGetAllStages';
-
-import useBalanceDai from '../../hooks/useBalanceDai';
-import useBalanceUsdc from '../../hooks/useBalanceUsdc';
-import useBalanceUsdt from '../../hooks/useBalanceUsdt';
-import useBalanceOfly from '../../hooks/useBalanceOfly';
-
-
-function Home(props) {
-  const { account, library, chainId } = useWeb3React();
-
-  const allStages = useGetAllStages();
-  const daiBal = useBalanceDai();
-  const usdcBal = useBalanceUsdc();
-  const usdtBal = useBalanceUsdt();
-  const oflyBal = useBalanceOfly();
+function Home() {
+  const {account, chainId, library } = useWeb3React();
 
   const classes = useStyles();
+
+  React.useEffect(() => {
+   
+    if(!!account) {
+     
+    }
+    
+    return () => {
+      
+    }
+  }, [account, chainId]);
 
   return (
     <Grid
       container
       spacing={4}
-      direction="column"
-      justify="flex-start"
-      alignItems="center"
+      justify='center'
+      alignItems='center'
       className={classes.container}
     >
-      <Grid item xs>
-        <Typography variant="h2" gutterBottom>
+      <Grid item xs={12}>
+        <Typography variant="h2">
             O.Flights (OFLY) Token Sale
         </Typography>
       </Grid>
-      <Grid item xs>
+      <Grid item xs={12} >
         <Button 
           variant="contained" 
           color="primary" 
@@ -53,25 +48,21 @@ function Home(props) {
           target="_blank"
         > OFLY Lightpaper </Button>
       </Grid>
-      <Grid item xs>
-        <Grid 
-          container
-          spacing={5}
-          direction="row"
-          justify="center"
-          alignItems="center"
-          className={classes.container}
-        >
-          <Grid item xs>
-            <InfoCard darkMode={props.darkMode}/>
-          </Grid>
-          <Grid item xs>
-            <InvestCard darkMode={props.darkMode}/>
-          </Grid>
+      <Grid 
+        container item xs={12}
+        justify='center'
+        alignItems='center'
+        spacing={9}
+      >
+        <Grid item >
+          <InfoCard/>
+        </Grid>
+        <Grid item >
+          <InvestCard/>
         </Grid>
       </Grid>
-      <Grid item xs>
-        <iframe width="720" height="350" src="https://www.youtube.com/embed/OM_5XRC91Og" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <Grid item xs={12}>
+       
       </Grid>
     </Grid>        
   );

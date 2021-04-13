@@ -3,15 +3,15 @@ import {
   makeStyles,
 } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(() => ({
-    container: {
-        padding:'0 50px 0 50px',
+export const useStyles = makeStyles({
+    card: {
+        backgroundColor: theme.palette.paper.main,
         color: theme.palette.text.primary,
-        //backgroundColor: theme.palette.background.main 
-      },
+        borderRadius : "15px",
+        
+    },
     button: {
         background: theme.palette.gradient.main,
         color: theme.palette.text.primary, 
     }
-    })
-);
+});

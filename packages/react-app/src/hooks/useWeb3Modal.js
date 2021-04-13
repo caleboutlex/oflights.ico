@@ -14,7 +14,7 @@ const NETWORK_NAME = "mainnet";
 function useWeb3Modal(config = {}) {
   const [provider, setProvider] = useState();
   const { autoLoad = false, infuraId = INFURA_ID, NETWORK = NETWORK_NAME } = config;
-  const { activate } = useWeb3React();
+  const { activate, deactivate } = useWeb3React();
 
   // Web3Modal also supports many other wallets.
   // You can see other options at https://github.com/Web3Modal/web3modal
@@ -41,6 +41,7 @@ function useWeb3Modal(config = {}) {
   const logoutOfWeb3Modal = useCallback(
     async function () {
       await web3Modal.clearCachedProvider();
+      deactivate(injected);
       window.location.reload();
     },
     [web3Modal],
@@ -51,7 +52,7 @@ function useWeb3Modal(config = {}) {
     if (autoLoad && web3Modal.cachedProvider) {
       loadWeb3Modal();
     }
-  }, [autoLoad, loadWeb3Modal, web3Modal.cachedProvider]);
+  }, [autoLoad, web3Modal.cachedProvider]);
 
   return [provider, loadWeb3Modal, logoutOfWeb3Modal];
 }

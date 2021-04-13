@@ -1,27 +1,19 @@
 import React from 'react';
-
 import { 
     Grid,
     Button,
     TextField,
     Menu,
     MenuItem,
-    Fade,
-    Typography
 } from '@material-ui/core'
-
 import {
-    fade,
-    ThemeProvider,
     withStyles,
     makeStyles,
-    createMuiTheme,
   } from '@material-ui/core/styles';
-
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 import { useWeb3React } from '@web3-react/core';
-
+import { formatter } from '../../utils/utils'
 import daiLogo from '../../assets/coins/dai.png'
 import usdcLogo from '../../assets/coins/usdc.png'
 import usdtLogo from '../../assets/coins/usdt.png'
@@ -51,15 +43,11 @@ const USDT = () => {
 
 const CssTextField = withStyles({
     root: {
+        width:'100%',
         '& .MuiInputBase-root': {
             color: 'inherit',
           },
-        '& label.Mui-focused': {
-            color: 'green',
-        },
-        '& .MuiInput-underline:after': {
-            borderBottomColor: 'green',
-        },
+        
         '& .MuiOutlinedInput-root': {
             '& fieldset': {
             borderColor: theme.palette.primary.main,
@@ -68,11 +56,31 @@ const CssTextField = withStyles({
     },
 })(TextField);
 
+const useStyles = makeStyles({
+    textfield: {
+        color: theme.palette.text.primary
+    },
+    container: {
+       
+        flexWrap: 'nowrap'
+    },
+    label: {
+        display: 'flex',
+        direction: 'row',
+       
+    },
+    menu:{
+        '& .MuiPaper-root': {
+            backgroundColor: theme.palette.paper.main
+        },
+    }
+});
+
 const PickerInput = (props) => {
-    const { account, chainId, library } = useWeb3React();
+    const { account } = useWeb3React();
     const [ anchorEl, setAnchorEl ] = React.useState(null);
     const [ image, setImage ] = React.useState(daiLogo);
-    const [ balance, setBalance ] = React.useState();
+    const [ balance, setBalance ] = React.useState(0);
 
     const daiBalance = useGetBalanceDai();
     const usdcBalance = useGetBalanceUsdc();
@@ -89,105 +97,83 @@ const PickerInput = (props) => {
 
     const handleClickDai = () => {
         setImage(daiLogo);
-        setBalance(Number(daiBalance).toFixed(4))
+        setBalance(formatter.format(daiBalance))
         props.onClick('DAI')
         handleClose();
     }
     const handleClickUsdc = () => {
         setImage(usdcLogo);
-        setBalance(Number(usdcBalance).toFixed(4))
+        setBalance(formatter.format(usdcBalance))
         props.onClick('USDC')
         handleClose();
     }
     const handleClickUsdt = () => {
         setImage(usdtLogo);
-        setBalance(Number(usdtBalance).toFixed(4))
+        setBalance(formatter.format(usdtBalance))
         props.onClick('USDT')
         handleClose();
     }
     
 
-    const useStyles = makeStyles({
-        textfield: {
-            color: props.darkMode ? theme.palette.text.dark : theme.palette.text.light
-        },
-        container: {
-            display: 'flex',
-            flexWrap: 'nowrap'
-        },
-        label: {
-            display: 'flex',
-            direction: 'row',
-            justifyContent: 'flex-start'
-        },
-        menu:{
-            '& .MuiPaper-root': {
-                backgroundColor: props.darkMode ? theme.palette.paper.dark : theme.palette.paper.light
-            },
-        }
-    });
     const classes = useStyles();
 
     React.useEffect(() => {
-        if(!!account && daiBalance) {
-            console.log('Account connected')
-            setBalance(Number(daiBalance).toFixed(4));
+        console.log('useEffect picker')
+        if(!!account) {   
+            if(image == daiLogo) {
+                setBalance(formatter.format(daiBalance));
+            } else if( image == usdcLogo) {
+                setBalance(formatter.format(usdcBalance));
+            } else if( image == usdtLogo) {
+                setBalance(formatter.format(usdtBalance));
+            }
+            console.log(balance);
         }
-    }, [account, daiBalance]);
+    }, [daiBalance, usdcBalance, usdtBalance]);
 
     return (
         <Grid 
             container
-            direction='column' 
+            direction="row"
+            justify="flex-start"
+            className={classes.container}
         >
-            <Grid item >
-                <Grid 
-                    container
-                    direction="row"
-                    justify="flex-start"
-                    alignItems="center"
-                    className={classes.container}
-                >
-                    <Grid item >
-                        <CssTextField
-                            id="input"
-                            variant='outlined'
-                            InputLabelProps={{
-                                shrink: true,
-                                className: classes.textfield
-                            }}
-                            size='small'
-                            type="number"
-                            onChange={props.onChange}
-                        />
-                    </Grid>
-                    <Grid item >
-                        <Button aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick}>
-                            <img src={image} alt="payment" style={{maxWidth:"42px"}} />
-                            <ArrowDropDownIcon size='small'/>
-                        </Button>
-                        <Menu
-                            id="simple-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                            className={classes.menu}
-                        >
-                            <MenuItem onClick={handleClickDai} ><DAI/></MenuItem>
-                            <MenuItem onClick={handleClickUsdc}><USDC/></MenuItem>
-                            <MenuItem onClick={handleClickUsdt}><USDT/></MenuItem>
-                        </Menu>
-                    </Grid>
-                </Grid>
+            <Grid item xs={9}>
+                <CssTextField
+                    id="input"
+                    variant='outlined'
+                    InputLabelProps={{
+                        shrink: true,
+                        className: classes.textfield
+                        
+                    }}
+                    size='medium'
+                    type="number"
+                    label={props.label}
+                    defaultValue={props.defaultValue}
+                    helperText={`Balance: ${balance}`}
+                    onChange={props.onChange}
+                    
+                />
             </Grid>
-            <Grid item className={classes.label}>
-                <Typography variant="h6">
-                    Balance: {Number(balance).toFixed(4)}
-                </Typography>
+            <Grid item xs={3}>
+                <Button  onClick={handleClick}>
+                    <img src={image} alt="payment" style={{maxWidth:"42px"}} />
+                    <ArrowDropDownIcon size='small'/>
+                </Button>
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                    className={classes.menu}
+                >
+                    <MenuItem onClick={handleClickDai} ><DAI/></MenuItem>
+                    <MenuItem onClick={handleClickUsdc}><USDC/></MenuItem>
+                    <MenuItem onClick={handleClickUsdt}><USDT/></MenuItem>
+                </Menu>
             </Grid>
         </Grid>
-            
     )
 }
 

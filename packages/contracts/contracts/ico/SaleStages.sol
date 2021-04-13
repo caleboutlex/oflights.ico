@@ -13,14 +13,18 @@ contract SaleStages is Ownable {
     struct Stage {
         // the id of the stage.
         uint256 id; 
+        // the name of the sale stage. For example: Crowdsale.
+        string name;
         // the token allocation of the stage of the ICO sale.
         uint256 allocation;
+        // the max amount of tokens a address can buy from the contract in this stage.
+        uint256 min;
         // the max amount of tokens a address can buy from the contract in this stage.
         uint256 limit;
         // Amount of OFLY tokens returned for 1 uint of USDC/USDT/DAI.
         uint256 rate;
-        // the name of the sale stage. For example: Crowdsale.
-        string name;
+        // The amount of tokens sold from this sale stage.
+        uint256 amountSold;
         // if the sale stage is active this is set to true.
         bool active;
         // set to true is goal is reached thus all allocation is sold. 
@@ -47,20 +51,24 @@ contract SaleStages is Ownable {
         public 
         view 
         returns (
-            uint allocation, 
+            string memory name,
+            uint allocation,
+            uint min, 
             uint limit, 
             uint rate, 
-            string memory name,
+            uint sold,
             bool active, 
             bool goalReached, 
             bool whitelisted
     ) {
 
         Stage storage stage = Stages[_stage];
+        name = stage.name;
         allocation = stage.allocation;
+        min = stage.min;
         limit = stage.limit;
         rate = stage.rate;
-        name = stage.name;
+        sold = stage.amountSold;
         active = stage.active;
         goalReached = stage.goalReached;
         whitelisted = stage.whitelisted;
@@ -78,6 +86,7 @@ contract SaleStages is Ownable {
      */
     function addStage(
         uint256 _all,
+        uint256 _min,
         uint256 _limit,
         uint256 _rate,
         string memory _name,
@@ -87,10 +96,12 @@ contract SaleStages is Ownable {
         // assemble the stage info 
         Stage memory newStage = Stage({
             id: Stages.length,
+            name: _name,
             allocation: _all, 
+            min: _min,
             limit: _limit, 
             rate: _rate, 
-            name: _name,
+            amountSold: 0,
             active: false, 
             goalReached: false,
             whitelisted: whitelisted

@@ -1,7 +1,6 @@
 import React from 'react'
 import { 
     Grid,
-    ButtonGroup,
     Button,
     Typography 
 } from '@material-ui/core'
@@ -11,7 +10,8 @@ import { useWeb3React } from '@web3-react/core';
 import { useStyles } from './InvestCard.styles';
 import PickerInput from '../../inputs/PickerInput'
 
-import { getDAI, getUSDC, getUSDT, getICOcontract, MAX_UINT } from '../../../utils';
+import { getDAI, getUSDC, getUSDT, getICOcontract } from '../../../utils/contracts';
+import { MAX_UINT } from '../../../utils/utils';
 
 
 const InvestCard = (props) => {
@@ -29,32 +29,40 @@ const InvestCard = (props) => {
     const usdc = getUSDC(library, chainId);
     const usdt = getUSDT(library, chainId);
     const ico = getICOcontract(library, chainId);
-
-    const [ token, setToken ] = React.useState(dai);
-
-    
-    
+ 
     const handleChange = (e) => {
-        setValue(e.target.value)
-    }
+        let token = filterToken(); 
+        let _value; 
+        if(token === usdc || token === usdt) {
+            _value = (Number(e.target.value) * 1000000).toString();
+        } else if( token == dai ) {
+            _value = library.utils.toWei(e.target.value.toString(), 'ether');
+        }
+        setValue(_value)
+    };
 
     const handleSelect = (_selected) => {
         console.log(_selected);
         setSelected(_selected)
     }
 
+    const filterToken = () => {
+        let _token;
+        if(selected === 'DAI') {
+            _token = dai; 
+        } else if(selected === 'USDC') {
+            _token = usdc; 
+        } else if(selected === 'USDT') {
+            _token = usdt;
+        }
+        return _token; 
+    }
+
     const onApprove = async (e) => {
         e.preventDefault();
         setLoading(true);
         setMessage('Waiting on transaction succes.....');
-        let token; 
-        if(selected == 'DAI') {
-            token = dai; 
-        } else if(selected == 'USDC') {
-            token = usdc; 
-        } else if(selected == 'USDT') {
-            token = usdt;
-        }
+        let token = filterToken();
         try {
             await token.methods.approve(ico.options.address, MAX_UINT).send({from: account}).then(()=> {
                 setMessage('Succes.....');
@@ -80,16 +88,13 @@ const InvestCard = (props) => {
         e.preventDefault();
         setLoading(true);
         setMessage('Waiting on transaction succes.....');
-        let token; 
-        if(selected == 'DAI') {
-            token = dai; 
-        } else if(selected == 'USDC') {
-            token = usdc; 
-        } else if(selected == 'USDT') {
-            token = usdt;
-        }
+        let token = filterToken() 
+       
         try {
-            await ico.methods.buyTokens(library.utils.toWei(value.toString(), "ether"), token.options.address).send({from: account}).then(()=> {
+            await ico.methods.buyTokens(
+                    value.toString(), 
+                    token.options.address
+                ).send({from: account}).then(()=> {
                 setMessage('Succes.....');
                 setLoading(false);
                 grabERC20Allowance().then((res)=> {
@@ -110,14 +115,7 @@ const InvestCard = (props) => {
     }
 
     const grabERC20Allowance = async () => {
-        let token; 
-        if(selected == 'DAI') {
-            token = dai; 
-        } else if(selected == 'USDC') {
-            token = usdc; 
-        } else if(selected == 'USDT') {
-            token = usdt;
-        }
+        let token = filterToken();
         try {
             const res = await token.methods.allowance(account, ico.options.address).call();
             return res; 
@@ -127,7 +125,7 @@ const InvestCard = (props) => {
       }
 
       React.useEffect(() => {
-        if(!!account && dai && usdc && usdt) { 
+        if(account && dai && usdc && usdt) { 
             console.log('Useeffect')
             grabERC20Allowance().then((res)=> {
                 if(Number(res) > value) {
@@ -139,7 +137,7 @@ const InvestCard = (props) => {
             });
            
         }
-    }, [account, selected, allowance]);
+    }, [selected, allowance, dai, usdc, usdt]);
 
 
     
@@ -150,30 +148,59 @@ const InvestCard = (props) => {
                 <Grid
                     container
                     direction="column"
+                   
                     alignItems="center"
-                    spacing={2}
+                    spacing={3}
                 >
                     
-                    <Grid item xs >
-                        <Typography variant="h1" gutterBottom>
-                            BUY OFLY
+                    <Grid item xs={12}>
+                        <Typography variant="h4" gutterBottom noWrap>
+                            Buy OFLY Tokens
                         </Typography>
                     </Grid>
-                    <Grid item xl >
+                    <Grid item >
                         <PickerInput 
-                            darkMode={props.darkMode} 
                             onClick={handleSelect}
                             onChange={handleChange}
                         />
                     </Grid>
-                    <Grid item xs className={classes.nowrapper}>
-                        <ButtonGroup fullWidth={true}>
-                            <Button  className={classes.button} disabled={approved} variant="contained" color="primary" onClick={onApprove}> Approve {selected} </Button>
-                            <Button  className={classes.button} variant="contained" color="primary" onClick={onBuy}> Buy </Button>
-                        </ButtonGroup>
+                    <Grid item >
+                        <Grid 
+                            container item
+                            spacing={3}
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <Grid item xs>
+                                <Button  
+                                    className={classes.button} 
+                                    disabled={approved} 
+                                    variant="contained" 
+                                    onClick={onApprove}
+                                    
+                                > 
+                                    <Typography noWrap>
+                                        Approve {selected} 
+                                    </Typography>  
+                                </Button>
+                            </Grid>
+                            <Grid item xs>
+                                <Button  
+                                    className={classes.button} 
+                                    variant="contained" 
+                                    onClick={onBuy}
+                                    
+                                > 
+                                    <Typography noWrap>
+                                        Buy OFLY
+                                    </Typography>
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </Grid>
-                    <Grid item xs >
-                        <Typography variant="h6">
+                    <Grid item >
+                        <Typography variant="caption">
                             You will recive: x amount of OFLY
                         </Typography>
                     </Grid>

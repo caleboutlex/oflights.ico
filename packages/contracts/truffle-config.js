@@ -18,9 +18,10 @@ module.exports = {
         `https://data-seed-prebsc-1-s1.binance.org:8545`
       ),
       network_id: 97,
-      confirmations: 10,
+      confirmations: 5,
       timeoutBlocks: 200,
-      skipDryRun: true
+      skipDryRun: true,
+      production: true
     },
     bsc_mainnet: {
       provider: () => new HDWalletProvider(
@@ -105,7 +106,8 @@ module.exports = {
     'truffle-plugin-verify'
   ],
   api_keys: {
-    etherscan: "EZUSQCBM9JZE3BZ9BSYSG8HVQA1YQJEBHT"
+    etherscan: "EZUSQCBM9JZE3BZ9BSYSG8HVQA1YQJEBHT",
+    bscscan: "ZE2JJHZ2AJ6JP3CCCM3NCD4FBP92CCDJM9"
   },
   // Configure your compilers
   compilers: {

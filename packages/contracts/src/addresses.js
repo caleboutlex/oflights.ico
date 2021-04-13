@@ -1,19 +1,18 @@
 // This address points to a dummy ERC20 contract deployed on Ethereum Mainnet,
 // Goerli, Kovan, Rinkeby and Ropsten. Replace it with your smart contracts.
+
+
 const addresses = {
   bsc_testnet: {
-    dai: '0x0dcefaf7a8fc20ca7ae7c5039f2415b213358f64',
-    usdc: '0xb1093aff1e5eba3d235749a6f0abca84086c7184',
-    usdt: '0xcf5d8b1591fea251bc5a9ce793b01876ea5bf96f',
-    ofly: '0x9Bd9334948eE614B1c0462ea4a5C072b9cD9A21A',
-    ico: '0x9007b843cAeB729396CD104EAaa08cA477Dc4b82'
+    dai: '0x4C84b4725a3CE8986e4519172cB95ba959B98AAb',
+    usdc: '0xC30759101a20CFd578097572A42fE2B2435c16bf',
+    usdt: '0xB8Cdf1d66A17379cdF82eDE68cD73B7Be1Ac0Ac1',
+    ofly: '0x4E33180a84b94fce995aFc20240fcB64F54C9706',
+    ico: '0xAfCa4239F3Fb46C2c8d59e2e0dEe4973621599E9',
+    masterchef: '0x9bE966B80eD09CD29B3Cb7c9716248c70866911f',
   },
   bsc_mainnet: {
-    dai: '0x0dcefaf7a8fc20ca7ae7c5039f2415b213358f64',
-    usdc: '0xb1093aff1e5eba3d235749a6f0abca84086c7184',
-    usdt: '0xcf5d8b1591fea251bc5a9ce793b01876ea5bf96f',
-    ofly: '0x9Bd9334948eE614B1c0462ea4a5C072b9cD9A21A',
-    ico: '0x9007b843cAeB729396CD104EAaa08cA477Dc4b82'
+   
   }
 };
 

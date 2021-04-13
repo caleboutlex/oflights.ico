@@ -22,6 +22,6 @@
     "dotenv": "6.2.0",
     "eslint": "^7.11.0",
     "ganache-time-traveler": "^1.0.15",
-    "truffle-plugin-verify": "^0.5.5"
+    "truffle-plugin-verify": "^0.5.7"
   }
 }

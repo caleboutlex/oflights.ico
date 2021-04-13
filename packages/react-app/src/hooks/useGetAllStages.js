@@ -1,10 +1,11 @@
 import React from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { getICOcontract } from '../utils'
+
+import { getICOcontract } from '../utils/contracts'
 
 const useGetAllStages = () => {
     const { account, library, chainId } = useWeb3React();
-    const [ allStages, setAllStages] = React.useState(0);
+    const [ allStages, setAllStages] = React.useState([]);
 
     const ICO = getICOcontract(library, chainId);
     
@@ -25,13 +26,15 @@ const useGetAllStages = () => {
             //const _uri = await WallToken.methods.tokenURI(i).call();
             const info = await ICO.methods.getStage(i).call();
             const stage = { 
+                name: info.name, 
                 allocation: info.allocation, 
+                min: info.min,
                 limit: info.limit, 
                 rate: info.rate,
-                name: info.name, 
-                active: info.active, 
-                goalReached: info.goalReached, 
-                whitelisted: info.whitelisted,                 
+                sold: info.sold,
+                active: info.active.toString(), 
+                goalReached: info.goalReached.toString(), 
+                whitelisted: info.whitelisted.toString(),               
             };
             _stages.push(stage);
             } catch (err) {

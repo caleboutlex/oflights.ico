@@ -12,10 +12,10 @@ import './Whitelist.sol';
 contract ICO is Whitelist, Pausable {
     using SafeMath for uint256;
     
-    IERC20 USDC; 
-    IERC20 USDT; 
-    IERC20 DAI; 
-    IERC20Mintable TOKEN;
+    IERC20 internal USDC; 
+    IERC20 internal USDT; 
+    IERC20 internal DAI; 
+    IERC20Mintable public TOKEN;
 
     // Mapping that holds all the buyers there buy amount; 
     mapping(address => uint256) internal userbuyAmounts; 
@@ -38,6 +38,7 @@ contract ICO is Whitelist, Pausable {
         IERC20 _usdc, 
         IERC20 _usdt,
         uint256 _allocation,
+        uint256 _min,
         uint256 _limit,
         uint256 _rate,
         string memory _name, 
@@ -48,7 +49,7 @@ contract ICO is Whitelist, Pausable {
         USDC = _usdc;
         USDT = _usdt;
         // add the first stage to the ICO.
-        addStage(_allocation, _limit, _rate, _name, _whitelisted);
+        addStage(_allocation, _min, _limit, _rate, _name, _whitelisted);
     }
     
     function getRemainingTokens() public view returns(uint256) {
@@ -57,6 +58,10 @@ contract ICO is Whitelist, Pausable {
 
     function getCurrentrate() public view returns(uint256) {
         return Stages[currentStage].rate;
+    }
+
+    function getCurrentMinimum() public view returns(uint256) {
+        return Stages[currentStage].min;
     }
 
     function getCurrentLimit() public view returns(uint256) {
@@ -109,15 +114,16 @@ contract ICO is Whitelist, Pausable {
     function startNextStage() public onlyOwner {
         // check if we arent in the last stage. In that cause we cant start a new one. 
         require(getTotalStages() > currentStage.add(1),'This is the last Stage please make a new one do to this function');
-        // internal function will make shure the goal has been met off the previous stage and the next stage isnt already active. 
+        // internal function will make shure the goal has been met off the previous stage and the next stage isnt already active.
+        deactivateStage(currentStage); 
         activateStage(currentStage.add(1)); // sets the current stage to the new one
 
-        uint256 bal = TOKEN.balanceOf(address(this));
         uint256 all = Stages[currentStage].allocation;
-        uint256 mintAmount = all.sub(bal);
+        // send all the leftover tokens to the owner
+        sweep();
         // mint the OFLY tokens 
-        uint256 newBal = mintAllocation(mintAmount);
-        require(newBal == Stages[currentStage].allocation, 'ICO did not get the correct allocation amount');
+        uint256 newAllocation = mintAllocation(all);
+        require(newAllocation == Stages[currentStage].allocation, 'ICO did not get the correct allocation amount');
     }
 
     /**
@@ -131,6 +137,7 @@ contract ICO is Whitelist, Pausable {
      */
     function setNewStage(
         uint256 _allocation, 
+        uint256 _min,
         uint256 _limit, 
         uint256 _rate, 
         string memory _name, 
@@ -138,85 +145,67 @@ contract ICO is Whitelist, Pausable {
     ) public onlyOwner {
 
         // init the stage 
-        addStage(_allocation, _limit, _rate, _name, _whitelisted);
+        addStage(_allocation, _min, _limit, _rate, _name, _whitelisted);
 
     }
 
     /**
      * @dev Lets investors buy ICO tokens with the accepted tokens
      *  
-     * @param _amount Amount of stablecoins invested.
+     * @param _inputamount Amount of stablecoins invested.
      * @param _paytoken The token in wich the user wants to pay. 
      */
     function buyTokens(
-        uint256 _amount, 
+        uint256 _inputamount, 
         IERC20 _paytoken
     ) public 
         whenNotPaused
         onlyActive
+        isWhitinLimitsAndAccepted(_inputamount, _paytoken)
     {  
         if(Stages[currentStage].whitelisted == true) {
             require(isWhitelisted(msg.sender) == true, 'This stage is whitelisted only');
         }
         
-        handlePayment(_amount, msg.sender, _paytoken);
-
-        // update the buyer info 
-        userbuyAmounts[msg.sender] = userbuyAmounts[msg.sender].add(_amount);
+        handlePayment(_inputamount, msg.sender, _paytoken);
         if(TOKEN.balanceOf(address(this)) == 0) {
             Stages[currentStage].goalReached == true; 
         }
 
     } 
 
-    /**
-     * @dev Lets investors buy ICO tokens with the accepted tokens
-     *  
-     * @param _paytoken The token in wich the user wants to pay. 
-     */
-    function buyMaxTokens(
-        IERC20 _paytoken
-    ) public 
-        whenNotPaused
-        onlyActive
-    {
-        if(Stages[currentStage].whitelisted == true) {
-            require(isWhitelisted(msg.sender) == true, 'This stage is whitelisted only');
-        }
-        uint256 _leftoverUser = getLeftOverLimitAmount(msg.sender);
-        uint256 _leftoverInput = getLeftOverInputAmount();
-        if(_leftoverUser > _leftoverInput) {
-            _leftoverUser = getLeftOverInputAmount();
-        }
-        handlePayment(_leftoverUser, msg.sender, _paytoken);
-        // update the buyer info 
-        userbuyAmounts[msg.sender] = userbuyAmounts[msg.sender].add(_leftoverUser);
-        if(TOKEN.balanceOf(address(this)) == 0) {
-            Stages[currentStage].goalReached == true; 
-        }
-    } 
-
+    
     /**
      * @dev Internal function that handles the payment and sends tokens to the caller. 
      *  
-     * @param amount Amount of OFLY tokens to be minted.
+     * @param _amount Amount of OFLY tokens to be minted.
      */
 
-    function handlePayment(uint256 amount, address caller, IERC20 paytoken) internal {
-        require(paytoken == DAI, 'Only accepts DAI');
-        require(userbuyAmounts[caller].add(amount) <= Stages[currentStage].limit, 'Cant buy more then the max Limit of this stage');
+    function handlePayment(uint256 _amount, address _caller, IERC20 _paytoken) internal {
+        // set up local amount variable and handle the amount if the paytoken is usdc or usdc
+        uint256 amount;
+        if(_paytoken == DAI) {
+            amount = _amount;
+        } else if ( _paytoken == USDC || _paytoken == USDT ) { 
+            amount = _amount.mul(10**12);
+        }
+        require(userbuyAmounts[_caller].add(amount) <= Stages[currentStage].limit, 'Cant buy more then the max Limit of this stage');
         // we check if the user has approved the contract to spend the tokens
-        require(paytoken.allowance(caller, address(this)) >= amount, 'Caller must approve first');
+        require(_paytoken.allowance(_caller, address(this)) >= amount, 'Caller must approve first');
         // grab the tokens from msg.sender.
-        paytoken.transferFrom(caller, address(this), amount);
+        _paytoken.transferFrom(_caller, address(this), _amount);
        
         // calculate the amount to send
         uint tokensBought = Stages[currentStage].rate.mul(amount).div(10**18);
-        require(tokensBought != 0, 'cant buy 0 stupid');
+        require(tokensBought != 0, 'cant buy 0');
         require(TOKEN.balanceOf(address(this)) >= tokensBought, 'Not enought tokens in this sale to buy');
         // send the tokens to the investor;
         TOKEN.approve(address(this), tokensBought);
-        TOKEN.transferFrom(address(this), caller, tokensBought);
+        TOKEN.transferFrom(address(this), _caller, tokensBought);
+
+        // update the buyer info 
+        userbuyAmounts[msg.sender] = userbuyAmounts[msg.sender].add(tokensBought);
+        Stages[currentStage].amountSold = Stages[currentStage].amountSold.add(tokensBought);
     }
 
     /**
@@ -238,23 +227,43 @@ contract ICO is Whitelist, Pausable {
      */
     function sweep() internal {
         // transfer remaining tokens to the owner. 
-        uint256 bal = TOKEN.balanceOf(address(this));
-        TOKEN.approve(address(this), bal);
-        TOKEN.transferFrom(address(this), owner(), bal);
-        require(TOKEN.balanceOf(address(this)) == 0, 'ICO contract did not send out all tokens');
-        // set goal to reached.
-        Stages[currentStage].goalReached = true; 
+        TOKEN.approve(address(this), TOKEN.balanceOf(address(this)) );
+        DAI.approve(address(this),DAI.balanceOf(address(this)) );
+        USDC.approve(address(this),USDC.balanceOf(address(this)) );
+        USDT.approve(address(this), USDT.balanceOf(address(this)) );
+        TOKEN.transferFrom(address(this), owner(), TOKEN.balanceOf(address(this)));
+        DAI.transferFrom(address(this), owner(), DAI.balanceOf(address(this)));
+        USDC.transferFrom(address(this), owner(), USDC.balanceOf(address(this)));
+        USDT.transferFrom(address(this), owner(), USDT.balanceOf(address(this)));
+        require(TOKEN.balanceOf(address(this)) == 0, 'ICO contract did not send out all OFLY tokens');
+        require(DAI.balanceOf(address(this)) == 0, 'ICO contract did not send out all DAI tokens');
+        require(USDC.balanceOf(address(this)) == 0, 'ICO contract did not send out all USDC tokens');
+        require(USDT.balanceOf(address(this)) == 0, 'ICO contract did not send out all USDT tokens');
     }
 
+    function isAcceptedToken(IERC20 _token) internal returns(bool) {
+        if (_token == DAI || _token == USDC || _token == USDT) {
+            return true; 
+        } else {
+            return false;
+        }
+    }
     /**
      * @dev Modifier to make shure we only accept the listed Stablecoins as payment. 
      *  
      * @param _token the payment token. 
      */
-    modifier onlyAcceptedTokens(IERC20 _token) {
-      if (_token == USDC || _token == USDC || _token == USDC) {
-         _;
-      }
+    modifier isWhitinLimitsAndAccepted(uint256 _amount, IERC20 _token) {
+        require(isAcceptedToken(_token) == true, 'Only DAI - USDC - USDT is accepted');
+        uint256 amount; 
+        if(_token == DAI) {
+            amount = _amount;
+        } else if(_token == USDC || _token == USDT) {
+            amount = _amount.mul(10**12);
+        }
+        require(amount >= Stages[currentStage].min && amount <= Stages[currentStage].limit, 'Must be within limits');
+        _;
+        
     }
     
   

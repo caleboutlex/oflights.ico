@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
-import { getDAI, getUSDC, getUSDT, getOFLY } from '../utils'
+import { getOFLY } from '../utils/contracts'
 
 const useBalanceOfly = () => {
     const { account, library, chainId } = useWeb3React()

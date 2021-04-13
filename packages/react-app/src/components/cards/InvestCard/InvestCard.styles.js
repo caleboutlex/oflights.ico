@@ -8,10 +8,11 @@ export const useStyles = makeStyles({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '35vh',
-        padding: '20px',
+        minHeight: '32vh',
         backgroundColor: theme.palette.paper.main,
-        color: theme.palette.text.primary
+        color: theme.palette.text.primary,
+        borderRadius : "15px",
+        padding: "10px"
     },
     nowrapper: {
         width: '100%',
@@ -22,7 +23,8 @@ export const useStyles = makeStyles({
         
     },
     button: {
-        color: theme.palette.text.primary
-        
+        minWidth: "130px",
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.primary.main,
     }
 });

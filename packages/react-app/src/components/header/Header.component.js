@@ -1,145 +1,168 @@
 import React from 'react'
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles"
-import { Button, Grid, AppBar, Toolbar, Typography, Link } from '@material-ui/core'
-
-import NightsStayIcon from '@material-ui/icons/NightsStay';
-import useWeb3Modal from '../../hooks/useWeb3Modal';
-
-import Styled from 'styled-components'
-import { theme } from '../../theme'
+import { Button, Grid, AppBar, Toolbar, Typography } from '@material-ui/core'
 
 import { useWeb3React } from '@web3-react/core';
-
+import { Link } from 'react-router-dom'
+import SettingsIcon from '@material-ui/icons/Settings';
 import useBalance from '../../hooks/useBalance';
 import useBalanceOfly from '../../hooks/useBalanceOfly';
-
+import { formatter } from '../../utils/utils'
 import OflightLogo from '../../assets/o_flights_logo.webp'
 import { useStyles } from './Header.styles'
+import useContractInfo from '../../hooks/useContractInfo';
 
-const Header = (props) => {
-    const [ provider, loadWeb3Modal, logoutOfWeb3Modal] = useWeb3Modal();    
-    const { account, library, chainId } = useWeb3React();
+const WalletButton = ({ provider, loadWeb3Modal, logoutOfWeb3Modal, connected }) => {
+    return (
+        <div>
+            <Button
+                size="large"
+                variant={connected} 
+                color="secondary"
+                onClick={() => {
+                    if (!provider) {
+                    loadWeb3Modal();
+                    } else {
+                    logoutOfWeb3Modal();
+                    }
+                }}
+                >
+                {!provider ? 
+                    <Typography variant="body2" noWrap>
+                        Connect Wallet
+                    </Typography>
+                : 
+                    <Typography variant="body2" noWrap>
+                        Disconnect 
+                    </Typography>
+                }
+            </Button>
+        </div>
+    )
+};
+
+const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal}) => {
+    const { account, chainId } = useWeb3React();
+    const [ connected, setConnected ] = React.useState('contained');
+    const [ isAdmin, setAdmin ] = React.useState(false);
 
     const accountBalance = useBalance();
     const oflyBalance = useBalanceOfly();
 
     const classes = useStyles();
+    const contractInfo = useContractInfo();
 
     React.useEffect(() => {
-       
-        return () => {
-         
+        if(contractInfo && account) {
+            if(account === contractInfo.owner) {
+                setAdmin(true);
+            }
         }
-      }, [account, chainId])
+    }, [contractInfo])
 
     return (
-        <AppBar position='sticky' color='transparent' elevation={0} >
+        <AppBar position='relative' color='transparent' elevation={0} >
             <Toolbar className={classes.header}>
                 <Grid 
                     container
-                    spacing={3}
+                    spacing={5}
                     direction="row"
                     justify="space-between"
                     alignItems="center"
                 >
-                    <Grid item xs>
-                        <Link href='/'> 
-                            <img src={OflightLogo}/>
+                    <Grid container item xs>
+                        <Link to='/'> 
+                            <img alt='OFlights logo' src={OflightLogo}/>
                         </Link>
                     </Grid>
-                    <Grid item xs>
+                    <Grid container item xs  >
                         <Grid 
                             container
-                            spacing={2}
+                            spacing={6}
                             direction="row"
-                            justify="space-between"
+                            justify="center"
                             alignItems="center"
                         >
                             <Grid item xs >
-                                <Link href={`/${props.nav1}`}> 
-                                    <Typography className={classes.title} variant="h5" noWrap>
-                                        {props.nav1}
-                                    </Typography>
-                                </Link>
+                                <Typography 
+                                    className={classes.title} 
+                                    component={Link}
+                                    to={`/${nav1}`} 
+                                    color="textPrimary"
+                                    variant="h5" 
+                                    noWrap
+                                >
+                                    {nav1}
+                                </Typography>
                             </Grid>
                             <Grid item xs >
-                                <Link href={`/${props.nav2}`} > 
-                                    <Typography className={classes.title} variant="h5" noWrap>
-                                        {props.nav2}
-                                    </Typography>
-                                </Link>
+                                <Typography 
+                                    className={classes.title} 
+                                    component={Link}
+                                    to={`/${nav2}`} 
+                                    color="textPrimary"
+                                    variant="h5" 
+                                    noWrap
+                                >
+                                    {nav2}
+                                </Typography>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs >
                         <Grid 
-                             container
-                             spacing={2}
-                             direction="row"
-                             justify="center"
-                             alignItems="center"
-                             className={classes.nowrapper}
+                            container
+                            spacing={2}
+                            direction="row"
+                            justify="center"
+                            alignItems="center"
+                            className={classes.nowrapper}
                         >
-                            <Grid item xs >
+                            <Grid item  >
                                 <Button
                                     size="large"
                                     color="primary"
                                     variant='outlined'
-                                    fullwidth={true}
                                 >
-                                   <Typography variant="h6" noWrap className={classes.button}>
-                                           {Number(accountBalance).toFixed(4)} BNB
+                                   <Typography 
+                                        className={classes.button}
+                                        variant="body2" 
+                                        color="primary"
+                                        noWrap
+                                    >
+                                           {formatter.format(Number(accountBalance))} BNB
                                     </Typography>
                                 </Button> 
                             </Grid>
-                            <Grid item xs >
+                            <Grid item  >
                                 <Button
                                     size="large"
                                     color="primary"
                                     variant='outlined'
-                                    fullwidth={true}
+                                    
                                 >
-                                   <Typography variant="h6" noWrap className={classes.button}>
-                                           {Number(oflyBalance).toFixed(4)} OFLY
+                                   <Typography variant="body2" noWrap className={classes.button}>
+                                           {formatter.format(Number(oflyBalance))} OFLY
                                     </Typography>
                                 </Button> 
                             </Grid>
-                            <Grid item xs >
-                                <Button
-                                    size="large"
-                                    color="primary"
-                                    variant="outlined" 
-                                    onClick={() => {
-                                        if (!provider) {
-                                        loadWeb3Modal();
-                                        } else {
-                                        logoutOfWeb3Modal();
-                                        }
-                                    }}
-                                    fullwidth={true}
-                                >
-                                    {!provider ? 
-                                        <Typography variant="h6" noWrap className={classes.button}>
-                                            Connect Wallet
-                                        </Typography>
-                                    : 
-                                        <Typography variant="h6" noWrap className={classes.button}>
-                                            Disconnect
-                                        </Typography>
-                                    }
-                                </Button>
-                            </Grid>
-                            <Grid item xs >
-                                <Button
-                                    size="large"
-                                    color="primary"
-                                    variant="outlined" 
-                                >
-                                    <Typography variant="h6" noWrap className={classes.button}>
-                                        Admin Panel
-                                    </Typography>
-                                </Button> 
-                            </Grid>
+                            { isAdmin ==true ?
+                                <Grid item  >
+                                    <Button
+                                        size="medium"
+                                        color="primary"
+                                        variant="outlined"
+                                        component={Link}
+                                        to="/admin"
+                                    >
+                                        <SettingsIcon />
+                                    </Button> 
+                                </Grid>
+                               :
+                               <></> 
+                            }
+                            <Grid item  >
+                                <WalletButton provider={provider} loadWeb3Modal={loadWeb3Modal} logoutOfWeb3Modal={logoutOfWeb3Modal} connected={connected}/> 
+                            </Grid>    
                         </Grid>
                     </Grid>
                 </Grid>
@@ -149,15 +172,3 @@ const Header = (props) => {
 };
 
 export default Header;
-
-const Wrapper = Styled.div`
-    display: flex;
-    justify-content: center;
-    min-width: 20%;
-`
-
-const NavWrapper = Styled.div`
-    display: flex;
-    justify-content: inherit;
-    min-width: 40%;
-`

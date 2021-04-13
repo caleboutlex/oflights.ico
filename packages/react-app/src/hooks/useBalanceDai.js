@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
-import { getDAI, getUSDC, getUSDT, getOFLY } from '../utils'
+import { getDAI} from '../utils/contracts'
 
 const useBalanceDai = () => {
     const { account, library, chainId } = useWeb3React()
@@ -16,7 +16,6 @@ const useBalanceDai = () => {
         dai.methods
           .balanceOf(account).call()
           .then((balance) => {
-            console.log('BALANCE:', balance)
             if (!stale) {
               setBalance(library.utils.fromWei(balance, 'ether'))
             }

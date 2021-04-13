@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
-import { getDAI, getUSDC, getUSDT, getOFLY } from '../utils'
+import { getUSDT } from '../utils/contracts'
 
 const useBalanceUsdt = () => {
     const { account, library, chainId } = useWeb3React()
@@ -16,7 +16,7 @@ const useBalanceUsdt = () => {
         usdt.methods
           .balanceOf(account).call()
           .then((balance) => {
-            console.log('BALANCE:', balance)
+           
             if (!stale) {
               setBalance(Number(balance)/1000000)
             }

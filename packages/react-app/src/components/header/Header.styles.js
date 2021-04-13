@@ -5,11 +5,7 @@ import {
 
 export const useStyles = makeStyles(() => ({
     header: {
-            maxWidth: '100vw',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            backgroundColor: theme.palette.header.main
+        //backgroundColor: theme.palette.header.main
     },
     title: {
         display: 'none',
@@ -23,12 +19,13 @@ export const useStyles = makeStyles(() => ({
         },},
     wrapper: {
         display: 'flex',
-        flexWrap: 'nowrap',
+        flexWrap: 'wrap',
         justifyContent: 'center',
     },
     button: {
         display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
         
     },
     nowrapper: {
