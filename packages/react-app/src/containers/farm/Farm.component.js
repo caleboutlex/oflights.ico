@@ -9,10 +9,10 @@ import { useWeb3React } from "@web3-react/core";
 import FarmCard from '../../components/cards/farmcard/FarmCard.component';
 import useFarmsAmount from '../../hooks/useFarmsAmount';
 
-import daiLogo from '../../assets/coins/dai.png'
-import usdcLogo from '../../assets/coins/usdc.png'
-import usdtLogo from '../../assets/coins/usdt.png'
-import busdLogo from '../../assets/coins/busd.png'
+import daiLogo from '../../assets/dai.png'
+import usdcLogo from '../../assets/usdc.png'
+import usdtLogo from '../../assets/usdt.png'
+import busdLogo from '../../assets/busd.png'
 
 
 const FarmNames = [

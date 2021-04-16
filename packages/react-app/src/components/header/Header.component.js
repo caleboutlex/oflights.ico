@@ -60,7 +60,6 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
     const classes = useStyles();
   
     React.useEffect(() => {
-   
         if(owner && account) {
             if(account === owner) {
                 console.log(owner)
@@ -68,7 +67,7 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                 setAdmin(true);
             }
         }
-    }, [account, tokenBalance, accountBalance])
+    }, [account, tokenBalance, accountBalance, owner])
 
     return (
         <AppBar position='relative' color='transparent' elevation={0} >

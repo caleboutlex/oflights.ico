@@ -15,10 +15,10 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 import { useWeb3React } from '@web3-react/core';
 import { formatter } from '../../utils/utils'
-import daiLogo from '../../assets/coins/dai.png'
-import usdcLogo from '../../assets/coins/usdc.png'
-import usdtLogo from '../../assets/coins/usdt.png'
-import busdLogo from '../../assets/coins/busd.png'
+import daiLogo from '../../assets/dai.png'
+import usdcLogo from '../../assets/usdc.png'
+import usdtLogo from '../../assets/usdt.png'
+import busdLogo from '../../assets/busd.png'
 
 import { addresses, abis } from "@project/contracts";
 import { getDAI } from '../../utils/contracts';
