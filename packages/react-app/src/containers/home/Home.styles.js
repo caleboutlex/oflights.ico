@@ -14,8 +14,7 @@ export const useStyles = makeStyles(() => ({
         color: theme.palette.text.primary, 
     },
     title: {
-      textShadow: `0px 0px 4px ${theme.palette.secondary.main}`,
-      borderBottom: `1px solid ${theme.pallel.primary.main}`
+      textShadow: `0px 0px 4px ${theme.palette.secondary.main}`
     },
     backgroundImage: {
       position: 'absolute',
