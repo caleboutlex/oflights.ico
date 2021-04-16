@@ -7,6 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const CssTextField = withStyles({
     root: {
+        color: theme.palette.text.primary,
         width: '100%',
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
@@ -21,6 +22,7 @@ const CssTextField = withStyles({
             },
         },
     },
+    
 })(TextField);
 
 
@@ -28,7 +30,7 @@ const BasicInput = (props) => {
    
     return (
         <CssTextField
-            variant='filled'
+            variant='standard'
             InputLabelProps={{
                 shrink: true,
             }}
@@ -38,7 +40,6 @@ const BasicInput = (props) => {
             defaultValue={props.defaultValue}
             helperText={props.helperText}
             onChange={props.onChange}
-            
         />
     )
 }

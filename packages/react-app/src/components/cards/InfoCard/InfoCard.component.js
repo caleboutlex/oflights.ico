@@ -9,31 +9,24 @@ import { formatter } from '../../../utils/utils'
 import { useWeb3React } from '@web3-react/core';
 import { useStyles } from './InfoCard.styles';
 
-import useGetAllStages from '../../../hooks/useGetAllStages';
-import useContractInfo from '../../../hooks/useContractInfo';
+import usePresaleStage from '../../../hooks/usePresaleStage';
+import useCurrentStage from '../../../hooks/useCurrentStage';
 
 const InfoCard = (props) => {
     const {account, library } = useWeb3React();
-    const allStages = useGetAllStages();
-    const contractInfo = useContractInfo();
-    const [ info, setInfo ] = React.useState({
-        name:'',
-        allocation: '', 
-        min:'',
-        limit: '', 
-        rate: '',
-        sold:'',
-        active: false, 
-        goalReached: false, 
-        whitelisted: false, 
-    });
-   
+    const currentStage = useCurrentStage();
+    const stage = usePresaleStage(currentStage);
 
+    const [ info, setInfo ] = React.useState();
+    
     React.useEffect(() => {
-        if(allStages.length > 0 && contractInfo) {
-           setInfo(allStages[contractInfo.currentStage]);
+    
+        if(account && library) {   
+            setInfo(stage);
+            
         }
-    }, [allStages])
+       
+    }, [ account])
 
     const classes = useStyles();
 
@@ -52,8 +45,8 @@ const InfoCard = (props) => {
                     </Grid>
                     <Grid item xs>
                         <Typography variant="body1" gutterBottom noWrap>
-                            {account?
-                                info.name
+                            {stage?
+                                ''
                             :
                                 ''
                             }
@@ -115,16 +108,16 @@ const InfoCard = (props) => {
                             alignItems="flex-end"
                             className={classes.nowrapper}
                         >
-                            {account? 
+                            {stage? 
                             <>
                                 <Grid item xs>
                                     <Typography variant="body1" noWrap>
-                                        {formatter.format(Number(library.utils.fromWei(info.allocation.toString(), 'ether')))}
+                                        {formatter.format(Number(library.utils.fromWei(stage.allocation, 'ether')))}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs>
                                     <Typography variant="body1" noWrap>
-                                        {formatter.format(Number(library.utils.fromWei(info.rate.toString(), 'ether')))}
+                                        {formatter.format(Number(library.utils.fromWei(stage.rate, 'ether')))}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs>
@@ -134,17 +127,17 @@ const InfoCard = (props) => {
                                 </Grid>
                                 <Grid item xs>
                                     <Typography variant="body1" noWrap>
-                                        {formatter.format(Number(library.utils.fromWei(info.min.toString(), 'ether')))}
+                                        {formatter.format(Number(library.utils.fromWei(stage.min, 'ether')))}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs>
                                     <Typography variant="body1" noWrap>
-                                        {formatter.format(Number(library.utils.fromWei(info.limit.toString(), 'ether')))}
+                                        {formatter.format(Number(library.utils.fromWei(stage.limit, 'ether')))}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs>
                                     <Typography variant="body1" noWrap>
-                                        {formatter.format(Number(library.utils.fromWei(info.sold.toString(), 'ether')))}
+                                        {formatter.format(Number(library.utils.fromWei(stage.sold, 'ether')))}
                                     </Typography>
                                 </Grid>
                             </>

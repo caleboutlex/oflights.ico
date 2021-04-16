@@ -1,56 +1,58 @@
 import { addresses, abis } from "@project/contracts";
+import { makeContract } from './utils';
 
 export const getICOcontract = (library, chainId) => {
-    let Contract;
-    if(chainId === 56 ) {
-        Contract = new library.eth.Contract(abis.ico, addresses.bsc_mainnet.ico);
+    if(chainId === 56 || chainId === 1337) {
+        return makeContract(library, abis.ico, addresses.bsc.ico);
     } else if( chainId === 97) {
-        Contract = new library.eth.Contract(abis.ico, addresses.bsc_testnet.ico);
+        return makeContract(library, abis.ico, addresses.bsc.ico);
     }
-
-    return Contract;
 }
 
 export const getOFLY = (library, chainId) => {
-    let Contract;
-    if(chainId === 56 ) {
-        Contract = new library.eth.Contract(abis.erc20, addresses.bsc_mainnet.ofly);
+    if(chainId === 56 || chainId === 1337 ) {
+        return makeContract(library, abis.erc20, addresses.bsc.ofly);
     } else if( chainId === 97) {
-        Contract = new library.eth.Contract(abis.erc20, addresses.bsc_testnet.ofly);
+        return makeContract(library, abis.erc20, addresses.bsc.ofly);
     }
-
-    return Contract;
 }
 
 export const getDAI = (library, chainId) => {
-    let Contract;
-    if(chainId === 56 ) {
-        Contract = new library.eth.Contract(abis.erc20, addresses.bsc_mainnet.dai);
+    if(chainId === 56 || chainId === 1337 ) {
+        return makeContract(library, abis.erc20, addresses.bsc.dai);
     } else if( chainId === 97) {
-        Contract = new library.eth.Contract(abis.erc20, addresses.bsc_testnet.dai);
+        return makeContract(library, abis.erc20, addresses.bsc.dai);
     }
-
-    return Contract;
 }
 
 export const getUSDC = (library, chainId) => {
-    let Contract;
-    if(chainId === 56 ) {
-        Contract = new library.eth.Contract(abis.erc20, addresses.bsc_mainnet.usdc);
+    if(chainId === 56 || chainId === 1337 ) {
+        return makeContract(library, abis.erc20, addresses.bsc.usdc);
     } else if( chainId === 97) {
-        Contract = new library.eth.Contract(abis.erc20, addresses.bsc_testnet.usdc);
+        return makeContract(library, abis.erc20, addresses.bsc.usdc);
     }
-
-    return Contract;
 }
 
 export const getUSDT = (library, chainId) => {
-    let Contract;
-    if(chainId === 56 ) {
-        Contract = new library.eth.Contract(abis.erc20, addresses.bsc_mainnet.usdt);
+    if(chainId === 56 || chainId === 1337 ) {
+        return makeContract(library, abis.erc20, addresses.bsc.usdt);
     } else if( chainId === 97) {
-        Contract = new library.eth.Contract(abis.erc20, addresses.bsc_testnet.usdt);
+        return makeContract(library, abis.erc20, addresses.bsc.usdt);
     }
+}
 
-    return Contract;
+export const getFarmContract = (library, chainId) => {
+    if(chainId === 56 || chainId === 1337 ) {
+        return makeContract(library, abis.farm, addresses.bsc.farm);
+    } else if( chainId === 97) {
+        return makeContract(library, abis.farm, addresses.bsc.farm);
+    }
+}
+
+export const getWBNB = (library, chainId) => {
+    if(chainId === 56 || chainId === 1337) {
+        return makeContract(library, abis.erc20, addresses.bsc.wbnb);
+    } else if( chainId === 97) {
+        return makeContract(library, abis.erc20, addresses.bsc.wbnb);
+    }
 }

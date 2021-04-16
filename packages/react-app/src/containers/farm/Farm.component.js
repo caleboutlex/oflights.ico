@@ -6,64 +6,86 @@ import {
 } from '@material-ui/core'
 import { useStyles } from './Farm.styles'
 import { useWeb3React } from "@web3-react/core";
-
 import FarmCard from '../../components/cards/farmcard/FarmCard.component';
+import useFarmsAmount from '../../hooks/useFarmsAmount';
 
+import daiLogo from '../../assets/coins/dai.png'
+import usdcLogo from '../../assets/coins/usdc.png'
+import usdtLogo from '../../assets/coins/usdt.png'
+import busdLogo from '../../assets/coins/busd.png'
+
+
+const FarmNames = [
+  'OFly - Dai LP',
+  'OFly - Usdc LP',
+  'OFly - Usdt LP',
+  'OFly - Busd LP',
+];
+
+const Avatars = [
+  daiLogo, 
+  usdcLogo, 
+  usdtLogo,
+  busdLogo,
+];
+
+const renderFarms = (_pools) => {
+  const renderedFarms = [];
+
+  for(let i = 0; i < _pools; i++) {
+    renderedFarms.push(
+      <Grid item  key={i}>
+        <FarmCard
+          name={FarmNames[i]}
+          avatar={Avatars[i]}
+          pid={i}
+        />
+      </Grid>
+    )
+  }
+
+  return renderedFarms;
+  
+}
 
 function Farm() {
   const {account, chainId, library } = useWeb3React();
-
+  const totalPools = useFarmsAmount();
   const classes = useStyles();
 
   React.useEffect(() => {
-   
-    if(!!account) {
-     
+  
+    if(!!account && !!totalPools) {
+      
     }
     
     return () => {
-      
+       
     }
-  }, [account, chainId]);
+  }, [account, chainId, totalPools]);
 
   return (
     <Grid
-    container
-    spacing={4}
-    justify='center'
-    alignItems='center'
-    className={classes.container}
-  >
-    <Grid item xs={12}>
-      <Typography variant="h2">
-          O.Flights (OFLY) Token Sale
-      </Typography>
-    </Grid>
-    <Grid item xs={12} >
-      <Button 
-        variant="contained" 
-        color="primary" 
-        className={classes.button}
-        href="https://fc5fdf55-4241-45fe-a274-d028d011ed78.filesusr.com/ugd/743b78_fecc2adf4c5a44bfa089d78a2abc5214.pdf"
-        target="_blank"
-      > OFLY Lightpaper </Button>
-    </Grid>
-    <Grid 
-      container item xs={12}
+      container
+      spacing={4}
       justify='center'
       alignItems='center'
-      spacing={9}
+      className={classes.container}
     >
-      <Grid item >
-        <FarmCard/>
+      <Grid item xs={12}>
+        <Typography variant="h2">
+            O.Flights Farming
+        </Typography>
       </Grid>
-      <Grid item >
-        <FarmCard/>
+      <Grid container spacing={4} justify='center' item xs={12} >
+        {account && totalPools ? 
+            renderFarms(totalPools)
+        :
+          <></>
+        }
+        
       </Grid>
-    </Grid>
-    <Grid item xs={12}>
      
-    </Grid>
   </Grid>             
   );
 }

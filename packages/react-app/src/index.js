@@ -6,10 +6,10 @@ import Web3 from "web3";
 import { Web3ReactProvider } from '@web3-react/core';
 
 function getLibrary(provider) {
-   const library = new Web3(provider)
+   const library = new Web3(provider);
    library.pollingInterval = 10000
    return library
-}
+};
 
 ReactDOM.render(
    <Web3ReactProvider getLibrary={getLibrary}>

@@ -5,11 +5,14 @@ import { useWeb3React } from '@web3-react/core';
 import { Link } from 'react-router-dom'
 import SettingsIcon from '@material-ui/icons/Settings';
 import useBalance from '../../hooks/useBalance';
-import useBalanceOfly from '../../hooks/useBalanceOfly';
 import { formatter } from '../../utils/utils'
 import OflightLogo from '../../assets/o_flights_logo.webp'
 import { useStyles } from './Header.styles'
+
+import { addresses, abis } from "@project/contracts";
+import useOwner from '../../hooks/useOwner';
 import useContractInfo from '../../hooks/useContractInfo';
+import useTokenBalance from '../../hooks/useTokenBalance';
 
 const WalletButton = ({ provider, loadWeb3Modal, logoutOfWeb3Modal, connected }) => {
     return (
@@ -41,23 +44,31 @@ const WalletButton = ({ provider, loadWeb3Modal, logoutOfWeb3Modal, connected })
 };
 
 const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal}) => {
-    const { account, chainId } = useWeb3React();
+    const { account, library } = useWeb3React();
     const [ connected, setConnected ] = React.useState('contained');
     const [ isAdmin, setAdmin ] = React.useState(false);
-
+    const owner = useOwner();
+    const tokenBalance = useTokenBalance(addresses.bsc.ofly);
     const accountBalance = useBalance();
-    const oflyBalance = useBalanceOfly();
+
+    const formatEther = (input) => {
+        if(library) {
+            return library.utils.fromWei(input.toString(), 'ether');
+        }
+    }
 
     const classes = useStyles();
-    const contractInfo = useContractInfo();
-
+  
     React.useEffect(() => {
-        if(contractInfo && account) {
-            if(account === contractInfo.owner) {
+   
+        if(owner && account) {
+            if(account === owner) {
+                console.log(owner)
+                console.log(account)
                 setAdmin(true);
             }
         }
-    }, [contractInfo])
+    }, [account, tokenBalance, accountBalance])
 
     return (
         <AppBar position='relative' color='transparent' elevation={0} >
@@ -140,9 +151,18 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                                     variant='outlined'
                                     
                                 >
-                                   <Typography variant="body2" noWrap className={classes.button}>
-                                           {formatter.format(Number(oflyBalance))} OFLY
-                                    </Typography>
+                                   
+                                       {tokenBalance?
+                                            <Typography variant="body2" noWrap className={classes.button}>
+                                                {formatter.format(Number(formatEther(tokenBalance)))} OFLY
+                                            </Typography>
+                                        :
+                                        <Typography variant="body2" noWrap className={classes.button}>
+                                           Loading...
+                                        </Typography>
+                                        }
+                                     
+                                    
                                 </Button> 
                             </Grid>
                             { isAdmin ==true ?

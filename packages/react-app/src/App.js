@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
 function App() {
   const { account, chainId } = useWeb3React();
   const [ provider, loadWeb3Modal, logoutOfWeb3Modal] = useWeb3Modal();
-  const [ chainID, setChainID ] = React.useState();
+  
 
   const classes = useStyles();
 

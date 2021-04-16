@@ -28,6 +28,9 @@ const Info = () => {
         if(!!contractInfo) {
             setInfo(contractInfo);
         }
+        return () => {
+            setInfo(undefined)
+        }
     },[contractInfo, account])
     return(
         <MaterialCard className={classes.card}>

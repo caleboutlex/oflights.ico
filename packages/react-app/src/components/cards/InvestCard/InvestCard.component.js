@@ -9,98 +9,55 @@ import CardContent from '@material-ui/core/CardContent';
 import { useWeb3React } from '@web3-react/core';
 import { useStyles } from './InvestCard.styles';
 import PickerInput from '../../inputs/PickerInput'
+import { addresses, abis } from "@project/contracts";
 
 import { getDAI, getUSDC, getUSDT, getICOcontract } from '../../../utils/contracts';
-import { MAX_UINT } from '../../../utils/utils';
+import { MAX_UINT, makeContract } from '../../../utils/utils';
+
+import useApprove from '../../../hooks/useApprove';
+import useAllowance from '../../../hooks/useAllowance';
 
 
 const InvestCard = (props) => {
     const {account, chainId, library } = useWeb3React();
-    const [ value, setValue ] = React.useState(0);
-    const [ selected, setSelected ] = React.useState('DAI');
-    const [ allowance, setAllowance ] = React.useState();
 
+    const ico = getICOcontract(library, chainId);
+    const dai = getDAI(library, chainId);
+
+    const [ value, setValue ] = React.useState(0);
+    const [ selected, setSelected ] = React.useState(addresses.bsc.dai);
+    const [ token, setToken ] = React.useState();
+    
     const [ message, setMessage ] = React.useState();
     const [ loading, setLoading ] = React.useState(false); 
 
-    const [ approved, setApproved ] = React.useState(false)
-
-    const dai = getDAI(library, chainId);
-    const usdc = getUSDC(library, chainId);
-    const usdt = getUSDT(library, chainId);
-    const ico = getICOcontract(library, chainId);
+    const [ approved, setApproved ] = React.useState(false);
+    const allowance = useAllowance(selected, addresses.bsc.ico);
+    
+    const { onApprove } = useApprove(MAX_UINT, addresses.bsc.ico, token);
  
     const handleChange = (e) => {
-        let token = filterToken(); 
-        let _value; 
-        if(token === usdc || token === usdt) {
-            _value = (Number(e.target.value) * 1000000).toString();
-        } else if( token == dai ) {
-            _value = library.utils.toWei(e.target.value.toString(), 'ether');
-        }
+        let _value = library.utils.toWei(e.target.value.toString(), 'ether');
         setValue(_value)
     };
 
     const handleSelect = (_selected) => {
-        console.log(_selected);
         setSelected(_selected)
     }
 
-    const filterToken = () => {
-        let _token;
-        if(selected === 'DAI') {
-            _token = dai; 
-        } else if(selected === 'USDC') {
-            _token = usdc; 
-        } else if(selected === 'USDT') {
-            _token = usdt;
-        }
-        return _token; 
-    }
-
-    const onApprove = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setMessage('Waiting on transaction succes.....');
-        let token = filterToken();
-        try {
-            await token.methods.approve(ico.options.address, MAX_UINT).send({from: account}).then(()=> {
-                setMessage('Succes.....');
-                setLoading(false);
-                grabERC20Allowance().then((res)=> {
-                    setAllowance(res);
-                   
-                })
-            });
-
-          } catch (e) {
-                if (e.message.includes("User denied transaction signature")) {
-                    setMessage('Ser? Why you cancel?');
-                } else {
-                    console.log(e)
-                }
-          }
-        setLoading(false);
-        setMessage('')
-    }
 
     const onBuy = async (e) => {
         e.preventDefault();
         setLoading(true);
         setMessage('Waiting on transaction succes.....');
-        let token = filterToken() 
-       
         try {
             await ico.methods.buyTokens(
                     value.toString(), 
-                    token.options.address
+                    selected
                 ).send({from: account}).then(()=> {
                 setMessage('Succes.....');
                 setLoading(false);
-                grabERC20Allowance().then((res)=> {
-                    setAllowance(res);
-                   
-                })
+               
             });
 
           } catch (e) {
@@ -114,30 +71,24 @@ const InvestCard = (props) => {
         setMessage('')
     }
 
-    const grabERC20Allowance = async () => {
-        let token = filterToken();
-        try {
-            const res = await token.methods.allowance(account, ico.options.address).call();
-            return res; 
-        } catch (e) {
-          return 0;
-        }
-      }
+    
 
       React.useEffect(() => {
-        if(account && dai && usdc && usdt) { 
-            console.log('Useeffect')
-            grabERC20Allowance().then((res)=> {
-                if(Number(res) > value) {
-                    setApproved(true);
-                } else {
-                    setApproved(false);
-                }
-                setAllowance(res);
-            });
-           
+        console.log('INVESTCARD')
+        if(account && library && selected && allowance ) { 
+            const token = makeContract(library, abis.erc20, selected);
+            setToken(token)
+            if( Number(allowance) > 0) {
+                setApproved(true);
+            } else {
+                setApproved(false);
+            }
         }
-    }, [selected, allowance, dai, usdc, usdt]);
+        return () => {
+            setToken(undefined)
+            setApproved(undefined)
+        }
+    }, [selected, allowance, account]);
 
 
     
@@ -169,7 +120,7 @@ const InvestCard = (props) => {
                             container item
                             spacing={3}
                             direction="row"
-                            justifyContent="center"
+                            justify="center"
                             alignItems="center"
                         >
                             <Grid item xs>
@@ -181,7 +132,7 @@ const InvestCard = (props) => {
                                     
                                 > 
                                     <Typography noWrap>
-                                        Approve {selected} 
+                                        Approve 
                                     </Typography>  
                                 </Button>
                             </Grid>

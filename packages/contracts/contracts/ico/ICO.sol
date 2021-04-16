@@ -15,6 +15,7 @@ contract ICO is Whitelist, Pausable {
     IERC20 internal USDC; 
     IERC20 internal USDT; 
     IERC20 internal DAI; 
+    IERC20 internal BUSD; 
     IERC20Mintable public TOKEN;
 
     // Mapping that holds all the buyers there buy amount; 
@@ -37,6 +38,7 @@ contract ICO is Whitelist, Pausable {
         IERC20 _dai, 
         IERC20 _usdc, 
         IERC20 _usdt,
+        IERC20 _busd,
         uint256 _allocation,
         uint256 _min,
         uint256 _limit,
@@ -48,6 +50,7 @@ contract ICO is Whitelist, Pausable {
         DAI = _dai;
         USDC = _usdc;
         USDT = _usdt;
+        BUSD = _busd; 
         // add the first stage to the ICO.
         addStage(_allocation, _min, _limit, _rate, _name, _whitelisted);
     }
@@ -183,20 +186,15 @@ contract ICO is Whitelist, Pausable {
 
     function handlePayment(uint256 _amount, address _caller, IERC20 _paytoken) internal {
         // set up local amount variable and handle the amount if the paytoken is usdc or usdc
-        uint256 amount;
-        if(_paytoken == DAI) {
-            amount = _amount;
-        } else if ( _paytoken == USDC || _paytoken == USDT ) { 
-            amount = _amount.mul(10**12);
-        }
-        require(userbuyAmounts[_caller].add(amount) <= Stages[currentStage].limit, 'Cant buy more then the max Limit of this stage');
+      
+        require(userbuyAmounts[_caller].add(_amount) <= Stages[currentStage].limit, 'Cant buy more then the max Limit of this stage');
         // we check if the user has approved the contract to spend the tokens
-        require(_paytoken.allowance(_caller, address(this)) >= amount, 'Caller must approve first');
+        require(_paytoken.allowance(_caller, address(this)) >= _amount, 'Caller must approve first');
         // grab the tokens from msg.sender.
         _paytoken.transferFrom(_caller, address(this), _amount);
        
         // calculate the amount to send
-        uint tokensBought = Stages[currentStage].rate.mul(amount).div(10**18);
+        uint tokensBought = Stages[currentStage].rate.mul(_amount).div(10**18);
         require(tokensBought != 0, 'cant buy 0');
         require(TOKEN.balanceOf(address(this)) >= tokensBought, 'Not enought tokens in this sale to buy');
         // send the tokens to the investor;
@@ -231,18 +229,21 @@ contract ICO is Whitelist, Pausable {
         DAI.approve(address(this),DAI.balanceOf(address(this)) );
         USDC.approve(address(this),USDC.balanceOf(address(this)) );
         USDT.approve(address(this), USDT.balanceOf(address(this)) );
+        BUSD.approve(address(this), BUSD.balanceOf(address(this)) );
         TOKEN.transferFrom(address(this), owner(), TOKEN.balanceOf(address(this)));
         DAI.transferFrom(address(this), owner(), DAI.balanceOf(address(this)));
         USDC.transferFrom(address(this), owner(), USDC.balanceOf(address(this)));
         USDT.transferFrom(address(this), owner(), USDT.balanceOf(address(this)));
+        BUSD.transferFrom(address(this), owner(), BUSD.balanceOf(address(this)));
         require(TOKEN.balanceOf(address(this)) == 0, 'ICO contract did not send out all OFLY tokens');
         require(DAI.balanceOf(address(this)) == 0, 'ICO contract did not send out all DAI tokens');
         require(USDC.balanceOf(address(this)) == 0, 'ICO contract did not send out all USDC tokens');
         require(USDT.balanceOf(address(this)) == 0, 'ICO contract did not send out all USDT tokens');
+        require(BUSD.balanceOf(address(this)) == 0, 'ICO contract did not send out all BUSD tokens');
     }
 
     function isAcceptedToken(IERC20 _token) internal returns(bool) {
-        if (_token == DAI || _token == USDC || _token == USDT) {
+        if (_token == DAI || _token == USDC || _token == USDT || _token == BUSD) {
             return true; 
         } else {
             return false;
@@ -254,14 +255,8 @@ contract ICO is Whitelist, Pausable {
      * @param _token the payment token. 
      */
     modifier isWhitinLimitsAndAccepted(uint256 _amount, IERC20 _token) {
-        require(isAcceptedToken(_token) == true, 'Only DAI - USDC - USDT is accepted');
-        uint256 amount; 
-        if(_token == DAI) {
-            amount = _amount;
-        } else if(_token == USDC || _token == USDT) {
-            amount = _amount.mul(10**12);
-        }
-        require(amount >= Stages[currentStage].min && amount <= Stages[currentStage].limit, 'Must be within limits');
+        require(isAcceptedToken(_token) == true, 'Only DAI - USDC - USDT - BUSD is accepted');
+        require(_amount >= Stages[currentStage].min && _amount <= Stages[currentStage].limit, 'Must be within limits');
         _;
         
     }

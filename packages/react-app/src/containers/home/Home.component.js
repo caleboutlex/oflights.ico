@@ -16,9 +16,9 @@ function Home() {
   const classes = useStyles();
 
   React.useEffect(() => {
-   
+ 
     if(!!account) {
-     
+      
     }
     
     return () => {
@@ -50,14 +50,12 @@ function Home() {
       </Grid>
       <Grid 
         container item xs={12}
-        justify='center'
-        alignItems='center'
         spacing={9}
       >
-        <Grid item >
+        <Grid container justify="center" item xs>
           <InfoCard/>
         </Grid>
-        <Grid item >
+        <Grid container justify="center" item xs >
           <InvestCard/>
         </Grid>
       </Grid>

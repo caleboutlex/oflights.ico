@@ -15,26 +15,29 @@ import AssistantIcon from '@material-ui/icons/Assistant';
 const NewStage = () => {
     const { account, library, chainId } = useWeb3React();
     const [ allocation, setAllocation ] = React.useState();
+    const [ min, setMin ] = React.useState();
     const [ limit, setLimit ] = React.useState();
     const [ rate, setRate ] = React.useState();
     const [ name, setName ] = React.useState();
     const [ whitelisted, setWhitelisted ] = React.useState();
-    const ICO = getICOcontract(library, chainId);
+
+    const ico = getICOcontract(library, chainId);
 
     const classes = useStyles();
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+      
         try {
-            await ICO.methods.setNewStage(
+            await ico.methods.setNewStage(
                 library.utils.toWei(allocation.toString(), "ether"), 
+                library.utils.toWei(min.toString(), "ether"),
                 library.utils.toWei(limit.toString(), "ether"),
                 library.utils.toWei(rate.toString(), "ether"),  
                 name.toString(), 
                 whitelisted.toString(),
             ).send({from: account})
         } catch (err) {
-
+            console.log(err);
         }
     }
 
@@ -68,6 +71,14 @@ const NewStage = () => {
                             onChange={(e) =>setAllocation(e.target.value)}
                             label="Allocation"
                             helperText="The amount of tokens allocated to the stage"
+                            type="number"
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <BasicInput
+                            onChange={(e) =>setMin(e.target.value)}
+                            label="Buy Minimum"
+                            helperText="The Minimum amount stablecoins a address can spend"
                             type="number"
                         />
                     </Grid>

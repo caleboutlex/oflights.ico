@@ -14,9 +14,8 @@ import {
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import { useStyles } from '../adminpanel.styles';
-import { formatter } from '../../../utils/utils'
-import useGetAllStages from '../../../hooks/useGetAllStages';
-import useContractInfo from '../../../hooks/useContractInfo';
+import { formatter } from '../../../utils/utils';
+
 
 const checkbox = (state) => {
     if(state == 'true') {
@@ -37,8 +36,8 @@ const checkbox = (state) => {
 
 const StagesTabel = () =>{
     const { account, library, chainId } = useWeb3React();
-    const contractInfo = useContractInfo();
-    const allstages = useGetAllStages();
+    const contractInfo = 0
+    const allstages = 0
     const classes = useStyles();
    
 
@@ -63,11 +62,6 @@ const StagesTabel = () =>{
     }
     
     const rows = makeRows();
-
-    React.useEffect(()=>{
-       
-    },[allstages, contractInfo])
-    
 
     return (
         <TableContainer component={Paper} className={classes.card}>

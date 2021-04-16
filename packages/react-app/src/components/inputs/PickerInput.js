@@ -6,6 +6,7 @@ import {
     Menu,
     MenuItem,
 } from '@material-ui/core'
+
 import {
     withStyles,
     makeStyles,
@@ -17,29 +18,14 @@ import { formatter } from '../../utils/utils'
 import daiLogo from '../../assets/coins/dai.png'
 import usdcLogo from '../../assets/coins/usdc.png'
 import usdtLogo from '../../assets/coins/usdt.png'
+import busdLogo from '../../assets/coins/busd.png'
 
-import useGetBalanceDai from '../../hooks/useBalanceDai'
-import useGetBalanceUsdc from '../../hooks/useBalanceUsdc'
-import useGetBalanceUsdt from '../../hooks/useBalanceUsdt'
+import { addresses, abis } from "@project/contracts";
+import { getDAI } from '../../utils/contracts';
+
+import useTokenBalance from '../../hooks/useTokenBalance';
 
 import { theme } from '../../theme';
-
-
-const DAI = () => {
-    return (
-        <img src={daiLogo} alt="Maker-Dai" style={{maxWidth:"50px"}}/>
-    )
-};
-const USDC = () => {
-    return (
-        <img src={usdcLogo} alt="Usd-Coin" style={{maxWidth:"50px"}} />
-    )
-};
-const USDT = () => {
-    return (
-        <img src={usdtLogo} alt="Tether" style={{maxWidth:"50px"}} />
-    )
-};
 
 const CssTextField = withStyles({
     root: {
@@ -77,15 +63,13 @@ const useStyles = makeStyles({
 });
 
 const PickerInput = (props) => {
-    const { account } = useWeb3React();
+    const { account, chainId, library } = useWeb3React();
     const [ anchorEl, setAnchorEl ] = React.useState(null);
     const [ image, setImage ] = React.useState(daiLogo);
     const [ balance, setBalance ] = React.useState(0);
-
-    const daiBalance = useGetBalanceDai();
-    const usdcBalance = useGetBalanceUsdc();
-    const usdtBalance = useGetBalanceUsdt();
-
+    const [ selected, setSelected ] = React.useState(addresses.bsc.dai)
+    const tokenBalance = useTokenBalance(selected);
+    const dai = getDAI(library, chainId);
     
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -97,39 +81,39 @@ const PickerInput = (props) => {
 
     const handleClickDai = () => {
         setImage(daiLogo);
-        setBalance(formatter.format(daiBalance))
-        props.onClick('DAI')
+        setSelected(addresses.bsc.dai);
+        props.onClick(addresses.bsc.dai)
         handleClose();
     }
     const handleClickUsdc = () => {
         setImage(usdcLogo);
-        setBalance(formatter.format(usdcBalance))
-        props.onClick('USDC')
+        setSelected(addresses.bsc.usdc);
+        props.onClick(addresses.bsc.usdc)
         handleClose();
     }
     const handleClickUsdt = () => {
         setImage(usdtLogo);
-        setBalance(formatter.format(usdtBalance))
-        props.onClick('USDT')
+        setSelected(addresses.bsc.usdt);
+        props.onClick(addresses.bsc.usdt)
         handleClose();
     }
-    
+    const handleClickBusd = () => {
+        setImage(busdLogo);
+        setSelected(addresses.bsc.busd);
+        props.onClick(addresses.bsc.busd)
+        handleClose();
+    }
 
     const classes = useStyles();
 
     React.useEffect(() => {
-        console.log('useEffect picker')
-        if(!!account) {   
-            if(image == daiLogo) {
-                setBalance(formatter.format(daiBalance));
-            } else if( image == usdcLogo) {
-                setBalance(formatter.format(usdcBalance));
-            } else if( image == usdtLogo) {
-                setBalance(formatter.format(usdtBalance));
-            }
-            console.log(balance);
+        console.log('PICKERINPUT')
+        if(account && library) {   
+            setBalance(
+                library.utils.fromWei(tokenBalance.toString(), 'ether')
+            );
         }
-    }, [daiBalance, usdcBalance, usdtBalance]);
+    }, [selected, account, tokenBalance]);
 
     return (
         <Grid 
@@ -151,7 +135,7 @@ const PickerInput = (props) => {
                     type="number"
                     label={props.label}
                     defaultValue={props.defaultValue}
-                    helperText={`Balance: ${balance}`}
+                    helperText={`Balance: ${formatter.format(balance)}`}
                     onChange={props.onChange}
                     
                 />
@@ -168,9 +152,18 @@ const PickerInput = (props) => {
                     onClose={handleClose}
                     className={classes.menu}
                 >
-                    <MenuItem onClick={handleClickDai} ><DAI/></MenuItem>
-                    <MenuItem onClick={handleClickUsdc}><USDC/></MenuItem>
-                    <MenuItem onClick={handleClickUsdt}><USDT/></MenuItem>
+                    <MenuItem onClick={handleClickDai} >
+                        <img src={daiLogo} alt="Maker Dai" style={{maxWidth:"40px"}} />
+                    </MenuItem>
+                    <MenuItem onClick={handleClickUsdc}>
+                        <img src={usdcLogo} alt="Usd-Coin" style={{maxWidth:"40px"}} />
+                    </MenuItem>
+                    <MenuItem onClick={handleClickUsdt}>
+                        <img src={usdtLogo} alt="Tether" style={{maxWidth:"40px"}} />
+                    </MenuItem>
+                    <MenuItem onClick={handleClickBusd}>
+                        <img src={busdLogo} alt="Binance Usd" style={{maxWidth:"40px"}} />
+                    </MenuItem>
                 </Menu>
             </Grid>
         </Grid>
