@@ -1,5 +1,21 @@
 ## @project/contracts
 
-A minimalist, opinionated structure for managing smart contract ABIs and addresses.
+This holds all the contracts for the OFLY token sale and Farming contracts. 
 
-[Read more about Application Binary Interfaces (ABIs) here](https://ethereum.stackexchange.com/questions/234/what-is-an-abi-and-why-is-it-needed-to-interact-with-contracts).
+- farming 
+    OFlightsFarm: The MasterChef contract for the OFLY farming. This contract needs to have minter rights for the OFLY token. 
+
+- ico
+    The inital Token Sale Contract that accepts DAI USDC USDT BUSD token.
+
+- token 
+    The OFLY token. 
+
+
+run in terminal: 
+
+TESTNET 
+    npx truffle migrate --reset --network bsc_testnet
+
+TESTNET 
+    npx truffle migrate --reset --network bsc_mainnet

@@ -5,7 +5,7 @@ const BUSD = artifacts.require("BUSD");
 
 const OFLIGHTS = artifacts.require("OFlightsToken");
 const ICO = artifacts.require("ICO");
-const MASTERCHEF = artifacts.require("OFlightsFarm");
+const FARM = artifacts.require("OFlightsFarm");
 
 const factoryAbi = require("../src/abis/factory.json");
 const factoryAddress = "0x6725F303b657a9451d8BA641348b6761A6CC7a17";
@@ -15,7 +15,7 @@ const routerAddress = "0xD99D1c33F9fC3444f8101754aBC46c52416550D1";
 
 const MAX_UINT = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 const BLOCKS_PER_YEAR = "10518975";
-const REWARD_PER_BLOCK = "11690000";
+const REWARD_PER_BLOCK = "11690000000000";
 
 /*
 - Testnet:
@@ -97,31 +97,31 @@ module.exports = async function (deployer) {
         addresses.usdc, 
         addresses.usdt,
         addresses.busd,
-        web3.utils.toWei('25000000', 'ether'), 
-        web3.utils.toWei('500', 'ether'), 
-        web3.utils.toWei('100000', 'ether'), 
-        web3.utils.toWei('1', 'ether'), 
-        'Test Funding',
-        false,
+        web3.utils.toWei('25000000', 'ether'),      //  ALLOCATION 
+        web3.utils.toWei('500', 'ether'),           //  Min Buy 
+        web3.utils.toWei('100000', 'ether'),        //  Max Buy
+        web3.utils.toWei('1', 'ether'),             //  RATE 
+        'Test Funding',                             //  NAME
+        false,                                      //  WHITELISTED
         {from: addresses.dev}
     );
     const ico = await ICO.deployed();
     addresses.ico = ico.address;
-    // deploy masterchef contract 
+    // deploy farm contract 
 
     await deployer.deploy(
-        MASTERCHEF,
-        oflights.address, // OFLY token
+        FARM,
+        oflights.address,                   // OFLY token
         addresses.dev,
-        REWARD_PER_BLOCK, // reward per block
-        '0', // start block
-        '1', // bonus end block
+        REWARD_PER_BLOCK,                   // reward per block
+        '0',                                // start block
+        '1',                                // bonus end block
     );
-    const masterchef = await MASTERCHEF.deployed();
-    addresses.masterchef = masterchef.address;
+    const farm = await FARM.deployed();
+    addresses.farm = farm.address;
 
     // grant test roles to the ofly token 
-    await oflights.setTestingRoles(ico.address, masterchef.address, {from: addresses.dev});
+    await oflights.setTestingRoles(ico.address, farm.address, {from: addresses.dev});
 
     /* ------ TEST AND MAINNET  ------ */
 
@@ -148,28 +148,34 @@ module.exports = async function (deployer) {
      const pair4 = await FACTORY.methods.getPair(addresses.busd, addresses.ofly).call();
      addresses.OFLY_BUSD_pair = pair4;
     
-
     // add new pid to the farm with the OFLY and DAI LP token. 
-    await masterchef.add(
-        '25',  // allocation point
+    await farm.add(
+        '20',  // allocation point
+        addresses.ofly, // lp token 
+        false,
+        {from: addresses.dev}
+    );
+    // add new pid to the farm with the OFLY and DAI LP token. 
+    await farm.add(
+        '20',  // allocation point
         pair1, // lp token 
         false,
         {from: addresses.dev}
     );
-    await masterchef.add(
-        '25',  // allocation point
+    await farm.add(
+        '20',  // allocation point
         pair2, // lp token 
         false,
         {from: addresses.dev}
     );
-    await masterchef.add(
-        '25',  // allocation point
+    await farm.add(
+        '20',  // allocation point
         pair3, // lp token 
         false,
         {from: addresses.dev}
     );
-    await masterchef.add(
-        '25',  // allocation point
+    await farm.add(
+        '20',  // allocation point
         pair4, // lp token 
         false,
         {from: addresses.dev}

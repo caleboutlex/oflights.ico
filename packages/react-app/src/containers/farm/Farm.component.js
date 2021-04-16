@@ -16,6 +16,7 @@ import busdLogo from '../../assets/busd.png'
 
 
 const FarmNames = [
+  'OFly',
   'OFly - Dai LP',
   'OFly - Usdc LP',
   'OFly - Usdt LP',
@@ -23,6 +24,7 @@ const FarmNames = [
 ];
 
 const Avatars = [
+  daiLogo,
   daiLogo, 
   usdcLogo, 
   usdtLogo,

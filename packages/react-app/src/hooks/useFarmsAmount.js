@@ -8,21 +8,22 @@ import { getFarmContract } from '../utils/contracts';
 const useFarmsAmount = () => {
     const { account, library, chainId } = useWeb3React()
     const [ total, setTotal ] = useState();
-    const FARM = getFarmContract(library, chainId);
+    
 
     const fetchInfo = useCallback(async () => {
-      const total = await FARM.methods.poolLength().call();
-      setTotal(total)
+        const FARM = getFarmContract(library, chainId);
+        const total = await FARM.methods.poolLength().call();
+        setTotal(total)
 
-    }, [account, library, FARM ])
+    }, [account, library ])
 
     useEffect(() => {
  
-        if (account && library && FARM ) {
+        if (account && library) {
             fetchInfo();
         }
 
-    }, [account, library, FARM])
+    }, [account, library])
 
     return total
 }
