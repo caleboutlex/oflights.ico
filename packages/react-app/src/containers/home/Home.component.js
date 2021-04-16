@@ -7,8 +7,8 @@ import {
 import { useStyles } from './Home.styles'
 import { useWeb3React } from "@web3-react/core";
 
-import InfoCard from '../../components/cards/infocard/InfoCard.component';
-import InvestCard from '../../components/cards/investcard/InvestCard.component';
+import InfoCard from '../../components/cards/InfoCard/InfoCard.component';
+import InvestCard from '../../components/cards/InvestCard/InvestCard.component';
 
 function Home() {
   const {account, chainId, library } = useWeb3React();
