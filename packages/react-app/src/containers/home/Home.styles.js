@@ -12,6 +12,16 @@ export const useStyles = makeStyles(() => ({
     button: {
         background: theme.palette.gradient.main,
         color: theme.palette.text.primary, 
+    },
+    title: {
+      textShadow: `0px 0px 4px ${theme.palette.secondary.main}`
+    },
+    backgroundImage: {
+      position: 'absolute',
+      top: '200px',
+      height: '780px',
+      zIndex: '-1',
+     
     }
     })
 );

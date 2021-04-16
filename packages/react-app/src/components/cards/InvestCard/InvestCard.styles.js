@@ -9,6 +9,7 @@ export const useStyles = makeStyles({
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '32vh',
+        minWidth: '26vw',
         backgroundColor: theme.palette.paper.main,
         color: theme.palette.text.primary,
         borderRadius : "15px",

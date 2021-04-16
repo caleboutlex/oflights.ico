@@ -13,7 +13,13 @@ const _theme = createMuiTheme({
        justifyContent:'center'
     },
     typography: {
-       
+      h1: {
+          fontFamily: 'Audiowide, cursive',
+      },
+      h2: {
+        fontFamily: 'Audiowide, cursive',
+      },
+  
     
     },
     
