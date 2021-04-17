@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import SettingsIcon from '@material-ui/icons/Settings';
 import useBalance from '../../hooks/useBalance';
 import { formatter } from '../../utils/utils'
-import OflightLogo from '../../assets/o_flights_logo.webp'
+import OflightLogo from '../../assets/o_flights_logo.png'
 import { useStyles } from './Header.styles'
 
 import { addresses, abis } from "@project/contracts";
@@ -137,7 +137,7 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                 >
                     <Grid container item xs>
                         <Link to='/'> 
-                            <img alt='OFlights logo' src={OflightLogo}/>
+                            <img alt='OFlights logo' width='275px' src={OflightLogo}/>
                         </Link>
                     </Grid>
                     <Grid container item xs  >

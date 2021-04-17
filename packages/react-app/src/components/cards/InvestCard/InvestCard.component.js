@@ -10,7 +10,9 @@ import { useWeb3React } from '@web3-react/core';
 import { useStyles } from './InvestCard.styles';
 import PickerInput from '../../inputs/PickerInput'
 import { addresses, abis } from "@project/contracts";
-
+import Tooltip from '@material-ui/core/Tooltip';
+import HelpIcon from '@material-ui/icons/Help';
+import IconButton from '@material-ui/core/IconButton';
 import { getDAI, getUSDC, getUSDT, getICOcontract } from '../../../utils/contracts';
 import { MAX_UINT, makeContract } from '../../../utils/utils';
 
@@ -104,10 +106,15 @@ const InvestCard = (props) => {
                     spacing={3}
                 >
                     
-                    <Grid item xs={12}>
+                    <Grid container alignItems="center" item xs={12}>
                         <Typography variant="h4" gutterBottom noWrap>
                             Buy OFLY Tokens
                         </Typography>
+                        <Tooltip title="1. Approve Contract,  2. Insert desired amount, 3. Buy Tokens">
+                            <IconButton aria-label="delete">
+                                <HelpIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Grid>
                     <Grid item >
                         <PickerInput 
