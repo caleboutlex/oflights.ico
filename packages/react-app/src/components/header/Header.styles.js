@@ -10,6 +10,7 @@ export const useStyles = makeStyles(() => ({
     title: {
         display: 'none',
         color: theme.palette.text.main,
+
         fontVariantCaps: 'all-small-caps',
         '&:hover': {
             color: theme.palette.primary,
@@ -33,5 +34,13 @@ export const useStyles = makeStyles(() => ({
         flexWrap: 'nowrap',
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
+    modal: {
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'fixed'
+    },
 }));

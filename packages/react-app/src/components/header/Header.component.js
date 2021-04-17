@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Grid, AppBar, Toolbar, Typography } from '@material-ui/core'
+import { Button, Grid, AppBar, Toolbar, Typography, Modal } from '@material-ui/core'
 
 import { useWeb3React } from '@web3-react/core';
 import { Link } from 'react-router-dom'
@@ -14,26 +14,55 @@ import useOwner from '../../hooks/useOwner';
 import useContractInfo from '../../hooks/useContractInfo';
 import useTokenBalance from '../../hooks/useTokenBalance';
 
+import WalletModal from '../walletmodal/WalletModal.component'
+
 const WalletButton = ({ account, provider, loadWeb3Modal, logoutOfWeb3Modal, connected }) => {
     const classes = useStyles();
+    const [ open, setOpen ] = React.useState(false);
+
+    function getModalStyle() {
+        const top = 50;
+        const left = 50;
+    
+        return {
+            
+            top: `${top}%`,
+            left: `${left}%`,
+            transform: `translate(-${top}%, -${left}%)`,
+        };
+    }
+
+    const handleOpen = () => {
+        setOpen(true);
+      };
+    
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
         <div>
             <Button
                 size="large"
                 variant={connected} 
                 color="secondary"
-                onClick={() => {
+                onClick={
+                    () => {
                     if (!provider) {
+                    handleOpen()
                     loadWeb3Modal();
                     } else {
                     logoutOfWeb3Modal();
                     }
-                }}
+                    }
+                }
                 >
                 {!provider ? 
+                <>
                     <Typography variant="body2"noWrap>
                        Connect
                     </Typography>
+                </> 
                 : 
                     <Grid container item spacing={2} direction="row" className={classes.nowrapper}>
                         <Grid item>
@@ -51,6 +80,19 @@ const WalletButton = ({ account, provider, loadWeb3Modal, logoutOfWeb3Modal, con
                     
                 }
             </Button>
+            <Modal
+                style={getModalStyle()}
+                className={classes.modal}
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+            >
+                <>
+                    <WalletModal
+                        handleClose={handleClose}
+                    />
+                </>
+            </Modal> 
         </div>
     )
 };

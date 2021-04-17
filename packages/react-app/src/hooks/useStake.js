@@ -8,6 +8,7 @@ const useStake = (pid, amount) => {
     const farm = getFarmContract(library, chainId);
 
     const deposit = async (_pid, _amount) => {
+      console.log(_amount);
         await farm.methods.deposit(
             _pid, 
             library.utils.toWei(_amount, 'ether')

@@ -12,9 +12,13 @@ import InvestCard from '../../components/cards/InvestCard/InvestCard.component';
 
 import aircraft from '../../assets/aircraft.png'
 
+import usePresaleStage from '../../hooks/usePresaleStage';
+import useCurrentStage from '../../hooks/useCurrentStage';
+
 function Ico() {
   const {account, chainId, library } = useWeb3React();
-
+  const currentStage = useCurrentStage();
+  const stage = usePresaleStage(currentStage);
   const classes = useStyles();
 
   React.useEffect(() => {
@@ -41,11 +45,9 @@ function Ico() {
             O.Flights Token Sale
         </Typography>
       </Grid>
-      {account ? 
-      <>
         <Grid item xs={12}>
-          <Typography variant="body1">
-              Sale Stage Name
+          <Typography variant="h4">
+             {stage ? stage.name : ''}
           </Typography>
         </Grid>
         <Grid item xs={12} >
@@ -73,19 +75,7 @@ function Ico() {
               Welcome to the Future
           </Typography>
         </Grid>
-        <img src={aircraft} alt='FlightCraft' className={classes.backgroundImageConnected}/>
-
-      </>
-        :
-        <>
-        <Grid item xs={12}>
-          <Typography variant="h4">
-              Connect First...
-          </Typography>
-        </Grid>
-        <img src={aircraft} alt='FlightCraft' className={classes.backgroundImage}/>
-        </>
-      }  
+        <img src={aircraft} alt='FlightCraft' className={classes.backgroundImageConnected}/> 
     </Grid>        
   );
 }

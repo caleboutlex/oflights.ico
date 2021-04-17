@@ -7,7 +7,7 @@ import useBlock from './useBlock'
 
 const useTokenBalance = (tokenAddress) => {
     const { account, library, chainId } = useWeb3React()
-    const [ balance, setBalance ] = useState(new BigNumber(0))
+    const [ balance, setBalance ] = useState(0)
 
     const block = useBlock()
 

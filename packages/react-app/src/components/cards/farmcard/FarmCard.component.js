@@ -19,6 +19,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
+
 import { formatter } from '../../../utils/utils'
 import { useWeb3React } from '@web3-react/core';
 import { useStyles } from './FarmCard.styles';
@@ -96,7 +97,11 @@ const FarmCard = ({pid, name, avatar}) => {
                         <Avatar src={avatar} className={classes.avatar}/>
                     }
                     
-                    title={name}
+                    title={
+                        <Typography variant="h4" noWrap>
+                            {name}
+                        </Typography>
+                    }
                     subheader=""
                 />
                 <CardContent>
@@ -207,13 +212,13 @@ const FarmCard = ({pid, name, avatar}) => {
                             spacing={1}
                         >
                            
-                            <Grid container item xs>
-                                <Grid item xs>
+                            <Grid container spacing={1} item xs >
+                                <Grid item >
                                     <Typography noWrap>
-                                        LP Balance:
+                                        Balance:
                                     </Typography>
                                 </Grid>
-                                <Grid item xs>
+                                <Grid item >
                                     {tokenBalance ?
                                         <Typography noWrap >
                                             {formatter.format(library.utils.fromWei(tokenBalance.toString(), 'ether'))}
@@ -226,13 +231,13 @@ const FarmCard = ({pid, name, avatar}) => {
                                 </Grid>
                             </Grid>
                             {userInfo ? 
-                            <Grid container item xs >
-                                <Grid item xs>
+                            <Grid container spacing={1} item xs  >
+                                <Grid item >
                                     <Typography noWrap>
                                         Deposited:
                                     </Typography>
                                 </Grid>
-                                <Grid item xs>
+                                <Grid item >
                                     <Typography noWrap>
                                         {formatter.format(library.utils.fromWei(userInfo.amount.toString(), 'ether'))}
                                     </Typography>
@@ -241,22 +246,7 @@ const FarmCard = ({pid, name, avatar}) => {
                             :
                                 <></>
                             }
-                            {userInfo?
-                            <Grid container item xs  >
-                                <Grid item xs>
-                                    <Typography noWrap>
-                                        Reward Debt:
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs>
-                                    <Typography noWrap>
-                                        {formatter.format(library.utils.fromWei(userInfo.rewardDebt.toString(), 'ether'))}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                            :
-                                <></>
-                            }
+                           
                         
                             
                         </Grid>
@@ -274,7 +264,8 @@ const FarmCard = ({pid, name, avatar}) => {
                         <StakeModal
                             pid={pid}
                             lpToken={token}
-                            balance={tokenBalance}
+                            balance={tokenBalance ? tokenBalance : 'Loading...'}
+                            deposited={userInfo ? userInfo.amount : 'Loading...'}
                         />
                     </>
                 </Modal>  

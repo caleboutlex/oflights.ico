@@ -11,6 +11,7 @@ function getLibrary(provider) {
    return library
 };
 
+
 ReactDOM.render(
    <Web3ReactProvider getLibrary={getLibrary}>
        <App />

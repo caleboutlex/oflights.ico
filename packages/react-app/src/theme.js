@@ -36,23 +36,23 @@ const _theme = createMuiTheme({
           main: `linear-gradient(25deg, #FF615C 5%, #B80600 90%)`
         },
         primary: {
-            main: '#FF615C',
+            main: '#CC0033',
         },
         secondary: {
-          main: "#FF615C" ,
+          main: "#CC0033" ,
         },
         background: {
-            main: '#1B1B1B',
+            main: '#181818ff',
         },
         header: {
-            main: "#1B1B1B"
+            main: "#181818"
         },
         paper: {
-            main: '#1B1B1B'
+            main: '#181818'
         },
         text: {
             primary: "#fafafa",
-            secondary: "#ffffff",
+            secondary: "#fafafa",
         },
     },
   });

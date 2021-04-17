@@ -9,4 +9,8 @@ export const useStyles = makeStyles({
     padding: '15px',
     backgroundColor: theme.palette.paper.main
   },
+  nowrapper: {
+    display: 'flex',
+    flexWrap: 'nowrap'
+  },
 });

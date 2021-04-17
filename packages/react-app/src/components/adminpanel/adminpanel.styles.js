@@ -11,7 +11,7 @@ export const useStyles = makeStyles({
         
     },
     button: {
-        background: theme.palette.gradient.main,
+       
         color: theme.palette.text.primary, 
     }
 });

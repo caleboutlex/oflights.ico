@@ -14,7 +14,7 @@ const NETWORK_NAME = "mainnet";
 function useWeb3Modal(config = {}) {
   const [provider, setProvider] = useState();
   const { autoLoad = false, infuraId = INFURA_ID, NETWORK = NETWORK_NAME } = config;
-  const { activate, deactivate } = useWeb3React();
+  const { activate } = useWeb3React();
 
   // Web3Modal also supports many other wallets.
   // You can see other options at https://github.com/Web3Modal/web3modal
@@ -22,27 +22,10 @@ function useWeb3Modal(config = {}) {
     network: NETWORK,
     cacheProvider: true,
     providerOptions: {
-      injected: {
-        display: {
-          name: "Metamask",
-          description: "Connect with the provider in your Browser"
-        },
-        package: null
-      },
-      // Example with WalletConnect provider
       walletconnect: {
-        display: {
-          name: "Mobile",
-          description: "Scan qrcode with your mobile wallet"
-        },
         package: WalletConnectProvider,
         options: {
-          infuraId: "INFURA_ID" // required
-        }
-      },
-      Disclamer: {
-        display: {
-          description: "Scan QR code with your mobile wallet"
+          infuraId,
         },
       },
     },
@@ -52,13 +35,13 @@ function useWeb3Modal(config = {}) {
   const loadWeb3Modal = useCallback(async () => {
     const newProvider = await web3Modal.connect();
     setProvider(new Web3Provider(newProvider));
+    console.log('New provider: ', newProvider);
     activate(injected);
   }, [web3Modal, activate]);
 
   const logoutOfWeb3Modal = useCallback(
     async function () {
       await web3Modal.clearCachedProvider();
-      deactivate(injected);
       window.location.reload();
     },
     [web3Modal],
@@ -69,7 +52,7 @@ function useWeb3Modal(config = {}) {
     if (autoLoad && web3Modal.cachedProvider) {
       loadWeb3Modal();
     }
-  }, [autoLoad, web3Modal.cachedProvider]);
+  }, [autoLoad, loadWeb3Modal, web3Modal.cachedProvider]);
 
   return [provider, loadWeb3Modal, logoutOfWeb3Modal];
 }

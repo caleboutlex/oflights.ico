@@ -18,7 +18,8 @@ import Home from './containers/home/Home.component';
 import Ico from './containers/ico/Ico.component';
 import Admin from './containers/admin/Admin.component';
 import Farm from './containers/farm/Farm.component';
-import background from './assets/background.png'
+import background from './assets/background.png';
+
 
 const useStyles = makeStyles(() => ({
       container: {
@@ -29,10 +30,8 @@ const useStyles = makeStyles(() => ({
 );
 
 function App() {
-  const { account, chainId } = useWeb3React();
   const [ provider, loadWeb3Modal, logoutOfWeb3Modal] = useWeb3Modal();
   
-
   const classes = useStyles();
 
   return (

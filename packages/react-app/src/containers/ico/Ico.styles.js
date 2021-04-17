@@ -16,14 +16,14 @@ export const useStyles = makeStyles(() => ({
 
     backgroundImage: {
       position: 'sticky',
-      height: '780px',
+      height: '580px',
       zIndex: '-1',
     },
 
     backgroundImageConnected: {
       position: 'sticky',
       top: '650px',
-      height: '780px',
+      height: '580px',
       zIndex: '-1',
     },
     title: {

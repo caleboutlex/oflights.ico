@@ -4,6 +4,7 @@ import { useWeb3React } from '@web3-react/core';
 import { addresses, abis } from "@project/contracts";
 import { makeContract, MAX_UINT, getTotalLPValue } from '../utils/utils';
 import { getFarmContract } from '../utils/contracts';
+import useBlock from './useBlock'
 
 const useFarm = (id) => {
     const { account, library, chainId } = useWeb3React()
@@ -13,7 +14,7 @@ const useFarm = (id) => {
         lastRewardBlock: '',
         accOflyPerShare: '',     
     });
-    
+    const block = useBlock();
 
     const fetchInfo = useCallback(async () => {
       const FARM = getFarmContract(library, chainId);
@@ -34,7 +35,7 @@ const useFarm = (id) => {
             fetchInfo();
         }
         
-    }, [account, library, id])
+    }, [account, library, id, block])
 
     return info
 }

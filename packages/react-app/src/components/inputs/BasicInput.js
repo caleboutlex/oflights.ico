@@ -7,7 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const CssTextField = withStyles({
     root: {
-        color: theme.palette.text.primary,
+        color: 'white',
         width: '100%',
         '& .MuiTextField-root': {
             margin: theme.spacing(1),

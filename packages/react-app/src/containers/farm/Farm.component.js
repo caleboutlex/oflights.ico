@@ -53,7 +53,7 @@ const renderFarms = (_pools) => {
 
 function Farm() {
   const {account, chainId, library } = useWeb3React();
-  const totalPools = useFarmsAmount();
+  const totalPools = useFarmsAmount(5);
   const classes = useStyles();
 
   React.useEffect(() => {
@@ -80,17 +80,13 @@ function Farm() {
             O.Flights Farming
         </Typography>
       </Grid>
-      <Grid container spacing={6} justify='center' item xs={12} >
-        {account && totalPools ? 
-            renderFarms(totalPools)
-        :
-        <Grid item xs={12}>
-          <Typography variant="h4">
-              Connect First...
+      <Grid item xs={12}>
+          <Typography variant="h3" className={classes.title}>
+              Farming starts at ... 
           </Typography>
         </Grid>
-        }
-        
+      <Grid container spacing={6} justify='center' item xs={12} >
+            {renderFarms(totalPools)}
       </Grid>
      
   </Grid>             

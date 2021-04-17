@@ -5,9 +5,10 @@ import { getFarmContract, getDAI, getUSDT, getUSDC , getOFLY, getWBNB } from '..
 
 const useUnStake = (pid, amount) => {
     const { account, library, chainId } = useWeb3React()
+    const farm = getFarmContract(library, chainId);
 
     const withdraw = async (_pid, _amount) => {
-        const farm = getFarmContract(library, chainId);
+        console.log(_pid, _amount)
         await farm.methods.withdraw(
             _pid, 
             library.utils.toWei(_amount, 'ether')
@@ -21,7 +22,7 @@ const useUnStake = (pid, amount) => {
           amount.toString(),
         )
       },
-      [account, pid, amount],
+      [account, pid, amount, farm],
     )
   
     return { onUnStake: handleUnStake }
