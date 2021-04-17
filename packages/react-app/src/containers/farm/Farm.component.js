@@ -69,7 +69,7 @@ function Farm() {
   return (
     <Grid
       container
-      spacing={4}
+      spacing={8}
       justify='center'
       alignItems='center'
       className={classes.container}
@@ -79,7 +79,7 @@ function Farm() {
             O.Flights Farming
         </Typography>
       </Grid>
-      <Grid container spacing={4} justify='center' item xs={12} >
+      <Grid container spacing={6} justify='center' item xs={12} >
         {account && totalPools ? 
             renderFarms(totalPools)
         :

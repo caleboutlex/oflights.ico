@@ -28,7 +28,7 @@ function Home() {
   return (
     <Grid
       container
-      spacing={10}
+      spacing={4}
       justify='center'
       alignItems='center'
       className={classes.container}
@@ -43,7 +43,17 @@ function Home() {
             Urban Mobility Redefined!
         </Typography>
       </Grid>
-      <img src={aircraft} alt='FlightCraft' className={classes.backgroundImage}/>
+      <Grid item xs>
+        <iframe 
+          width="90%" 
+          height="560px" 
+          src="https://www.youtube.com/embed/OM_5XRC91Og" 
+          title="YouTube video player" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>  
+        </iframe>
+      </Grid>
     </Grid>        
   );
 }

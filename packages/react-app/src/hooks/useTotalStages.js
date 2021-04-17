@@ -8,19 +8,19 @@ import { getICOcontract } from '../utils/contracts';
 const useTotalStages = () => {
     const { account, library, chainId } = useWeb3React()
     const [ total, setTotal ] = useState(0);
-    const ICO = getICOcontract(library, chainId);
 
     const fetchInfo = useCallback(async () => {
+        const ICO = getICOcontract(library, chainId);
         const tot = await ICO.methods.getTotalStages().call();
         setTotal(tot);
-    }, [account, library, ICO])
+    }, [account, library])
 
     useEffect(() => {
      
-        if (account && library && ICO) {
+        if (account && library ) {
             fetchInfo()
         }
-    }, [account, library, ICO])
+    }, [account, library])
 
     return total
 }

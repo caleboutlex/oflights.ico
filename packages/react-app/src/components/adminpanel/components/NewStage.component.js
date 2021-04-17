@@ -102,7 +102,7 @@ const NewStage = () => {
                         <BasicInput
                             onChange={(e) =>setWhitelisted(e.target.value)}
                             label="Whitelisted"
-                            helperText="If the stage should be whitelisted or not. TRUE or FALSE"
+                            helperText="If the stage should be whitelisted or not. 'true' or 'false'"
                             type="text"
                         />
                     </Grid>

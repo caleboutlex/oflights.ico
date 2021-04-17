@@ -87,16 +87,16 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                     <Grid container item xs  >
                         <Grid 
                             container
-                            spacing={6}
+                            spacing={4}
                             direction="row"
                             justify="center"
                             alignItems="center"
                         >
-                            <Grid item xs >
+                            <Grid item  >
                                 <Typography 
                                     className={classes.title} 
                                     component={Link}
-                                    to={`/${nav1}`} 
+                                    to={`/tokensale`} 
                                     color="textPrimary"
                                     variant="h5" 
                                     noWrap
@@ -104,7 +104,7 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                                     {nav1}
                                 </Typography>
                             </Grid>
-                            <Grid item xs >
+                            <Grid item  >
                                 <Typography 
                                     className={classes.title} 
                                     component={Link}
@@ -118,7 +118,7 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs >
+                    <Grid container item xs >
                         <Grid 
                             container
                             spacing={2}

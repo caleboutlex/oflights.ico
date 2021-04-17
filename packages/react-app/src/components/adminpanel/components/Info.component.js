@@ -25,12 +25,10 @@ const Info = () => {
     const classes = useStyles();
 
     React.useEffect(() =>{
-        if(!!contractInfo) {
+        if(contractInfo) {
             setInfo(contractInfo);
         }
-        return () => {
-            setInfo(undefined)
-        }
+
     },[contractInfo, account])
     return(
         <MaterialCard className={classes.card}>
@@ -92,6 +90,7 @@ const Info = () => {
                             >
                                 {account? 
                                 <>
+                                
                                     <Grid item xs>
                                     <Typography variant="body1">
                                         {formatter.format(library.utils.fromWei(info.remainingTokens.toString(), 'ether'))}
@@ -112,11 +111,12 @@ const Info = () => {
                                             {formatter.format(library.utils.fromWei(info.currentLimit.toString(), 'ether'))}
                                         </Typography>
                                     </Grid>
+                             
                                 </>
                                 :
                                     <></>
                                 }
-                                
+   
                             </Grid>
                         </Grid>
                     </Grid>  

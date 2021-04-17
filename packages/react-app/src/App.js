@@ -1,7 +1,7 @@
 import React from "react";
 import { 
   Route, 
-  BrowserRouter as Router, 
+  HashRouter as Router, 
   Switch,
 } from 'react-router-dom';
 
@@ -52,14 +52,14 @@ function App() {
                 provider={provider} 
                 loadWeb3Modal={loadWeb3Modal} 
                 logoutOfWeb3Modal={logoutOfWeb3Modal}
-                nav1='ico'
+                nav1='token sale'
                 nav2='farming'
               />
             </Grid>
             <Grid container item xs={12}>
               <Switch>
                 <Route path="/" exact component={Home}/>
-                <Route path="/ico" component={Ico}/>
+                <Route path="/tokensale" component={Ico}/>
                 <Route path="/farming" component={Farm}/>
                 <Route path="/admin" component={Admin}/>
               </Switch>

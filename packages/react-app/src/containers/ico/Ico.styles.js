@@ -15,9 +15,10 @@ export const useStyles = makeStyles(() => ({
     },
 
     backgroundImage: {
-      position: 'sticky',
-      maxWidth: "80vw",
-      zIndex: '-1'
+      position: 'absolute',
+      top: '650px',
+      height: '780px',
+      zIndex: '-1',
     }
     })
 );

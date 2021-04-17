@@ -31,14 +31,19 @@ function Ico() {
   return (
     <Grid
       container
-      spacing={6}
+      spacing={4}
       justify='center'
-      alignItems='center'
+      alignItems='flex-end'
       className={classes.container}
     >
       <Grid item xs={12}>
         <Typography variant="h2">
-            Initial Coin Offering
+            O.Flights Token Sale
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="h3">
+            Sale Stage Name
         </Typography>
       </Grid>
       <Grid item xs={12} >
@@ -61,9 +66,13 @@ function Ico() {
           <InvestCard/>
         </Grid>
       </Grid>
-      <Grid item xs >
-        <img src={aircraft} alt='FlightCraft' className={classes.backgroundImage}/>
+      <Grid item xs={12}>
+        <Typography variant="h3">
+            Welcome to the Future
+        </Typography>
       </Grid>
+      <img src={aircraft} alt='FlightCraft' className={classes.backgroundImage}/>
+     
     </Grid>        
   );
 }

@@ -22,10 +22,27 @@ function useWeb3Modal(config = {}) {
     network: NETWORK,
     cacheProvider: true,
     providerOptions: {
+      injected: {
+        display: {
+          name: "Metamask",
+          description: "Connect with the provider in your Browser"
+        },
+        package: null
+      },
+      // Example with WalletConnect provider
       walletconnect: {
+        display: {
+          name: "Mobile",
+          description: "Scan qrcode with your mobile wallet"
+        },
         package: WalletConnectProvider,
         options: {
-          infuraId,
+          infuraId: "INFURA_ID" // required
+        }
+      },
+      Disclamer: {
+        display: {
+          description: "Scan QR code with your mobile wallet"
         },
       },
     },

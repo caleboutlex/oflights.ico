@@ -20,13 +20,12 @@ const InfoCard = (props) => {
     const [ info, setInfo ] = React.useState();
     
     React.useEffect(() => {
-    
-        if(account && library) {   
+        if(account && library && currentStage && stage) {   
             setInfo(stage);
-            
+            console.log(stage);
         }
        
-    }, [ account])
+    }, [ account, currentStage, stage])
 
     const classes = useStyles();
 
@@ -40,7 +39,7 @@ const InfoCard = (props) => {
                 >
                     <Grid item xs>
                         <Typography variant="h4" gutterBottom noWrap>
-                            Token Sale Process
+                            Token Sale Facts
                         </Typography>
                     </Grid>
                     <Grid item xs>
