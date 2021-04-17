@@ -9,6 +9,7 @@ import { useWeb3React } from "@web3-react/core";
 import FarmCard from '../../components/cards/farmcard/FarmCard.component';
 import useFarmsAmount from '../../hooks/useFarmsAmount';
 
+import oflyLogo from '../../assets/ofly.png'
 import daiLogo from '../../assets/dai.png'
 import usdcLogo from '../../assets/usdc.png'
 import usdtLogo from '../../assets/usdt.png'
@@ -24,7 +25,7 @@ const FarmNames = [
 ];
 
 const Avatars = [
-  daiLogo,
+  oflyLogo,
   daiLogo, 
   usdcLogo, 
   usdtLogo,
@@ -83,7 +84,11 @@ function Farm() {
         {account && totalPools ? 
             renderFarms(totalPools)
         :
-          <></>
+        <Grid item xs={12}>
+          <Typography variant="h4">
+              Connect First...
+          </Typography>
+        </Grid>
         }
         
       </Grid>

@@ -21,7 +21,6 @@ const _theme = createMuiTheme({
       },
       h3: {
         fontFamily: 'Audiowide, normal',
-       
       },
       h4: {
         fontFamily: 'Audiowide, normal',

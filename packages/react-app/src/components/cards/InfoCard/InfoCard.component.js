@@ -121,7 +121,7 @@ const InfoCard = (props) => {
                                 </Grid>
                                 <Grid item xs>
                                     <Typography variant="body1" noWrap>
-                                        DAI - USDC - USDT
+                                        DAI - USDC - USDT - BUSD
                                     </Typography>
                                 </Grid>
                                 <Grid item xs>

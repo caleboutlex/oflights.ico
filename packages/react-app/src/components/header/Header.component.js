@@ -14,7 +14,8 @@ import useOwner from '../../hooks/useOwner';
 import useContractInfo from '../../hooks/useContractInfo';
 import useTokenBalance from '../../hooks/useTokenBalance';
 
-const WalletButton = ({ provider, loadWeb3Modal, logoutOfWeb3Modal, connected }) => {
+const WalletButton = ({ account, provider, loadWeb3Modal, logoutOfWeb3Modal, connected }) => {
+    const classes = useStyles();
     return (
         <div>
             <Button
@@ -30,13 +31,24 @@ const WalletButton = ({ provider, loadWeb3Modal, logoutOfWeb3Modal, connected })
                 }}
                 >
                 {!provider ? 
-                    <Typography variant="body2" noWrap>
-                        Connect Wallet
+                    <Typography variant="body2"noWrap>
+                       Connect
                     </Typography>
                 : 
-                    <Typography variant="body2" noWrap>
-                        Disconnect 
-                    </Typography>
+                    <Grid container item spacing={2} direction="row" className={classes.nowrapper}>
+                        <Grid item>
+                            <Typography variant="body2" >
+                                🟢  
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body2"noWrap>
+                                {account ? account.slice(0,16) : '0x'}...
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    
+                    
                 }
             </Button>
         </div>
@@ -65,6 +77,8 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                 console.log(owner)
                 console.log(account)
                 setAdmin(true);
+            } else {
+                setAdmin(false);
             }
         }
     }, [account, tokenBalance, accountBalance, owner])
@@ -180,7 +194,7 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                                <></> 
                             }
                             <Grid item  >
-                                <WalletButton provider={provider} loadWeb3Modal={loadWeb3Modal} logoutOfWeb3Modal={logoutOfWeb3Modal} connected={connected}/> 
+                                <WalletButton account={account} provider={provider} loadWeb3Modal={loadWeb3Modal} logoutOfWeb3Modal={logoutOfWeb3Modal} connected={connected}/> 
                             </Grid>    
                         </Grid>
                     </Grid>

@@ -31,7 +31,7 @@ function Ico() {
   return (
     <Grid
       container
-      spacing={4}
+      spacing={6}
       justify='center'
       alignItems='flex-end'
       className={classes.container}
@@ -41,38 +41,51 @@ function Ico() {
             O.Flights Token Sale
         </Typography>
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="h3">
-            Sale Stage Name
-        </Typography>
-      </Grid>
-      <Grid item xs={12} >
-        <Button 
-          variant="contained" 
-          color="primary" 
-          className={classes.button}
-          href="https://fc5fdf55-4241-45fe-a274-d028d011ed78.filesusr.com/ugd/743b78_fecc2adf4c5a44bfa089d78a2abc5214.pdf"
-          target="_blank"
-        > OFLY Lightpaper </Button>
-      </Grid>
-      <Grid 
-        container item xs={12}
-        spacing={9}
-      >
-        <Grid container justify="center" item xs>
-          <InfoCard/>
+      {account ? 
+      <>
+        <Grid item xs={12}>
+          <Typography variant="body1">
+              Sale Stage Name
+          </Typography>
         </Grid>
-        <Grid container justify="center" item xs >
-          <InvestCard/>
+        <Grid item xs={12} >
+          <Button 
+            variant="contained" 
+            color="primary" 
+            className={classes.button}
+            href="https://fc5fdf55-4241-45fe-a274-d028d011ed78.filesusr.com/ugd/743b78_fecc2adf4c5a44bfa089d78a2abc5214.pdf"
+            target="_blank"
+          > OFLY Lightpaper </Button>
         </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="h3">
-            Welcome to the Future
-        </Typography>
-      </Grid>
-      <img src={aircraft} alt='FlightCraft' className={classes.backgroundImage}/>
-     
+        <Grid 
+          container item xs={12}
+          spacing={9}
+        >
+          <Grid container justify="center" item xs>
+            <InfoCard/>
+          </Grid>
+          <Grid container justify="center" item xs >
+            <InvestCard/>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="h4">
+              Welcome to the Future
+          </Typography>
+        </Grid>
+        <img src={aircraft} alt='FlightCraft' className={classes.backgroundImageConnected}/>
+
+      </>
+        :
+        <>
+        <Grid item xs={12}>
+          <Typography variant="h4">
+              Connect First...
+          </Typography>
+        </Grid>
+        <img src={aircraft} alt='FlightCraft' className={classes.backgroundImage}/>
+        </>
+      }  
     </Grid>        
   );
 }

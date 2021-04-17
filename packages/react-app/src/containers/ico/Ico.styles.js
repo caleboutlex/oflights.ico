@@ -15,7 +15,13 @@ export const useStyles = makeStyles(() => ({
     },
 
     backgroundImage: {
-      position: 'absolute',
+        position: 'sticky',
+      height: '780px',
+      zIndex: '-1',
+    },
+
+    backgroundImageConnected: {
+      position: 'sticky',
       top: '650px',
       height: '780px',
       zIndex: '-1',

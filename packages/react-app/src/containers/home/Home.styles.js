@@ -16,6 +16,9 @@ export const useStyles = makeStyles(() => ({
     title: {
       textShadow: `0px 0px 4px ${theme.palette.secondary.main}`
     },
+    backgroundVideo: {
+      position: 'fixed', zIndex: '-99', width: '100vw', height: '100vh'
+    },
     backgroundImage: {
       position: 'absolute',
       top: '200px',

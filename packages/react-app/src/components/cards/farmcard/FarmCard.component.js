@@ -159,7 +159,7 @@ const FarmCard = ({pid, name, avatar}) => {
                                     </Grid>
                                     <Grid item xs>
                                         <Typography variant="body1" noWrap>
-                                            * reward token *
+                                            OFLY
                                         </Typography>
                                     </Grid>
                                     <Grid item xs>
