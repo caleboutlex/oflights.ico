@@ -9,8 +9,9 @@ export const useStyles = makeStyles({
   },
   card:{
     padding: '35px',
-    maxWidth: '23%',
-    height: '35%',
+    minWidth: '23%',
+    maxWidth: '40%',
+    minHeight: '35%',
     borderRadius: '15px',
     backgroundColor: theme.palette.paper.main,
     color: theme.palette.text.primary,
