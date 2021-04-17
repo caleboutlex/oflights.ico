@@ -15,7 +15,7 @@ export const useStyles = makeStyles(() => ({
     },
 
     backgroundImage: {
-        position: 'sticky',
+      position: 'sticky',
       height: '780px',
       zIndex: '-1',
     },
@@ -25,6 +25,9 @@ export const useStyles = makeStyles(() => ({
       top: '650px',
       height: '780px',
       zIndex: '-1',
-    }
+    },
+    title: {
+      textShadow: `0px 4px 12px ${theme.palette.secondary.main}`
+    },
     })
 );

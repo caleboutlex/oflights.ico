@@ -165,13 +165,13 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                                     
                                 >
                                    
-                                       {tokenBalance?
+                                       {account ?
                                             <Typography variant="body2" noWrap className={classes.button}>
                                                 {formatter.format(Number(formatEther(tokenBalance)))} OFLY
                                             </Typography>
                                         :
                                         <Typography variant="body2" noWrap className={classes.button}>
-                                           Loading...
+                                           0 OFLY
                                         </Typography>
                                         }
                                      

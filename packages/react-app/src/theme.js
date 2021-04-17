@@ -39,7 +39,7 @@ const _theme = createMuiTheme({
             main: '#FF615C',
         },
         secondary: {
-          main: '#FF615C',
+          main: "#FF615C" ,
         },
         background: {
             main: '#1B1B1B',

@@ -37,7 +37,7 @@ function Ico() {
       className={classes.container}
     >
       <Grid item xs={12}>
-        <Typography variant="h2">
+        <Typography variant="h2" className={classes.title}>
             O.Flights Token Sale
         </Typography>
       </Grid>
