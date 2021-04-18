@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Grid, AppBar, Toolbar, Typography, Modal } from '@material-ui/core'
+import { Button, Grid, AppBar, Toolbar, Typography, Modal, Link as MaterialLink} from '@material-ui/core'
 
 import { useWeb3React } from '@web3-react/core';
 import { Link } from 'react-router-dom'
@@ -19,13 +19,13 @@ import WalletModal from '../walletmodal/WalletModal.component'
 const WalletButton = ({ account, provider, loadWeb3Modal, logoutOfWeb3Modal, connected }) => {
     const classes = useStyles();
     const [ open, setOpen ] = React.useState(false);
+    const [ isShown, setIsShown ] = React.useState(false)
 
     function getModalStyle() {
         const top = 50;
         const left = 50;
     
         return {
-            
             top: `${top}%`,
             left: `${left}%`,
             transform: `translate(-${top}%, -${left}%)`,
@@ -40,12 +40,18 @@ const WalletButton = ({ account, provider, loadWeb3Modal, logoutOfWeb3Modal, con
         setOpen(false);
     };
 
+
+    
+
     return (
         <div>
             <Button
                 size="large"
                 variant={connected} 
-                color="secondary"
+                color="primary"
+                className={classes.gradientButton}
+                onMouseEnter={() => setIsShown(true)}
+                onMouseLeave={() => setIsShown(false)}
                 onClick={
                     () => {
                     if (!provider) {
@@ -65,16 +71,33 @@ const WalletButton = ({ account, provider, loadWeb3Modal, logoutOfWeb3Modal, con
                 </> 
                 : 
                     <Grid container item spacing={2} direction="row" className={classes.nowrapper}>
-                        <Grid item>
-                            <Typography variant="body2" >
-                                🟢  
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2"noWrap>
-                                {account ? account.slice(0,16) : '0x'}...
-                            </Typography>
-                        </Grid>
+                        {isShown == true ?
+                            <>
+                            <Grid item>
+                                <Typography variant="body2" >
+                                    🟢  
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="body2"noWrap>
+                                    Disconnect Wallet
+                                </Typography>
+                            </Grid>
+                            </>
+                        :
+                            <>
+                            <Grid item>
+                                <Typography variant="body2" >
+                                    🟢  
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="body2"noWrap>
+                                    {account ? account.slice(0,16) : '0x'}...
+                                </Typography>
+                            </Grid>
+                            </>
+                        } 
                     </Grid>
                     
                     
@@ -97,7 +120,7 @@ const WalletButton = ({ account, provider, loadWeb3Modal, logoutOfWeb3Modal, con
     )
 };
 
-const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal}) => {
+const Header = ({title, nav1, nav2, nav3, provider, loadWeb3Modal, logoutOfWeb3Modal}) => {
     const { account, library } = useWeb3React();
     const [ connected, setConnected ] = React.useState('contained');
     const [ isAdmin, setAdmin ] = React.useState(false);
@@ -147,6 +170,7 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                             direction="row"
                             justify="center"
                             alignItems="center"
+                            className={classes.nowrapper}
                         >
                             <Grid item  >
                                 <Typography 
@@ -172,6 +196,20 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                                     {nav2}
                                 </Typography>
                             </Grid>
+                            <Grid item  >
+                                <Typography 
+                                    className={classes.title} 
+                                    component={MaterialLink}
+                                    style={{textDecoration: 'none'}}
+                                    href='https://www.o.flights/'
+                                    target="_blank" 
+                                    color="textPrimary"
+                                    variant="h5" 
+                                    noWrap
+                                >
+                                    {nav3}
+                                </Typography>
+                            </Grid>
                         </Grid>
                     </Grid>
                     <Grid container item xs >
@@ -186,13 +224,13 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                             <Grid item  >
                                 <Button
                                     size="large"
-                                    color="primary"
+                                    color="default"
                                     variant='outlined'
                                 >
                                    <Typography 
                                         className={classes.button}
                                         variant="body2" 
-                                        color="primary"
+                                        color="default"
                                         noWrap
                                     >
                                            {formatter.format(Number(accountBalance))} BNB
@@ -202,7 +240,7 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                             <Grid item  >
                                 <Button
                                     size="large"
-                                    color="primary"
+                                    color="default"
                                     variant='outlined'
                                     
                                 >
@@ -224,7 +262,7 @@ const Header = ({title, nav1, nav2, provider, loadWeb3Modal, logoutOfWeb3Modal})
                                 <Grid item  >
                                     <Button
                                         size="medium"
-                                        color="primary"
+                                        color="default"
                                         variant="outlined"
                                         component={Link}
                                         to="/admin"

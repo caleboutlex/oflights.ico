@@ -5,25 +5,30 @@ import { getFarmContract, getDAI, getUSDT, getUSDC , getOFLY, getWBNB } from '..
 
 const useApprove = (amount, address, contract) => {
     const { account, library, chainId } = useWeb3React()
+    const [ message, setMessage ] = React.useState();
    
     const approve = async (_address, _amount) => {
         await contract.methods.approve(
             _address, 
             _amount
-        ).send({from: account});
+        ).send({from: account}).then(()=> {
+          setMessage('Succes.....');
+        })
     }
 
     const handleApprove = React.useCallback(
       async () => {
+        setMessage('Waiting on transaction succes.....');
         await approve(
             address,
             amount.toString(),
         )
+        console.log(message);
       },
       [account, address, amount, contract],
     )
   
-    return { onApprove: handleApprove }
+    return {message, onApprove: handleApprove }
   }
   
   export default useApprove

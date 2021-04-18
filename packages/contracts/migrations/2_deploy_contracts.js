@@ -112,7 +112,6 @@ module.exports = async function (deployer) {
     await deployer.deploy(
         FARM,
         oflights.address,                   // OFLY token
-        addresses.dev,
         REWARD_PER_BLOCK,                   // reward per block
         '0',                                // start block
         '1',                                // bonus end block

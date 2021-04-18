@@ -137,6 +137,8 @@ const PickerInput = (props) => {
                     defaultValue={props.defaultValue}
                     helperText={`Balance: ${formatter.format(balance)}`}
                     onChange={props.onChange}
+                    defaultValue="0"
+                   
                     
                 />
             </Grid>

@@ -14,11 +14,14 @@ import Tooltip from '@material-ui/core/Tooltip';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import { getDAI, getUSDC, getUSDT, getICOcontract } from '../../../utils/contracts';
-import { MAX_UINT, makeContract } from '../../../utils/utils';
+import { MAX_UINT, makeContract, formatter } from '../../../utils/utils';
 
 import useApprove from '../../../hooks/useApprove';
 import useAllowance from '../../../hooks/useAllowance';
-
+import usePresaleStage from '../../../hooks/usePresaleStage';
+import useCurrentStage from '../../../hooks/useCurrentStage';
+import Toast from '../../notifications/toast'
+import Alert from '@material-ui/lab/Alert';
 
 const InvestCard = (props) => {
     const {account, chainId, library } = useWeb3React();
@@ -26,58 +29,66 @@ const InvestCard = (props) => {
     const ico = getICOcontract(library, chainId);
     const dai = getDAI(library, chainId);
 
+    const currentStage = useCurrentStage();
+    const stage = usePresaleStage(currentStage);
+
     const [ value, setValue ] = React.useState(0);
     const [ selected, setSelected ] = React.useState(addresses.bsc.dai);
     const [ token, setToken ] = React.useState();
-    
-    const [ message, setMessage ] = React.useState();
+    const [ rate, setRate ] =React.useState(0);
+    const [ expected, setExpected ] = React.useState();
+
+
+
     const [ loading, setLoading ] = React.useState(false); 
 
     const [ approved, setApproved ] = React.useState(false);
     const allowance = useAllowance(selected, addresses.bsc.ico);
     
-    const { onApprove } = useApprove(MAX_UINT, addresses.bsc.ico, token);
+    const { message, onApprove } = useApprove(MAX_UINT, addresses.bsc.ico, token);
  
     const handleChange = (e) => {
-        let _value = library.utils.toWei(e.target.value.toString(), 'ether');
-        setValue(_value)
+        e.preventDefault();
+        setValue((e.target.value*1000000000000000000).toLocaleString('fullwide', {useGrouping:false}));
+        setExpected(formatter.format((rate * e.target.value)/1000000000000000000).toLocaleString('fullwide', {useGrouping:false}))
     };
 
     const handleSelect = (_selected) => {
         setSelected(_selected)
     }
 
-
     const onBuy = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setMessage('Waiting on transaction succes.....');
+       
+        console.log(value.toString())
         try {
             await ico.methods.buyTokens(
                     value.toString(), 
                     selected
                 ).send({from: account}).then(()=> {
-                setMessage('Succes.....');
+               
                 setLoading(false);
                
             });
 
           } catch (e) {
                 if (e.message.includes("User denied transaction signature")) {
-                    setMessage('Ser? Why you cancel?');
+                    
                 } else {
                     console.log(e)
                 }
           }
         setLoading(false);
-        setMessage('')
+    
     }
 
     
 
-      React.useEffect(() => {
+    React.useEffect(() => {
         console.log('INVESTCARD')
-        if(account && library && selected && allowance ) { 
+        console.log('message: ', message);
+        if(account && library && selected && allowance && stage) { 
             const token = makeContract(library, abis.erc20, selected);
             setToken(token)
             if( Number(allowance) > 0) {
@@ -85,12 +96,13 @@ const InvestCard = (props) => {
             } else {
                 setApproved(false);
             }
+            setRate(stage.rate);
         }
         return () => {
             setToken(undefined)
             setApproved(undefined)
         }
-    }, [selected, allowance, account]);
+    }, [selected, allowance, account, currentStage, stage, message]);
 
 
     
@@ -101,13 +113,12 @@ const InvestCard = (props) => {
                 <Grid
                     container
                     direction="column"
-                   
                     alignItems="center"
-                    spacing={3}
+                    spacing={4}
                 >
                     
                     <Grid container alignItems="center" item xs={12}>
-                        <Typography variant="h4" gutterBottom noWrap>
+                        <Typography variant="h4"  noWrap>
                             Buy OFLY Tokens
                         </Typography>
                         <Tooltip title="1. Approve Contract,  2. Insert desired amount, 3. Buy Tokens">
@@ -116,6 +127,7 @@ const InvestCard = (props) => {
                             </IconButton>
                         </Tooltip>
                     </Grid>
+                
                     <Grid item >
                         <PickerInput 
                             onClick={handleSelect}
@@ -132,7 +144,7 @@ const InvestCard = (props) => {
                         >
                             <Grid item xs>
                                 <Button  
-                                    className={classes.button} 
+                                    className={approved == false ? classes.button : classes.empty}
                                     disabled={approved} 
                                     variant="contained" 
                                     onClick={onApprove}
@@ -159,9 +171,10 @@ const InvestCard = (props) => {
                     </Grid>
                     <Grid item >
                         <Typography variant="caption">
-                            You will recive: x amount of OFLY
+                            You will recive: {expected} amount of OFLY
                         </Typography>
                     </Grid>
+                   
    
                 </Grid>
             </CardContent>

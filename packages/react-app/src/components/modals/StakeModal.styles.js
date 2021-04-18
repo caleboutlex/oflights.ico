@@ -13,4 +13,8 @@ export const useStyles = makeStyles({
     display: 'flex',
     flexWrap: 'nowrap'
   },
+  button: {
+    background: theme.palette.gradient.main,
+    color: theme.palette.text.primary, 
+  }
 });

@@ -9,22 +9,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "../interfaces/IERC20Mintable.sol";
 
-
-interface IMigratorChef {
-    // Perform LP token migration from legacy UniswapV2 to SushiSwap.
-    // Take the current LP token address and return the new LP token address.
-    // Migrator should have full access to the caller's LP token.
-    // Return the new LP token address.
-    //
-    // XXX Migrator must have allowance access to UniswapV2 LP tokens.
-    // SushiSwap must mint EXACTLY the same amount of SushiSwap LP tokens or
-    // else something bad will happen. Traditional UniswapV2 does not
-    // do that so be careful!
-    function migrate(IERC20 token) external returns (IERC20);
-}
-
-
-// MasterChef is the master of OFly. He can make OFly and he is a fair guy.
+// OFlightsFarm is the master of OFly. He can make OFly and he is a fair guy.
 //
 // Note that it's ownable and the owner wields tremendous power. The ownership
 // will be transferred to a governance smart contract once OFLY is sufficiently
@@ -59,16 +44,13 @@ contract OFlightsFarm is Ownable {
     }
     // The OFLY TOKEN!
     IERC20Mintable public ofly;
-    // Dev address.
-    address public devaddr;
+
     // Block number when bonus OFLY period ends.
     uint256 public bonusEndBlock;
     // OFLY tokens created per block.
     uint256 public oflyPerBlock;
     // Bonus muliplier for early ofly makers.
     uint256 public constant BONUS_MULTIPLIER = 10;
-    // The migrator contract. It has a lot of power. Can only be set through governance (owner).
-    IMigratorChef public migrator;
     // Info of each pool.
     PoolInfo[] public poolInfo;
     // Info of each user that stakes LP tokens.
@@ -87,13 +69,11 @@ contract OFlightsFarm is Ownable {
 
     constructor(
         IERC20Mintable _ofly,
-        address _devaddr,
         uint256 _oflyPerBlock,
         uint256 _startBlock,
         uint256 _bonusEndBlock
     )  {
         ofly = _ofly;
-        devaddr = _devaddr;
         oflyPerBlock = _oflyPerBlock;
         bonusEndBlock = _bonusEndBlock;
         startBlock = _startBlock;
@@ -141,22 +121,7 @@ contract OFlightsFarm is Ownable {
         poolInfo[_pid].allocPoint = _allocPoint;
     }
 
-    // Set the migrator contract. Can only be called by the owner.
-    function setMigrator(IMigratorChef _migrator) public onlyOwner {
-        migrator = _migrator;
-    }
-
-    // Migrate lp token to another lp contract. Can be called by anyone. We trust that migrator contract is good.
-    function migrate(uint256 _pid) public {
-        require(address(migrator) != address(0), "migrate: no migrator");
-        PoolInfo storage pool = poolInfo[_pid];
-        IERC20 lpToken = pool.lpToken;
-        uint256 bal = lpToken.balanceOf(address(this));
-        lpToken.safeApprove(address(migrator), bal);
-        IERC20 newLpToken = migrator.migrate(lpToken);
-        require(bal == newLpToken.balanceOf(address(this)), "migrate: bad");
-        pool.lpToken = newLpToken;
-    }
+  
 
     // Return reward multiplier over the given _from to _to block.
     function getMultiplier(uint256 _from, uint256 _to)
@@ -224,7 +189,6 @@ contract OFlightsFarm is Ownable {
             multiplier.mul(oflyPerBlock).mul(pool.allocPoint).div(
                 totalAllocPoint
             );
-        ofly.mint(devaddr, sushiReward.div(10));
         ofly.mint(address(this), sushiReward);
         pool.accOflyPerShare = pool.accOflyPerShare.add(
             sushiReward.mul(1e12).div(lpSupply)
@@ -283,17 +247,12 @@ contract OFlightsFarm is Ownable {
 
     // Safe ofly transfer function, just in case if rounding error causes pool to not have enough SUSHIs.
     function safeOflyTransfer(address _to, uint256 _amount) internal {
-        uint256 sushiBal = ofly.balanceOf(address(this));
-        if (_amount > sushiBal) {
-            ofly.transfer(_to, sushiBal);
+        uint256 oflyBal = ofly.balanceOf(address(this));
+        if (_amount > oflyBal) {
+            ofly.transfer(_to, oflyBal);
         } else {
             ofly.transfer(_to, _amount);
         }
     }
 
-    // Update dev address by the previous dev.
-    function dev(address _devaddr) public {
-        require(msg.sender == devaddr, "dev: wut?");
-        devaddr = _devaddr;
-    }
 }

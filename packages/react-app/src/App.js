@@ -53,6 +53,7 @@ function App() {
                 logoutOfWeb3Modal={logoutOfWeb3Modal}
                 nav1='token sale'
                 nav2='farming'
+                nav3='Main Site'
               />
             </Grid>
             <Grid container item xs={12}>

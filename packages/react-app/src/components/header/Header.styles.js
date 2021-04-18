@@ -27,7 +27,6 @@ export const useStyles = makeStyles(() => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        
     },
     nowrapper: {
         display: 'flex',
@@ -43,4 +42,8 @@ export const useStyles = makeStyles(() => ({
         alignItems: 'center',
         position: 'fixed'
     },
+    gradientButton: {
+        background: theme.palette.gradient.main,
+        color: theme.palette.text.primary, 
+    }
 }));

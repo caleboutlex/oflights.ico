@@ -60,6 +60,11 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
         setDisplayValue((Number(balance) / 1000000000000000000).toString())
     }
 
+    const handleApprove = (e) => {
+        let res = onApprove();
+        console.log(res);
+    }
+
     React.useEffect(() => {
         if(account && library && lpToken && allowance) {
             console.log(pid)
@@ -121,8 +126,9 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                                 <Button 
                                     variant="contained" 
                                     color='primary' 
+                                    className={classes.button}
                                     fullWidth={true}
-                                    onClick={onApprove}
+                                    onClick={handleApprove}
                                 >
                                     Approve
                                 </Button>
@@ -135,6 +141,7 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                                                 color='primary' 
                                                 onClick={onStake}
                                                 fullWidth={true}
+                                                className={classes.button}
                                             >
                                                 Deposit
                                             </Button>
@@ -156,6 +163,7 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                                         color='primary' 
                                         fullWidth={true}
                                         onClick={onStake}
+                                        className={classes.button}
                                     >
                                         Deposit
                                     </Button>
@@ -191,6 +199,7 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                                                 color='primary' 
                                                 onClick={onUnStake}
                                                 fullWidth={true}
+                                                className={classes.button}
                                             >
                                                 Withdraw
                                             </Button>

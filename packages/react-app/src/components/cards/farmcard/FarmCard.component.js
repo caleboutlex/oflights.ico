@@ -53,7 +53,9 @@ const FarmCard = ({pid, name, avatar}) => {
     const [ expanded, setExpanded ] = React.useState(false);
     const [ open, setOpen ] = React.useState(false);
     const [ token, setToken ] = React.useState();
-
+    const [ enabled, setEnabled ] = React.useState(false);
+    const [ isActive, setActive ] = React.useState(false);
+    
     const poolInfo = useFarm(pid);
     const userInfo = useUserFarm(pid);
     const tokenBalance = useTokenBalance(poolInfo.lpToken);
@@ -76,15 +78,19 @@ const FarmCard = ({pid, name, avatar}) => {
 
 
     React.useEffect(() => {
-       
-        if(account && library && poolInfo ) { 
+        if(account && library && poolInfo && userInfo ) { 
             const token = makeContract(library, abis.erc20, poolInfo.lpToken);
             setToken(token);
             console.log(userInfo);
             console.log(poolInfo);
+            if(userInfo.pending !== '0') {
+                setEnabled(true);
+            } else {
+                setEnabled(false);
+            }
         }
         
-    }, [ open, account ]);
+    }, [ open, account, userInfo ]);
 
     return (
         <MaterialCard className={classes.card}>
@@ -168,7 +174,13 @@ const FarmCard = ({pid, name, avatar}) => {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs>
-                                        <Button variant="contained" color='primary' onClick={onHarvest}>
+                                        <Button 
+                                            variant='contained' 
+                                            disabled={!enabled} 
+                                            color='primary' 
+                                            onClick={onHarvest}
+                                            className={enabled ? classes.button : classes.empty}
+                                        >
                                             Harvest
                                         </Button>
                                     </Grid>               
@@ -185,9 +197,11 @@ const FarmCard = ({pid, name, avatar}) => {
                         <Grid item xs={12}>                       
                             <Button 
                                 variant="contained" 
-                                color='primary' 
+                                color='primary'
                                 fullWidth={true}
                                 onClick={handleOpen}
+                                disabled={!isActive} 
+                                className={isActive ? classes.button : classes.empty}
                             >
                                 Farm
                             </Button>

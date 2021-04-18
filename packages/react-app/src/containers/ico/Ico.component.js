@@ -2,18 +2,32 @@ import React from "react";
 import {
   Grid, 
   Typography,
-  Button
+  Button,
+  Modal
 } from '@material-ui/core'
 import { useStyles } from './Ico.styles'
 import { useWeb3React } from "@web3-react/core";
 
 import InfoCard from '../../components/cards/InfoCard/InfoCard.component';
 import InvestCard from '../../components/cards/InvestCard/InvestCard.component';
+import Alert from '@material-ui/lab/Alert';
 
 import aircraft from '../../assets/aircraft.png'
 
 import usePresaleStage from '../../hooks/usePresaleStage';
 import useCurrentStage from '../../hooks/useCurrentStage';
+
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+      top: `${top}%`,
+      left: `${left}%`,
+      transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 function Ico() {
   const {account, chainId, library } = useWeb3React();
@@ -21,12 +35,11 @@ function Ico() {
   const stage = usePresaleStage(currentStage);
   const classes = useStyles();
 
+  
   React.useEffect(() => {
- 
-    if(!!account) {
-      
+    if(account) {
+     
     }
-    
     return () => {
       
     }

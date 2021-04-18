@@ -58,10 +58,10 @@ contract OFlightsToken is ERC20, ERC20Burnable, Pausable, AccessControl {
     }
     
     // ONLY FOR TESTING 
-    function setTestingRoles(address ico, address masterchef) public {
+    function setTestingRoles(address ico, address farm) public {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), 'ONLY ADMIN ROLE CAN SET ROLE');
         grantRole(MINTER_ROLE, ico);
-        grantRole(MINTER_ROLE, masterchef);
+        grantRole(MINTER_ROLE, farm);
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 amount)

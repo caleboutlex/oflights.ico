@@ -57,7 +57,7 @@ function Farm() {
   const classes = useStyles();
 
   React.useEffect(() => {
-  
+    
     if(!!account && !!totalPools) {
       
     }
@@ -80,13 +80,8 @@ function Farm() {
             O.Flights Farming
         </Typography>
       </Grid>
-      <Grid item xs={12}>
-          <Typography variant="h3" className={classes.title}>
-              Farming starts at ... 
-          </Typography>
-        </Grid>
       <Grid container spacing={6} justify='center' item xs={12} >
-            {renderFarms(totalPools)}
+            {account ? renderFarms(totalPools) : renderFarms(5)}
       </Grid>
      
   </Grid>             

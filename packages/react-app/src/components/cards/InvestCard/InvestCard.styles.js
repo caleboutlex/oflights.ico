@@ -25,7 +25,7 @@ export const useStyles = makeStyles({
     },
     button: {
         minWidth: "130px",
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.primary.main,
+        background: theme.palette.gradient.main,
+        color: theme.palette.text.primary, 
     }
 });

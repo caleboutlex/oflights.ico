@@ -36,4 +36,8 @@ export const useStyles = makeStyles({
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
     },
+    button: {
+        background: theme.palette.gradient.main,
+        color: theme.palette.text.primary, 
+    }
 });
