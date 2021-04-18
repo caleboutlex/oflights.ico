@@ -11,7 +11,6 @@ export const useStyles = makeStyles({
         
     },
     button: {
-       
         color: theme.palette.text.primary, 
     }
 });

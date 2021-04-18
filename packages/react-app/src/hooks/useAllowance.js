@@ -23,7 +23,7 @@ const useAllowance = (tokenAddress, spender) => {
             fetchAllowance()
         }
        
-    }, [account, library, tokenAddress, spender])
+    }, [account, library, tokenAddress, spender, block])
 
     return allowance
 }

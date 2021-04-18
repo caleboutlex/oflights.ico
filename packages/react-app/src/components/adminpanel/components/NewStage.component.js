@@ -2,7 +2,8 @@ import React from 'react';
 import { 
     Grid,
     Typography,
-    Button
+    Button,
+    Switch
 } from '@material-ui/core'
 import MaterialCard from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -19,14 +20,19 @@ const NewStage = () => {
     const [ limit, setLimit ] = React.useState();
     const [ rate, setRate ] = React.useState();
     const [ name, setName ] = React.useState();
-    const [ whitelisted, setWhitelisted ] = React.useState();
+    const [ whitelisted, setWhitelisted ] = React.useState(false);
 
     const ico = getICOcontract(library, chainId);
 
     const classes = useStyles();
 
     const handleSubmit = async (e) => {
-      
+        console.log(allocation)
+        console.log(min)
+        console.log(limit)
+        console.log(rate)
+        console.log(name)
+        console.log(whitelisted)
         try {
             await ico.methods.setNewStage(
                 library.utils.toWei(allocation.toString(), "ether"), 
@@ -34,7 +40,7 @@ const NewStage = () => {
                 library.utils.toWei(limit.toString(), "ether"),
                 library.utils.toWei(rate.toString(), "ether"),  
                 name.toString(), 
-                whitelisted.toString(),
+                whitelisted
             ).send({from: account})
         } catch (err) {
             console.log(err);
@@ -98,19 +104,31 @@ const NewStage = () => {
                             type="number"
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        <BasicInput
-                            onChange={(e) =>setWhitelisted(e.target.value)}
-                            label="Whitelisted"
-                            helperText="If the stage should be whitelisted or not. 'true' or 'false'"
-                            type="text"
-                        />
+                    <Grid container item   direction='row' xs={6}>
+                        <Grid item xs={6}>
+                            <Typography variant='body1'>
+                                Whitelisted
+                            </Typography>
+                        </Grid>
+                        <Grid container item  justify="center" alignItems="center" direction='row' xs={6}>
+                            <Typography variant='caption'>
+                                false
+                            </Typography>
+                                <Switch
+                                    checked={whitelisted} 
+                                    onChange={()=>setWhitelisted(!whitelisted)}
+                                />
+                            <Typography variant='caption'>
+                                true
+                            </Typography>
+                        </Grid>
+                        
                     </Grid>
                     <Grid item xs={12}>
-                    <Button
-                        variant="outlined"
-                        size='large'
-                    >
+                        <Button
+                            variant="outlined"
+                            size='large'
+                        >
                         <Typography onClick={handleSubmit} noWrap>
                             Set a new sale stage
                         </Typography>

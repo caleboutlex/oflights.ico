@@ -13,21 +13,15 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 
 import { formatter } from '../../../utils/utils'
 import { useWeb3React } from '@web3-react/core';
 import { useStyles } from './FarmCard.styles';
 
-import { makeContract, MAX_UINT, getTotalLPValue } from '../../../utils/utils';
-import { addresses, abis } from "@project/contracts";
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+import { makeContract } from '../../../utils/utils';
+import { abis } from "@project/contracts";
 
 import StakeModal from '../../modals/StakeModal.component';
 import useFarm from '../../../hooks/useFarm';
@@ -142,7 +136,7 @@ const FarmCard = ({pid, name, avatar}) => {
                                         <Typography variant="body1" noWrap>
                                             {userInfo ?
                                                 library.utils.fromWei(userInfo.pending.toString(), 'ether')
-                                                :'Loading ....'
+                                                :'....'
                                             }
                                         </Typography>
                                     </Grid>
@@ -161,13 +155,12 @@ const FarmCard = ({pid, name, avatar}) => {
                                     <Grid item xs>
                                         <Typography variant="body1" noWrap>
                                         {poolInfo
-                                            ? `${new BigNumber(100)
-                                                .times(new BigNumber(100))
-                                                .times(new BigNumber(3))
+                                            ? `${formatter.format(new BigNumber(1)
+                                                .times(new BigNumber(1))
+                                                .times(new BigNumber(1))
                                                 .toNumber()
-                                                .toLocaleString('en-US')
-                                                .slice(0, -1)}%`
-                                            : 'Loading ...'}
+                                                )}%`
+                                            : '...'}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs>

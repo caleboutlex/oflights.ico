@@ -19,7 +19,7 @@ import Ico from './containers/ico/Ico.component';
 import Admin from './containers/admin/Admin.component';
 import Farm from './containers/farm/Farm.component';
 import background from './assets/background.png';
-
+import Footer from './components/footer/Footer.component';
 
 const useStyles = makeStyles(() => ({
       container: {
@@ -65,6 +65,12 @@ function App() {
               </Switch>
             </Grid>
           </Grid>
+          <Footer
+              title='O.FLIGHTS'
+              nav1='token sale'
+              nav2='farming'
+              nav3='Main Site'
+            />
       </Router>
     </ThemeProvider>
   );

@@ -16,21 +16,27 @@ import IconButton from '@material-ui/core/IconButton';
 import LockIcon from '@material-ui/icons/Lock';
 import usePresaleStage from '../../../hooks/usePresaleStage';
 import useCurrentStage from '../../../hooks/useCurrentStage';
+import useWhitelisted from '../../../hooks/useWhitelisted';
 
 const InfoCard = (props) => {
     const {account, library } = useWeb3React();
     const currentStage = useCurrentStage();
     const stage = usePresaleStage(currentStage);
+    const isWhitelisted = useWhitelisted(account);
 
     const [ info, setInfo ] = React.useState();
-    
+    const [ addressWhitelisted, setAddressWhitelisted ] = React.useState(false);
+
     React.useEffect(() => {
+        console.log(isWhitelisted);
         if(account && library && currentStage && stage) {   
             setInfo(stage);
+            setAddressWhitelisted(isWhitelisted);
             console.log(stage);
+            console.log(isWhitelisted);
         }
        
-    }, [ account, currentStage, stage])
+    }, [ account, currentStage, stage, isWhitelisted])
 
     const classes = useStyles();
 
@@ -47,11 +53,6 @@ const InfoCard = (props) => {
                         <Typography variant="h4"  noWrap>
                             Token Sale Facts
                         </Typography>
-                        <Tooltip title="🔴  Whitelist OFF.  🟢 Whitelist ON">
-                            <IconButton aria-label="delete">
-                                <HelpIcon />
-                            </IconButton>
-                        </Tooltip>
                     </Grid>
                 </Grid>
                 
@@ -70,20 +71,36 @@ const InfoCard = (props) => {
                             className={classes.nowrapper}
                             spacing={1}
                         >
-                            <Grid item xs>
-                                <Typography variant="body1" gutterBottom>
-                                    Whitelisted:
-                                </Typography>
-                            </Grid>
+                            {stage? 
+                                stage.whitelisted === 'true' ?
+                                <Grid item xs>
+                                    <Typography variant="body1" gutterBottom>
+                                        Whitelisted:
+                                    </Typography>
+                                </Grid>
+                                :
+                                <></>
+                                :
+                                <></>
+                            }
+                           
                             <Grid item xs>
                                 <Typography variant="body1" noWrap>
                                     Tokens Allocated:
                                 </Typography>
                             </Grid>
-                            <Grid item xs>
+                            <Grid container alignItems="center" item direction='row' xs>
                                 <Typography variant="body1" noWrap>
                                     Rate:
                                 </Typography>
+                                <Tooltip 
+                                    title={ 
+                                        "The amount of OFLY you get for the amount of Stablecoins you invest. (Ex. 1 DAI = 10 OFLY)"
+                                        }>
+                                    <IconButton size='small' >
+                                        <HelpIcon fontSize='small'/>
+                                    </IconButton>
+                                </Tooltip>
                             </Grid>
                             <Grid item xs>
                                 <Typography variant="body1" noWrap>
@@ -119,26 +136,52 @@ const InfoCard = (props) => {
                             {stage? 
                             <>
                                 {stage.whitelisted === 'true' ?
-                                    <Grid container item direction="row" alignItems="flex-end" justify="center" className={classes.nowrapper}>
+                                    addressWhitelisted == true ?
+                                    <Grid container item  spacing={1} justify="center" className={classes.nowrapper}>
+                                        <Grid item xs={12}>
+                                            <Typography variant="body1"  >
+                                                🟢
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs>
+                                            <Tooltip 
+                                                title={ 
+                                                    "This address is whitelisted."
+                                                    }>
+                                                <IconButton size='small' >
+                                                    <HelpIcon fontSize='small'/>
+                                                </IconButton>
+                                            </Tooltip>    
+                                        </Grid>
+                                    </Grid>
+                                    :
+                                    <Grid container spacing={1} item direction="row" alignItems="flex-end" justify="center" className={classes.nowrapper}>
                                         <Grid item xs>
                                             <Typography variant="body1">
-                                                🟢
+                                                🔴 
                                             </Typography>
                                         </Grid>
                                         <Grid item xs gutterBottom>
                                             <Button variant="outlined" size="small" fullWidth={true}  >
                                                 <Typography variant="caption" noWrap>
-                                                    Request Whitelist
+                                                    Get Whitelisted
                                                 </Typography>
                                             </Button>
                                         </Grid>
+                                        <Grid item xs>
+                                            <Tooltip 
+                                                title={ 
+                                                    "This stage is for Whitelisted investors only. Please request to be able to buy tokens."
+                                                    }>
+                                                <IconButton size='small' >
+                                                    <HelpIcon fontSize='small'/>
+                                                </IconButton>
+                                            </Tooltip>    
+                                        </Grid>
                                     </Grid>
                                 :
-                                    <Grid item >
-                                        <Typography variant="body1"  >
-                                            🔴 
-                                        </Typography>
-                                    </Grid>
+                                   
+                                    <></>
                                 }
                                 <Grid item xs>
                                     <Typography variant="body1" noWrap>

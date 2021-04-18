@@ -22,12 +22,7 @@ function useWeb3Modal(config = {}) {
     network: NETWORK,
     cacheProvider: true,
     providerOptions: {
-      walletconnect: {
-        package: WalletConnectProvider,
-        options: {
-          infuraId,
-        },
-      },
+      
     },
   });
 

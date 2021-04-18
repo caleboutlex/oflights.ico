@@ -93,10 +93,7 @@ const InvestCard = (props) => {
             setRate(stage.rate);
             
         }
-        return () => {
-            setToken(undefined)
-            setApproved(undefined)
-        }
+        
     }, [selected, allowance, account, currentStage, stage]);
 
 
@@ -140,7 +137,7 @@ const InvestCard = (props) => {
                             <Grid item xs>
                                 <Button  
                                     className={approved == false ? classes.button : classes.empty}
-                                    disabled={approved} 
+                                    disabled={approved == false ? false : true} 
                                     variant="contained" 
                                     onClick={onApprove}
                                     

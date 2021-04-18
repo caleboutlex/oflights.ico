@@ -142,16 +142,7 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                                                 Deposit
                                             </Button>
                                         </Grid>
-                                        <Grid item>
-                                            <Button 
-                                                variant="disabled" 
-                                                color='primary' 
-                                                onClick={setMaxDeposit}
-
-                                            >
-                                                Max
-                                            </Button>
-                                        </Grid>
+                                        
                                     </Grid>
                                     :
                                     <Button 
@@ -200,15 +191,7 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                                                 Withdraw
                                             </Button>
                                         </Grid>
-                                        <Grid item>
-                                            <Button 
-                                                variant="disabled" 
-                                                color='primary' 
-                                                onClick={setMaxWithdraw}
-                                            >
-                                                Max
-                                            </Button>
-                                        </Grid>
+                                        
                                     </Grid>
                                     :
                                     <></>

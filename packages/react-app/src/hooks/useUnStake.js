@@ -57,7 +57,7 @@ const useUnStake = (pid, amount) => {
       [account, pid, amount, farm],
     )
   
-    return {message, onUnStake: handleUnStake }
+    return { onUnStake: handleUnStake }
   }
   
   export default useUnStake

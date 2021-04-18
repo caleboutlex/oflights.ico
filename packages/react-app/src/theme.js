@@ -42,13 +42,13 @@ const _theme = createMuiTheme({
           main: "#CC0033" ,
         },
         background: {
-            main: '#181818ff',
+            main: '#0A0A0B',
         },
         header: {
-            main: "#181818"
+            main: "#000002"
         },
         paper: {
-            main: '#181818'
+            main: '#0A0A0B'
         },
         text: {
             primary: "#fafafa",

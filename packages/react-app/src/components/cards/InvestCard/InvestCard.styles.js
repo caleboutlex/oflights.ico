@@ -27,5 +27,8 @@ export const useStyles = makeStyles({
         minWidth: "130px",
         background: theme.palette.gradient.main,
         color: theme.palette.text.primary, 
+    },
+    empty: {
+        minWidth: "130px",
     }
 });

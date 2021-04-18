@@ -55,7 +55,7 @@ const useHarvest = (pid) => {
       [account, pid],
     )
   
-    return { message, onHarvest: handleHarvest }
+    return {  onHarvest: handleHarvest }
   }
   
   export default useHarvest

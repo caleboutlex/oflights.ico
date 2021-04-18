@@ -9,7 +9,8 @@ import {
     TableFooter,
     TablePagination,
     TableRow,
-    Paper
+    Paper,
+    Switch
 } from '@material-ui/core'
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -20,7 +21,7 @@ import useGetAllStages from '../../../hooks/useGetAllStages'
 import useContractInfo from '../../../hooks/useContractInfo'
 
 const checkbox = (state) => {
-    if(state == 'true') {
+    if(state === 'true') {
         return (
             <CheckBoxIcon/>
         );
@@ -28,10 +29,6 @@ const checkbox = (state) => {
         return(
             <CheckBoxOutlineBlankIcon/>
         );
-    } else {
-        return (
-            <CheckBoxIcon/>
-        )
     } 
 };
 
@@ -41,6 +38,7 @@ const StagesTabel = () =>{
     const contractInfo = useContractInfo();
     const allstages = useGetAllStages();
     const classes = useStyles();
+    const [ rows, setRows ] = React.useState([]);
    
 
     function createData(name, allocation, limit, rate, active, goalReached, whitelisted) {
@@ -49,21 +47,30 @@ const StagesTabel = () =>{
 
     const makeRows = () => {
         let _rows =[]; 
-        for(let i = 0; i < contractInfo.totalStages; i++){
-            _rows.push(createData(
-                allstages[i].name, 
-                formatter.format(library.utils.fromWei(allstages[i].allocation.toString(), 'ether')), 
-                formatter.format(library.utils.fromWei(allstages[i].limit.toString(), 'ether')),
-                formatter.format(library.utils.fromWei(allstages[i].rate.toString(), 'ether')), 
-                allstages[i].active,
-                allstages[i].goalReached,
-                allstages[i].whitelisted,
-            ));
-        };
+        if(allstages.length > 0) {
+            for(let i = 0; i < contractInfo.totalStages; i++){
+                _rows.push(createData(
+                    allstages[i].name, 
+                    formatter.format(library.utils.fromWei(allstages[i].allocation.toString(), 'ether')), 
+                    formatter.format(library.utils.fromWei(allstages[i].limit.toString(), 'ether')),
+                    formatter.format(library.utils.fromWei(allstages[i].rate.toString(), 'ether')), 
+                    allstages[i].active,
+                    allstages[i].goalReached,
+                    allstages[i].whitelisted,
+                ));
+            };
+        }
+      
         return _rows;
     }
     
-    const rows = makeRows();
+    
+    React.useEffect(()=>{
+       if(account && allstages && contractInfo) {
+           let _rows = makeRows()
+           setRows(_rows);
+       }
+    }, [allstages])
 
     return (
         <TableContainer component={Paper} className={classes.card}>
@@ -88,9 +95,9 @@ const StagesTabel = () =>{
                     <TableCell align="right">{row.allocation}</TableCell>
                     <TableCell align="right">{row.limit}</TableCell>
                     <TableCell align="right">{row.rate}</TableCell>
-                    <TableCell align="right">{checkbox(row.active)}</TableCell>
-                    <TableCell align="right">{checkbox(row.goalReached)}</TableCell>
-                    <TableCell align="right">{checkbox(row.whitelisted)}</TableCell>
+                    <TableCell align="right">{row.active === 'true' ?  <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}</TableCell>
+                    <TableCell align="right">{row.goalReached === 'true' ?  <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}</TableCell>
+                    <TableCell align="right">{row.whitelisted === 'true' ?  <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>

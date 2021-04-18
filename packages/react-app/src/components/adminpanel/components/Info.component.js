@@ -71,7 +71,7 @@ const Info = () => {
                                 </Grid>
                                 <Grid item xs>
                                     <Typography variant="body1">
-                                        Current Rate:
+                                        Current Rate (Amount of OFLY per Stablecoin):
                                     </Typography>
                                 </Grid>
                                 <Grid item xs>

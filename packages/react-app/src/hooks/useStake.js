@@ -57,7 +57,7 @@ const useStake = (pid, amount) => {
       [account, pid, amount, farm],
     )
   
-    return { message, onStake: handleStake }
+    return {  onStake: handleStake }
   }
   
   export default useStake

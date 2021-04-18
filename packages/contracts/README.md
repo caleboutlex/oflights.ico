@@ -11,11 +11,22 @@ This holds all the contracts for the OFLY token sale and Farming contracts.
 - token 
     The OFLY token. 
 
+1. Make .env file with correct parameters
 
-run in terminal: 
+2. Make shure address is funded 
 
-TESTNET 
-    npx truffle migrate --reset --network bsc_testnet
+3. run in terminal: 
 
-TESTNET 
-    npx truffle migrate --reset --network bsc_mainnet
+    TESTNET 
+        npx truffle migrate --reset --network bsc_testnet
+
+    TESTNET 
+        npx truffle migrate --reset --network bsc_mainnet 
+
+        !!! FOR MAINNET DEPLOYMENT WE NEED TO COMMENT OUT SOME STUFF IN deploy_contracts.js 
+
+3. INFO: Deploying contracts will automaticly make pools for all the tokens  
+
+
+4. Update addresses in ./src/addresses.js with the return values in the terminal 
+
