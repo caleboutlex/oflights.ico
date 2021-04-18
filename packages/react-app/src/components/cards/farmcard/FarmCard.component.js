@@ -54,7 +54,7 @@ const FarmCard = ({pid, name, avatar}) => {
     const [ open, setOpen ] = React.useState(false);
     const [ token, setToken ] = React.useState();
     const [ enabled, setEnabled ] = React.useState(false);
-    const [ isActive, setActive ] = React.useState(false);
+    const [ isActive, setActive ] = React.useState(true);
     
     const poolInfo = useFarm(pid);
     const userInfo = useUserFarm(pid);
@@ -83,6 +83,7 @@ const FarmCard = ({pid, name, avatar}) => {
             setToken(token);
             console.log(userInfo);
             console.log(poolInfo);
+
             if(userInfo.pending !== '0') {
                 setEnabled(true);
             } else {
