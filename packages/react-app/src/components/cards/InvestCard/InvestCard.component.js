@@ -25,7 +25,6 @@ import Alert from '@material-ui/lab/Alert';
 
 const InvestCard = (props) => {
     const {account, chainId, library } = useWeb3React();
-
     const ico = getICOcontract(library, chainId);
     const dai = getDAI(library, chainId);
 
@@ -37,16 +36,14 @@ const InvestCard = (props) => {
     const [ token, setToken ] = React.useState();
     const [ rate, setRate ] =React.useState(0);
     const [ expected, setExpected ] = React.useState();
-
-
-
     const [ loading, setLoading ] = React.useState(false); 
+    const [ active, setActive ] = React.useState(false);
 
     const [ approved, setApproved ] = React.useState(false);
     const allowance = useAllowance(selected, addresses.bsc.ico);
     
     const { message, onApprove } = useApprove(MAX_UINT, addresses.bsc.ico, token);
- 
+
     const handleChange = (e) => {
         e.preventDefault();
         setValue((e.target.value*1000000000000000000).toLocaleString('fullwide', {useGrouping:false}));
@@ -60,8 +57,6 @@ const InvestCard = (props) => {
     const onBuy = async (e) => {
         e.preventDefault();
         setLoading(true);
-       
-        console.log(value.toString())
         try {
             await ico.methods.buyTokens(
                     value.toString(), 
@@ -87,7 +82,6 @@ const InvestCard = (props) => {
 
     React.useEffect(() => {
         console.log('INVESTCARD')
-        console.log('message: ', message);
         if(account && library && selected && allowance && stage) { 
             const token = makeContract(library, abis.erc20, selected);
             setToken(token)
@@ -97,12 +91,13 @@ const InvestCard = (props) => {
                 setApproved(false);
             }
             setRate(stage.rate);
+            
         }
         return () => {
             setToken(undefined)
             setApproved(undefined)
         }
-    }, [selected, allowance, account, currentStage, stage, message]);
+    }, [selected, allowance, account, currentStage, stage]);
 
 
     

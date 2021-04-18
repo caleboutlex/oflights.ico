@@ -31,17 +31,17 @@ import { addresses, abis } from "@project/contracts";
 
 const StakeModal = ({pid, lpToken, balance, deposited}) => {
     const {account, chainId, library } = useWeb3React();
-
+   
     const classes = useStyles();
     const [ value, setValue ] = React.useState(0);
     const [ withdraw, setWithdraw ] = React.useState(false);
     const [ approved, setApproved ] = React.useState(false);
     const [ displayValue, setDisplayValue ] = React.useState();
 
-    const { onStake } = useStake(pid, value);
-    const { onUnStake } = useUnStake(pid, value);
-    
-    const { onApprove } = useApprove(MAX_UINT, addresses.bsc.farm, lpToken);
+
+    const {  onApprove } = useApprove(MAX_UINT, addresses.bsc.farm, lpToken);
+    const {  onStake } = useStake(pid, value);
+    const {  onUnStake } = useUnStake(pid, value);
 
     const allowance = useAllowance(lpToken.options.address, addresses.bsc.farm);
 
@@ -60,11 +60,7 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
         setDisplayValue((Number(balance) / 1000000000000000000).toString())
     }
 
-    const handleApprove = (e) => {
-        let res = onApprove();
-        console.log(res);
-    }
-
+    
     React.useEffect(() => {
         if(account && library && lpToken && allowance) {
             console.log(pid)
@@ -128,7 +124,7 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                                     color='primary' 
                                     className={classes.button}
                                     fullWidth={true}
-                                    onClick={handleApprove}
+                                    onClick={onApprove}
                                 >
                                     Approve
                                 </Button>

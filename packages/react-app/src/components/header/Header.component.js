@@ -158,7 +158,7 @@ const Header = ({title, nav1, nav2, nav3, provider, loadWeb3Modal, logoutOfWeb3M
                     justify="space-between"
                     alignItems="center"
                 >
-                    <Grid container item xs>
+                    <Grid item xs>
                         <Link to='/'> 
                             <img alt='OFlights logo' width='275px' src={OflightLogo}/>
                         </Link>

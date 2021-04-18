@@ -54,13 +54,13 @@ const FarmCard = ({pid, name, avatar}) => {
     const [ open, setOpen ] = React.useState(false);
     const [ token, setToken ] = React.useState();
     const [ enabled, setEnabled ] = React.useState(false);
-    const [ isActive, setActive ] = React.useState(true);
-    
+    const [ isActive, setActive ] = React.useState(false);
+ 
     const poolInfo = useFarm(pid);
     const userInfo = useUserFarm(pid);
     const tokenBalance = useTokenBalance(poolInfo.lpToken);
 
-    const { onHarvest } = useHarvest(pid);
+    const { message, onHarvest } = useHarvest(pid);
 
     const classes = useStyles();
 
@@ -77,13 +77,14 @@ const FarmCard = ({pid, name, avatar}) => {
     };
 
 
+
     React.useEffect(() => {
         if(account && library && poolInfo && userInfo ) { 
             const token = makeContract(library, abis.erc20, poolInfo.lpToken);
             setToken(token);
             console.log(userInfo);
             console.log(poolInfo);
-
+            setActive(true)
             if(userInfo.pending !== '0') {
                 setEnabled(true);
             } else {

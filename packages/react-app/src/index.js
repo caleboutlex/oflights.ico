@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import Web3 from "web3";
 import { Web3ReactProvider } from '@web3-react/core';
+import NotificationProvider from "./components/notifications/provider/Provider.component";
 
 function getLibrary(provider) {
    const library = new Web3(provider);
@@ -14,7 +15,9 @@ function getLibrary(provider) {
 
 ReactDOM.render(
    <Web3ReactProvider getLibrary={getLibrary}>
-       <App />
+      <NotificationProvider>
+         <App />
+      </NotificationProvider>
    </Web3ReactProvider>,
    document.getElementById("root"),
 );
