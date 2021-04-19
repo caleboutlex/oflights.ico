@@ -137,7 +137,7 @@ const InvestCard = (props) => {
                             <Grid item xs>
                                 <Button  
                                     className={approved == false ? classes.button : classes.empty}
-                                    disabled={approved == false ? false : true} 
+                                    disabled={approved == false ? false : true } 
                                     variant="contained" 
                                     onClick={onApprove}
                                     

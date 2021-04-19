@@ -29,17 +29,24 @@ import { theme } from '../../theme';
 
 const CssTextField = withStyles({
     root: {
-        width:'100%',
-        '& .MuiInputBase-root': {
-            color: 'inherit',
-          },
-        
-        '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-            borderColor: theme.palette.primary.main,
-            },
+        '& label.Mui-focused': {
+          color: 'white',
         },
-    },
+        '& .MuiInput-underline:after': {
+          borderBottomColor: 'white',
+        },
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            borderColor: 'white',
+          },
+          '&:hover fieldset': {
+            borderColor: 'white',
+          },
+          '&.Mui-focused fieldset': {
+            borderColor: 'white',
+          },
+        },
+      },
 })(TextField);
 
 const useStyles = makeStyles({

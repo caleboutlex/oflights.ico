@@ -4,10 +4,10 @@ import {
 } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() => ({
-    header: {
+    footer: {
         marginTop: '20px',
         backgroundColor: theme.palette.header.main,
-        minHeight: '90px',
+        minHeight: '7vh',
         borderTop: `3px solid ${theme.palette.primary.main}`
     },
     title: {
