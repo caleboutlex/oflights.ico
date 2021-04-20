@@ -162,7 +162,13 @@ const InfoCard = (props) => {
                                             </Typography>
                                         </Grid>
                                         <Grid item xs gutterBottom>
-                                            <Button variant="outlined" size="small" fullWidth={true}  >
+                                            <Button 
+                                                variant="outlined" 
+                                                size="small" 
+                                                fullWidth={true} 
+                                                href="https://forms.gle/yhW3Eg8DqfBs1GqeA"
+                                                target="_blank" 
+                                            >
                                                 <Typography variant="caption" noWrap>
                                                     Get Whitelisted
                                                 </Typography>

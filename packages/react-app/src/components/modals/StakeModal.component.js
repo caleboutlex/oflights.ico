@@ -114,7 +114,7 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant='caption' color='textPrimary'>
-                                Balance : {balance ? formatter.format(library.utils.fromWei(balance, 'ether')) : 'Loading.....'}
+                                Balance : {balance ? library.utils.fromWei(balance, 'ether') : 'Loading.....'}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
@@ -174,7 +174,7 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant='caption' color='textPrimary'>
-                                Deposited : {deposited ? formatter.format(library.utils.fromWei(deposited.toString(), 'ether')) : 'Loading.....'}
+                                Deposited : {deposited ? library.utils.fromWei(deposited.toString(), 'ether') : 'Loading.....'}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>

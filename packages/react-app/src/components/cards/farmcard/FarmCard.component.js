@@ -54,7 +54,7 @@ const FarmCard = ({pid, name, avatar}) => {
     const userInfo = useUserFarm(pid);
     const tokenBalance = useTokenBalance(poolInfo.lpToken);
 
-    const { message, onHarvest } = useHarvest(pid);
+    const {  onHarvest } = useHarvest(pid);
 
     const classes = useStyles();
 
@@ -132,6 +132,7 @@ const FarmCard = ({pid, name, avatar}) => {
                                             Earn:
                                         </Typography>
                                     </Grid>
+                                   
                                     <Grid item xs>
                                         <Typography variant="body1" noWrap>
                                             {userInfo ?
@@ -154,12 +155,8 @@ const FarmCard = ({pid, name, avatar}) => {
                                 >
                                     <Grid item xs>
                                         <Typography variant="body1" noWrap>
-                                        {poolInfo
-                                            ? `${formatter.format(new BigNumber(1)
-                                                .times(new BigNumber(1))
-                                                .times(new BigNumber(1))
-                                                .toNumber()
-                                                )}%`
+                                        {poolInfo.apy
+                                            ? `${formatter.format(poolInfo.apy)}%`
                                             : '...'}
                                         </Typography>
                                     </Grid>
@@ -168,6 +165,7 @@ const FarmCard = ({pid, name, avatar}) => {
                                             OFLY
                                         </Typography>
                                     </Grid>
+                                   
                                     <Grid item xs>
                                         <Button 
                                             variant='contained' 
@@ -230,7 +228,7 @@ const FarmCard = ({pid, name, avatar}) => {
                                 <Grid item >
                                     {tokenBalance ?
                                         <Typography noWrap >
-                                            {formatter.format(library.utils.fromWei(tokenBalance.toString(), 'ether'))}
+                                            {library.utils.fromWei(tokenBalance.toString(), 'ether')}
                                         </Typography>
                                     :
                                         <Typography >
@@ -248,7 +246,7 @@ const FarmCard = ({pid, name, avatar}) => {
                                 </Grid>
                                 <Grid item >
                                     <Typography noWrap>
-                                        {formatter.format(library.utils.fromWei(userInfo.amount.toString(), 'ether'))}
+                                        {(library.utils.fromWei(userInfo.amount.toString(), 'ether'))}
                                     </Typography>
                                 </Grid>
                             </Grid>

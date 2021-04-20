@@ -97,30 +97,32 @@ module.exports = async function (deployer) {
         addresses.usdc, 
         addresses.usdt,
         addresses.busd,
-        web3.utils.toWei('25000000', 'ether'),      //  ALLOCATION 
+        web3.utils.toWei('3000000', 'ether'),      //  ALLOCATION 
         web3.utils.toWei('500', 'ether'),           //  Min Buy 
         web3.utils.toWei('100000', 'ether'),        //  Max Buy
         web3.utils.toWei('1', 'ether'),             //  RATE 
-        'Test Funding',                             //  NAME
+        'Test Farming Allocation',                             //  NAME
         false,                                      //  WHITELISTED
         {from: addresses.dev}
     );
     const ico = await ICO.deployed();
     addresses.ico = ico.address;
+
+    // grant test roles to the ofly token 
+    await oflights.initICO(ico.address, {from: addresses.dev});
+
     // deploy farm contract 
 
     await deployer.deploy(
         FARM,
         oflights.address,                   // OFLY token
         REWARD_PER_BLOCK,                   // reward per block
-        '0',                                // start block
-        '1',                                // bonus end block
+        '1618912220',                       // start time
     );
     const farm = await FARM.deployed();
     addresses.farm = farm.address;
 
-    // grant test roles to the ofly token 
-    await oflights.setTestingRoles(ico.address, farm.address, {from: addresses.dev});
+
 
     /* ------ TEST AND MAINNET  ------ */
 

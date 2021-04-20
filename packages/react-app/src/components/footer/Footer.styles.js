@@ -5,9 +5,10 @@ import {
 
 export const useStyles = makeStyles(() => ({
     footer: {
-        marginTop: '20px',
+        marginTop: '100px',
         backgroundColor: theme.palette.header.main,
         minHeight: '7vh',
+        minWidth: '100vw',
         borderTop: `3px solid ${theme.palette.primary.main}`
     },
     title: {

@@ -5,6 +5,8 @@ import { addresses, abis } from "@project/contracts";
 import { makeContract, MAX_UINT, getTotalLPValue } from '../utils/utils';
 import { getFarmContract } from '../utils/contracts';
 import useBlock from './useBlock'
+import useTokenBalance from './useTokenBalance'
+import { getPoolApy } from '../utils/apy'
 
 const useFarm = (id) => {
     const { account, library, chainId } = useWeb3React()
@@ -15,15 +17,25 @@ const useFarm = (id) => {
         accOflyPerShare: '',     
     });
     const block = useBlock();
+  
 
     const fetchInfo = useCallback(async () => {
       const FARM = getFarmContract(library, chainId);
       const info = await FARM.methods.poolInfo(id).call();
+      const tokenPerBlock = await FARM.methods.oflyPerSecond().call()
+      const _apy = getPoolApy(
+        '1000000000000000000',
+        '1000000000000000000',
+        info.stakingTokenTotalAmount,
+        tokenPerBlock,
+      );
       const poolInfo = { 
-          lpToken: info.lpToken, 
+          lpToken: info.stakingToken, 
           allocPoint: info.allocPoint, 
-          lastRewardBlock: info.lastRewardBlock,
-          accOflyPerShare: info.accOflyPerShare,     
+          lastRewardBlock: info.lastRewardTime,
+          accOflyPerShare: info.accOflyPerShare, 
+          stakingTokenTotalAmount: info.stakingTokenTotalAmount,
+          apy: _apy
       };
       setInfo(poolInfo)
 

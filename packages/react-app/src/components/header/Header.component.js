@@ -73,14 +73,14 @@ const WalletButton = ({ account, provider, loadWeb3Modal, logoutOfWeb3Modal, con
                     <Grid container item spacing={2} direction="row" className={classes.nowrapper}>
                         {isShown == true ?
                             <>
-                            <Grid item>
+                            <Grid item xs={3}>
                                 <Typography variant="body2" >
                                     🟢  
                                 </Typography>
                             </Grid>
-                            <Grid item>
+                            <Grid item xs={9}>
                                 <Typography variant="body2"noWrap>
-                                    Disconnect Wallet
+                                    Disconnect
                                 </Typography>
                             </Grid>
                             </>
@@ -93,7 +93,7 @@ const WalletButton = ({ account, provider, loadWeb3Modal, logoutOfWeb3Modal, con
                             </Grid>
                             <Grid item>
                                 <Typography variant="body2"noWrap>
-                                    {account ? account.slice(0,16) : '0x'}...
+                                    {account ? account.slice(0,9) : '0x'}...
                                 </Typography>
                             </Grid>
                             </>
@@ -163,10 +163,10 @@ const Header = ({title, nav1, nav2, nav3, provider, loadWeb3Modal, logoutOfWeb3M
                             <img alt='OFlights logo' width='275px' src={OflightLogo}/>
                         </Link>
                     </Grid>
-                    <Grid container item xs  >
+                    <Grid container item xs>
                         <Grid 
                             container
-                            spacing={4}
+                            spacing={3}
                             direction="row"
                             justify="center"
                             alignItems="center"

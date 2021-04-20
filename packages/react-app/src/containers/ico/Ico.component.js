@@ -68,7 +68,7 @@ function Ico() {
             variant="contained" 
             color="primary" 
             className={classes.button}
-            href="https://fc5fdf55-4241-45fe-a274-d028d011ed78.filesusr.com/ugd/743b78_fecc2adf4c5a44bfa089d78a2abc5214.pdf"
+            href="https://fc5fdf55-4241-45fe-a274-d028d011ed78.filesusr.com/ugd/743b78_e3151d25ac2346d2bc42579b4b46c6d6.pdf?index=true"
             target="_blank"
           > OFLY Lightpaper </Button>
         </Grid>

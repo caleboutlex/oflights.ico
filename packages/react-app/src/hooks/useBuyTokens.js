@@ -1,10 +1,10 @@
 import React from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { addresses, abis } from "@project/contracts";
-import { getFarmContract, getDAI, getUSDT, getUSDC , getOFLY, getWBNB } from '../utils/contracts'
+import { getICOcontract, getDAI, getUSDT, getUSDC , getOFLY, getWBNB } from '../utils/contracts'
 import {useNotification} from '../components/notifications/provider/Provider.component'
 
-const useApprove = (amount, address, contract) => {
+const useBuyTokens = (amount, payment) => {
     const { account, library, chainId } = useWeb3React()
     const [ message, setMessage ] = React.useState();
     const dispatch = useNotification();
@@ -31,32 +31,32 @@ const useApprove = (amount, address, contract) => {
         }
     }, [message])
 
-    const approve = async (_address, _amount) => {
+    const buy = async (_value, _payment) => {
         setMessage('Waiting on transaction succes.....');
-        await contract.methods.approve(
-            _address, 
-            _amount
+        const ICO = getICOcontract(library, chainId);
+        await ICO.methods.buyTokens(
+            _value.toString(), 
+            _payment.toString()
         ).send({from: account}).then(()=> {
-          setMessage('Transaction Completed');
+            setMessage('Transaction Completed');
         }).catch((err) => {
-          if(err.message.includes("User denied transaction signature")) {
+        if(err.message.includes("User denied transaction signature")) {
             setMessage('User denied transaction signature');        
-          }
-        })
+        }
+        });
     }
 
-    const handleApprove = React.useCallback(
+    const handleBuy = React.useCallback(
       async () => {
-        await approve(
-            address,
-            amount.toString(),
+        await buy(
+            amount,
+            payment
         )
-        console.log(message);
       },
-      [account, address, amount, contract],
+      [account, amount, payment],
     )
   
-    return { onApprove: handleApprove }
+    return {  onBuy: handleBuy }
   }
   
-  export default useApprove
+  export default useBuyTokens

@@ -16,10 +16,13 @@ import IconButton from '@material-ui/core/IconButton';
 import { getDAI, getUSDC, getUSDT, getICOcontract } from '../../../utils/contracts';
 import { MAX_UINT, makeContract, formatter } from '../../../utils/utils';
 
+import useWhitelisted from '../../../hooks/useWhitelisted';
 import useApprove from '../../../hooks/useApprove';
 import useAllowance from '../../../hooks/useAllowance';
 import usePresaleStage from '../../../hooks/usePresaleStage';
 import useCurrentStage from '../../../hooks/useCurrentStage';
+import useBuyTokens from '../../../hooks/useBuyTokens';
+
 import Toast from '../../notifications/toast'
 import Alert from '@material-ui/lab/Alert';
 
@@ -28,21 +31,22 @@ const InvestCard = (props) => {
     const ico = getICOcontract(library, chainId);
     const dai = getDAI(library, chainId);
 
-    const currentStage = useCurrentStage();
-    const stage = usePresaleStage(currentStage);
-
     const [ value, setValue ] = React.useState(0);
     const [ selected, setSelected ] = React.useState(addresses.bsc.dai);
     const [ token, setToken ] = React.useState();
     const [ rate, setRate ] =React.useState(0);
     const [ expected, setExpected ] = React.useState();
     const [ loading, setLoading ] = React.useState(false); 
-    const [ active, setActive ] = React.useState(false);
-
+    const [ active, setActive ] = React.useState(true);
     const [ approved, setApproved ] = React.useState(false);
+
     const allowance = useAllowance(selected, addresses.bsc.ico);
-    
-    const { message, onApprove } = useApprove(MAX_UINT, addresses.bsc.ico, token);
+    const currentStage = useCurrentStage();
+    const stage = usePresaleStage(currentStage);
+    const isWhitelisted = useWhitelisted(account);
+
+    const { onBuy } = useBuyTokens(value, selected);
+    const { onApprove } = useApprove(MAX_UINT, addresses.bsc.ico, token);
 
     const handleChange = (e) => {
         e.preventDefault();
@@ -53,31 +57,6 @@ const InvestCard = (props) => {
     const handleSelect = (_selected) => {
         setSelected(_selected)
     }
-
-    const onBuy = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            await ico.methods.buyTokens(
-                    value.toString(), 
-                    selected
-                ).send({from: account}).then(()=> {
-               
-                setLoading(false);
-               
-            });
-
-          } catch (e) {
-                if (e.message.includes("User denied transaction signature")) {
-                    
-                } else {
-                    console.log(e)
-                }
-          }
-        setLoading(false);
-    
-    }
-
     
 
     React.useEffect(() => {
@@ -91,10 +70,15 @@ const InvestCard = (props) => {
                 setApproved(false);
             }
             setRate(stage.rate);
-            
+            console.log(stage)
+            if(stage.whitelisted == 'true') {
+                setActive(!isWhitelisted)
+            } else if(stage.whitelisted == 'false') {
+                setActive(false)
+            }   
         }
         
-    }, [selected, allowance, account, currentStage, stage]);
+    }, [selected, allowance, account, currentStage, stage, isWhitelisted]);
 
 
     
@@ -136,8 +120,8 @@ const InvestCard = (props) => {
                         >
                             <Grid item xs>
                                 <Button  
-                                    className={approved == false ? classes.button : classes.empty}
-                                    disabled={approved == false ? false : true } 
+                                    className={approved == false && active == false ? classes.button : classes.empty}
+                                    disabled={approved == false && active == false ? false : true } 
                                     variant="contained" 
                                     onClick={onApprove}
                                     
@@ -149,10 +133,10 @@ const InvestCard = (props) => {
                             </Grid>
                             <Grid item xs>
                                 <Button  
-                                    className={classes.button} 
+                                    className={active == false ? classes.button : classes.empty}
                                     variant="contained" 
                                     onClick={onBuy}
-                                    
+                                    disabled={active}
                                 > 
                                     <Typography noWrap>
                                         Buy OFLY

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-
+const BLOCKS_PER_YEAR = new BigNumber(10518975); 
 
 /**
  * Get the APY value in %
@@ -18,19 +18,6 @@ export const getPoolApy = (
   const totalRewardPricePerYear = new BigNumber(rewardTokenPrice).times(tokenPerBlock).times(BLOCKS_PER_YEAR)
   const totalStakingTokenInPool = new BigNumber(stakingTokenPrice).times(totalStaked)
   const apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
-  return apy.isNaN() || !apy.isFinite() ? null : apy.toNumber()
-}
-
-/**
- * Get farm APY value in %
- * @param poolWeight allocationPoint / totalAllocationPoint
- * @param rewardPriceUsd Cake price in USD
- * @param poolLiquidityUsd Total pool liquidity in USD
- * @returns
- */
-export const getFarmApy = (poolWeight, rewardPriceUsd, poolLiquidityUsd) => {
-  const yearlyCakeRewardAllocation = CAKE_PER_BLOCK.times(BLOCKS_PER_YEAR).times(poolWeight)
-  const apy = yearlyCakeRewardAllocation.times(rewardPriceUsd).div(poolLiquidityUsd).times(100)
   return apy.isNaN() || !apy.isFinite() ? null : apy.toNumber()
 }
 
