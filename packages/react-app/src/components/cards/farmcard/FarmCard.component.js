@@ -14,6 +14,8 @@ import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Tooltip from '@material-ui/core/Tooltip';
+import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 
 import { formatter } from '../../../utils/utils'
@@ -100,9 +102,27 @@ const FarmCard = ({pid, name, avatar}) => {
                     }
                     
                     title={
-                        <Typography variant="h4" noWrap>
-                            {name}
-                        </Typography>
+                        <Grid container jusify='center' >
+                            <Grid item xs>
+                                <Typography variant="h4" noWrap>
+                                    {name}
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                {pid !== 0 ? 
+                                <Tooltip 
+                                    title={ 
+                                        "To be able to Farm OFLY you need to provide liquidity to the pool on PANCAKESWAP"
+                                        }>
+                                    <IconButton size='small' >
+                                        <HelpIcon fontSize='small'/>
+                                    </IconButton>
+                                </Tooltip>                        
+                            :
+                                <></>
+                            }
+                            </Grid>
+                        </Grid>
                     }
                     subheader=""
                 />

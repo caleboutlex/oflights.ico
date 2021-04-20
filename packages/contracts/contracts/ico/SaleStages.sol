@@ -31,6 +31,7 @@ contract SaleStages is Ownable {
         bool goalReached; 
         // whitelist.
         bool whitelisted;
+        
     }
 
     // Array that holds the stages. 

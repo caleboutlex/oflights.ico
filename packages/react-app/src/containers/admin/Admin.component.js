@@ -10,6 +10,9 @@ import Info from '../../components/adminpanel/components/Info.component'
 import Controls from '../../components/adminpanel/components/Controls.component'
 import Whitelist from '../../components/adminpanel/components/Whitelist.component'
 import StagesTabel from '../../components/adminpanel/components/StagesTable.component'
+import FarmTokens from '../../components/adminpanel/components/FarmTokens.component'
+import RewardRate from '../../components/adminpanel/components/RewardRate.component'
+
 
 function Admin() {
   const {account, chainId, library } = useWeb3React();
@@ -45,8 +48,16 @@ function Admin() {
       <Grid item xs>
         <NewStage/>
       </Grid>
-      <Grid item xs>
-        <Whitelist/>
+      <Grid container item spacing={3} xs>
+        <Grid item xs={12}>
+          <Whitelist/>
+        </Grid>
+        <Grid item xs={12}>
+          <FarmTokens/>
+        </Grid>
+        <Grid item xs={12}>
+          <RewardRate/>
+        </Grid>
       </Grid>
     </Grid>        
   );

@@ -18,8 +18,6 @@ contract ICO is Whitelist, Pausable {
     IERC20 internal BUSD; 
     IERC20Mintable public TOKEN;
 
-    // Mapping that holds all the buyers there buy amount; 
-    mapping(address => uint256) internal userbuyAmounts; 
     /**
      * @dev Constructor that sets up the first Stage of the ICO 
      *  
@@ -75,9 +73,6 @@ contract ICO is Whitelist, Pausable {
         return getRemainingTokens().mul(getCurrentrate()).div(10**18);
     }
 
-    function getLeftOverLimitAmount(address _user) public view returns(uint256) {
-        return Stages[currentStage].limit.sub(userbuyAmounts[_user]);
-    }
 
     function getTotalStages() public view returns (uint256) {
         return Stages.length;
@@ -177,6 +172,12 @@ contract ICO is Whitelist, Pausable {
 
     } 
 
+    function mintRewardTokens(address farmAddress, uint256 amount) public onlyOwner {
+        mintAllocation(amount);
+        TOKEN.approve(address(this), amount );
+        TOKEN.transferFrom(address(this),farmAddress, amount);
+    }
+
     
     /**
      * @dev Internal function that handles the payment and sends tokens to the caller. 
@@ -187,7 +188,6 @@ contract ICO is Whitelist, Pausable {
     function handlePayment(uint256 _amount, address _caller, IERC20 _paytoken) internal {
         // set up local amount variable and handle the amount if the paytoken is usdc or usdc
       
-        require(userbuyAmounts[_caller].add(_amount) <= Stages[currentStage].limit, 'Cant buy more then the max Limit of this stage');
         // we check if the user has approved the contract to spend the tokens
         require(_paytoken.allowance(_caller, address(this)) >= _amount, 'Caller must approve first');
         // grab the tokens from msg.sender.
@@ -202,7 +202,6 @@ contract ICO is Whitelist, Pausable {
         TOKEN.transferFrom(address(this), _caller, tokensBought);
 
         // update the buyer info 
-        userbuyAmounts[msg.sender] = userbuyAmounts[msg.sender].add(tokensBought);
         Stages[currentStage].amountSold = Stages[currentStage].amountSold.add(tokensBought);
     }
 
@@ -242,7 +241,7 @@ contract ICO is Whitelist, Pausable {
         require(BUSD.balanceOf(address(this)) == 0, 'ICO contract did not send out all BUSD tokens');
     }
 
-    function isAcceptedToken(IERC20 _token) internal returns(bool) {
+    function isAcceptedToken(IERC20 _token) public view returns(bool) {
         if (_token == DAI || _token == USDC || _token == USDT || _token == BUSD) {
             return true; 
         } else {

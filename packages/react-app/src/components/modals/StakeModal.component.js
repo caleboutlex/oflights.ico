@@ -25,19 +25,19 @@ import useUnStake from '../../hooks/useUnStake';
 import useStake from '../../hooks/useStake';
 import useApprove from '../../hooks/useApprove';
 import useAllowance from '../../hooks/useAllowance';
+import useTokenBalance from '../../hooks/useTokenBalance';
 
 import { MAX_UINT, formatter } from '../../utils/utils';
 import { addresses, abis } from "@project/contracts";
 
 const StakeModal = ({pid, lpToken, balance, deposited}) => {
     const {account, chainId, library } = useWeb3React();
-   
     const classes = useStyles();
     const [ value, setValue ] = React.useState(0);
     const [ withdraw, setWithdraw ] = React.useState(false);
     const [ approved, setApproved ] = React.useState(false);
     const [ displayValue, setDisplayValue ] = React.useState();
-
+    const [ active, setActive ] = React.useState(true);
 
     const {  onApprove } = useApprove(MAX_UINT, addresses.bsc.farm, lpToken);
     const {  onStake } = useStake(pid, value);
@@ -71,8 +71,11 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
             } else {
                 setApproved(false)
             }
+            if( balance.toString() > '0') (
+                setActive(false)
+            )
         }
-    },[pid, allowance, lpToken, value])
+    },[pid, allowance, lpToken, value, balance])
 
     return (
         <form  noValidate autoComplete="off">
@@ -122,9 +125,10 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                                 <Button 
                                     variant="contained" 
                                     color='primary' 
-                                    className={classes.button}
+                                    className={active == false ? classes.button : classes.empty}
                                     fullWidth={true}
                                     onClick={onApprove}
+                                    disabled={active}
                                 >
                                     Approve
                                 </Button>
@@ -137,7 +141,8 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                                                 color='primary' 
                                                 onClick={onStake}
                                                 fullWidth={true}
-                                                className={classes.button}
+                                                className={active == false ? classes.button : classes.empty}
+                                                disabled={active}
                                             >
                                                 Deposit
                                             </Button>
@@ -150,7 +155,8 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
                                         color='primary' 
                                         fullWidth={true}
                                         onClick={onStake}
-                                        className={classes.button}
+                                        className={active == false ? classes.button : classes.empty}
+                                        disabled={active}
                                     >
                                         Deposit
                                     </Button>
