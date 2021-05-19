@@ -121,11 +121,11 @@ const WalletButton = ({ account, provider, loadWeb3Modal, logoutOfWeb3Modal, con
 };
 
 const Header = ({title, nav1, nav2, nav3, provider, loadWeb3Modal, logoutOfWeb3Modal}) => {
-    const { account, library } = useWeb3React();
+    const { account, library, chainId } = useWeb3React();
     const [ connected, setConnected ] = React.useState('contained');
     const [ isAdmin, setAdmin ] = React.useState(false);
     const owner = useOwner();
-    const tokenBalance = useTokenBalance(addresses.bsc.ofly);
+    const tokenBalance = useTokenBalance(chainId == '97' ? addresses.testnet.ofly : addresses.mainnet.ofly);
     const accountBalance = useBalance();
 
     const formatEther = (input) => {

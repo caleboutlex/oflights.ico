@@ -63,7 +63,7 @@ module.exports = {
           `wss://kovan.infura.io/ws/v3/${process.env.INFURA_API_KEY}`// Url to an Ethereum Node
         )
       },
-      gas: 12000000,
+      gas: 8000000,
       gasPrice: 25000000000,
       network_id: 42
     },

@@ -32,7 +32,7 @@ const InvestCard = (props) => {
     const dai = getDAI(library, chainId);
 
     const [ value, setValue ] = React.useState(0);
-    const [ selected, setSelected ] = React.useState(addresses.bsc.dai);
+    const [ selected, setSelected ] = React.useState(chainId == '97' ? addresses.testnet.dai : addresses.mainnet.dai);
     const [ token, setToken ] = React.useState();
     const [ rate, setRate ] =React.useState(0);
     const [ expected, setExpected ] = React.useState();
@@ -40,13 +40,13 @@ const InvestCard = (props) => {
     const [ active, setActive ] = React.useState(true);
     const [ approved, setApproved ] = React.useState(false);
 
-    const allowance = useAllowance(selected, addresses.bsc.ico);
+    const allowance = useAllowance(selected, (chainId == '97' ? addresses.testnet.ico : addresses.mainnet.ico));
     const currentStage = useCurrentStage();
     const stage = usePresaleStage(currentStage);
     const isWhitelisted = useWhitelisted(account);
 
     const { onBuy } = useBuyTokens(value, selected);
-    const { onApprove } = useApprove(MAX_UINT, addresses.bsc.ico, token);
+    const { onApprove } = useApprove(MAX_UINT, (chainId == '97' ? addresses.testnet.ico : addresses.mainnet.ico), token);
 
     const handleChange = (e) => {
         e.preventDefault();

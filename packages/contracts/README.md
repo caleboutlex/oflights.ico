@@ -35,9 +35,9 @@ This holds all the contracts for the OFLY token sale and Farming contracts.
 
 6. Verify Contract source code. 
 
-    TESTNET: run npx truffle run etherscan OFlightsToken ICO OFlightsFarm --network bsc_testnet
+    TESTNET: npx truffle run etherscan OFlightsToken ICO OFlightsFarm --network bsc_testnet
 
-    MAINNET: run npx truffle run etherscan OFlightsToken ICO OFlightsFarm --network bsc_testnet
+    MAINNET:  npx truffle run etherscan OFlightsToken ICO OFlightsFarm --network bsc_testnet
 
 
 

@@ -39,11 +39,11 @@ const StakeModal = ({pid, lpToken, balance, deposited}) => {
     const [ displayValue, setDisplayValue ] = React.useState();
     const [ active, setActive ] = React.useState(true);
 
-    const {  onApprove } = useApprove(MAX_UINT, addresses.bsc.farm, lpToken);
+    const {  onApprove } = useApprove(MAX_UINT, (chainId == '97' ? addresses.testnet.farm : addresses.mainnet.farm), lpToken);
     const {  onStake } = useStake(pid, value);
     const {  onUnStake } = useUnStake(pid, value);
 
-    const allowance = useAllowance(lpToken.options.address, addresses.bsc.farm);
+    const allowance = useAllowance(lpToken.options.address, (chainId == '97' ? addresses.testnet.farm : addresses.mainnet.farm));
 
     const handleChange = (e) => {
         setValue(e.target.value)

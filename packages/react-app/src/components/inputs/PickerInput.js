@@ -74,7 +74,7 @@ const PickerInput = (props) => {
     const [ anchorEl, setAnchorEl ] = React.useState(null);
     const [ image, setImage ] = React.useState(daiLogo);
     const [ balance, setBalance ] = React.useState(0);
-    const [ selected, setSelected ] = React.useState(addresses.bsc.dai)
+    const [ selected, setSelected ] = React.useState(chainId == '97' ? addresses.testnet.dai : addresses.mainnet.dai)
     const tokenBalance = useTokenBalance(selected);
     const dai = getDAI(library, chainId);
     
@@ -88,26 +88,26 @@ const PickerInput = (props) => {
 
     const handleClickDai = () => {
         setImage(daiLogo);
-        setSelected(addresses.bsc.dai);
-        props.onClick(addresses.bsc.dai)
+        setSelected(chainId == '97' ? addresses.testnet.dai : addresses.mainnet.dai);
+        props.onClick(chainId == '97' ? addresses.testnet.dai : addresses.mainnet.dai)
         handleClose();
     }
     const handleClickUsdc = () => {
         setImage(usdcLogo);
-        setSelected(addresses.bsc.usdc);
-        props.onClick(addresses.bsc.usdc)
+        setSelected(chainId == '97' ? addresses.testnet.dai : addresses.mainnet.usdc);
+        props.onClick(chainId == '97' ? addresses.testnet.dai : addresses.mainnet.usdc)
         handleClose();
     }
     const handleClickUsdt = () => {
         setImage(usdtLogo);
-        setSelected(addresses.bsc.usdt);
-        props.onClick(addresses.bsc.usdt)
+        setSelected(chainId == '97' ? addresses.testnet.usdt : addresses.mainnet.usdt);
+        props.onClick(chainId == '97' ? addresses.testnet.usdt : addresses.mainnet.usdt);
         handleClose();
     }
     const handleClickBusd = () => {
         setImage(busdLogo);
-        setSelected(addresses.bsc.busd);
-        props.onClick(addresses.bsc.busd)
+        setSelected(chainId == '97' ? addresses.testnet.busd : addresses.mainnet.busd);
+        props.onClick(chainId == '97' ? addresses.testnet.busd : addresses.mainnet.busd);
         handleClose();
     }
 
