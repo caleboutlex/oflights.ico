@@ -18,17 +18,17 @@ const DEADLINE = "1622595257";
 
 
 /* MAINNET ONLY */
-/*
+///*
     const factoryAddress = "0xBCfCcbde45cE874adCB698cC183deBcF17952812";
     const routerAddress = "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F";
-*/
+//*/
 /** -------------------------------------------  */  
 
 /* TESTNET ONLY */
-///*
+/*
     const factoryAddress = "0x6725F303b657a9451d8BA641348b6761A6CC7a17";
     const routerAddress = "0xD99D1c33F9fC3444f8101754aBC46c52416550D1";
-//*/
+*/
 /** -------------------------------------------  */ 
 
 
@@ -36,13 +36,13 @@ module.exports = async function (deployer) {
     const accounts = await web3.eth.getAccounts();
 
 /* TESTNET ONLY !!! */
-    const addresses = { 
+/*    const addresses = { 
         dev: accounts[0],
     };
 /** -------------------------------------------  */  
 
 /* MAINNET ONLY !!! */
-    /*
+///*
     const addresses = { 
         dev: accounts[0],
         dai: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
@@ -56,7 +56,7 @@ module.exports = async function (deployer) {
     const usdt = makeContract(erc20Abi, addresses.usdt)
     const busd = makeContract(erc20Abi, addresses.busd)
 
-    */
+//*/
 /** -------------------------------------------  */  
     
 /* ------ UTILS ------ */
@@ -78,7 +78,7 @@ module.exports = async function (deployer) {
     }
 
 /* ------ MOCKTOKENS TESTNET ONLY !! ------ */
-    ///*
+/*
     // Mock token deployment
         await deployer.deploy(
             DAI,
@@ -207,7 +207,7 @@ module.exports = async function (deployer) {
 /** -------------------------------------------  */  
 
 /** ---------  !!! TESTNET ONLY !!!  ---------  */
-//*/   
+/*/   
     // Approve the stablecoins to the router so we can add liq easily in test 
     await dai.approve(routerAddress, MAX_UINT)
     await usdc.approve(routerAddress, MAX_UINT)
