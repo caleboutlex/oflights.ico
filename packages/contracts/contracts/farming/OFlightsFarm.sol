@@ -460,7 +460,7 @@ contract OflightsFarm is Ownable {
     
     uint32 immutable public startTime; // The timestamp when OFLY farming starts.
     
-    uint32 public endTime; // Time on which the reward calculation should end
+
 
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
@@ -475,12 +475,10 @@ contract OflightsFarm is Ownable {
         
         oflyPerSecond = _oflyPerSecond;
         startTime = _startTime;
-        endTime = _startTime + 7 days;
+     
     }
     
-    function changeEndTime(uint32 addSeconds) external onlyOwner {
-        endTime += addSeconds;
-    }
+   
     
     // Changes Ofly token reward per second. Use this function to moderate the `lockup amount`. Essentially this function changes the amount of the reward
     // which is entitled to the user for his token staking by the time the `endTime` is passed.
@@ -536,22 +534,7 @@ contract OflightsFarm is Ownable {
         poolInfo[_pid].allocPoint = _allocPoint;
     }
 
-    // Return reward multiplier over the given _from to _to time.
-    function getMultiplier(uint256 _from, uint256 _to)
-        public
-        view
-        returns (uint256)
-    {
-        _from = _from > startTime ? _from : startTime;
-        if (_from > endTime || _to < startTime) {
-            return 0;
-        }
-        if (_to > endTime) {
-            return endTime - _from;
-        }
-        return _to - _from;
-    }
-
+   
     // View function to see pending OFLY on frontend.
     function pendingOfly(uint256 _pid, address _user)
         external
@@ -563,10 +546,8 @@ contract OflightsFarm is Ownable {
         uint256 accOflyPerShare = pool.accOflyPerShare;
        
         if (block.timestamp > pool.lastRewardTime && pool.stakingTokenTotalAmount != 0) {
-            uint256 multiplier =
-                getMultiplier(pool.lastRewardTime, block.timestamp);
             uint256 oflyReward =
-                multiplier * oflyPerSecond * pool.allocPoint / totalAllocPoint;
+                oflyPerSecond * pool.allocPoint / totalAllocPoint;
             accOflyPerShare += oflyReward * 1e12 / pool.stakingTokenTotalAmount;
         }
         return user.amount * accOflyPerShare / 1e12 - user.rewardDebt + user.remainingOflyTokenReward;
@@ -591,9 +572,8 @@ contract OflightsFarm is Ownable {
             pool.lastRewardTime = uint32(block.timestamp);
             return;
         }
-        uint256 multiplier = getMultiplier(pool.lastRewardTime, block.timestamp);
         uint256 oflyReward =
-            multiplier * oflyPerSecond * pool.allocPoint / totalAllocPoint;
+            oflyPerSecond * pool.allocPoint / totalAllocPoint;
         pool.accOflyPerShare += oflyReward * 1e12 / pool.stakingTokenTotalAmount;
         pool.lastRewardTime = uint32(block.timestamp);
     }

@@ -2,64 +2,83 @@ const DAI = artifacts.require("DAI");
 const USDC = artifacts.require("USDC");
 const USDT = artifacts.require("USDT");
 const BUSD = artifacts.require("BUSD");
-
 const OFLIGHTS = artifacts.require("OFlightsToken");
 const ICO = artifacts.require("ICO");
 const FARM = artifacts.require("OFlightsFarm");
-
 const factoryAbi = require("../src/abis/factory.json");
 const erc20Abi = require('../src/abis/erc20.json');
-
 const routerAbi = require("../src/abis/router.json");
-
 const MAX_UINT = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 
-const BLOCKS_PER_YEAR = "10518975";
 const REWARD_PER_BLOCK = "11690000000000";
+const FARMING_START_TIME = "1621595257";
+const DEADLINE = "1622595257";
 
-const makeContract = (abi, address) => {
-    return new web3.eth.Contract(abi, address);
-}
- /* MAINNET ONLY */
-///*
+
+
+
+/* MAINNET ONLY */
+/*
     const factoryAddress = "0xBCfCcbde45cE874adCB698cC183deBcF17952812";
     const routerAddress = "0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F";
-//*/
+*/
+/** -------------------------------------------  */  
 
 /* TESTNET ONLY */
-/*
+///*
     const factoryAddress = "0x6725F303b657a9451d8BA641348b6761A6CC7a17";
     const routerAddress = "0xD99D1c33F9fC3444f8101754aBC46c52416550D1";
-*/
+//*/
+/** -------------------------------------------  */ 
 
-
-const FACTORY = makeContract(factoryAbi, factoryAddress);
-const ROUTER = makeContract(routerAbi, routerAddress);
 
 module.exports = async function (deployer) {
     const accounts = await web3.eth.getAccounts();
+
+/* TESTNET ONLY !!! */
     const addresses = { 
         dev: accounts[0],
-    /* MAINNET ONLY */
-    ///*
+    };
+/** -------------------------------------------  */  
+
+/* MAINNET ONLY !!! */
+    /*
+    const addresses = { 
+        dev: accounts[0],
         dai: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
         usdc: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
         usdt: '0x55d398326f99059ff775485246999027b3197955',
         busd: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-    //*/ 
     };
+
+    const dai = makeContract(erc20Abi, addresses.dai)
+    const usdc = makeContract(erc20Abi, addresses.usdc)
+    const usdt = makeContract(erc20Abi, addresses.usdt)
+    const busd = makeContract(erc20Abi, addresses.busd)
+
+    */
+/** -------------------------------------------  */  
+    
+/* ------ UTILS ------ */
+
+    const makeContract = (abi, address) => {
+        return new web3.eth.Contract(abi, address);
+    }
+
+    const FACTORY = makeContract(factoryAbi, factoryAddress);
+    const ROUTER = makeContract(routerAbi, routerAddress);
 
     const SwapEthToToken = async (token) => {
         await ROUTER.methods.swapExactETHForTokens(
             '10000',
             ['0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',token],
             addresses.dev, 
-            '1622414212'
+            DEADLINE
         ).send({from: addresses.dev, value: 10000000000000000000, gas: 1714341 })
     }
 
-    /* ------ TESTNET TOKENS ONLY ------ */
-    /*
+/* ------ MOCKTOKENS TESTNET ONLY !! ------ */
+    ///*
     // Mock token deployment
         await deployer.deploy(
             DAI,
@@ -89,17 +108,11 @@ module.exports = async function (deployer) {
         const busd = await BUSD.deployed();
         addresses.busd = busd.address;
     //*/
-    /* ------ MAINNET AND FORK ONLY ------ */  
-    ///*
-        const dai = makeContract(erc20Abi, addresses.dai)
-        const usdc = makeContract(erc20Abi, addresses.usdc)
-        const usdt = makeContract(erc20Abi, addresses.usdt)
-        const busd = makeContract(erc20Abi, addresses.busd)
-        //const ofly = makeContract(abis.erc20, addresses.ofly)
-        
-    //*/
+
+
 
 /** ------- OFLY TOKEN AND ICO DEPLOYMENT --------- */
+    // DEPLOY TOKEN
         await deployer.deploy(
             OFLIGHTS,
             {from: addresses.dev}
@@ -107,7 +120,7 @@ module.exports = async function (deployer) {
         const oflights = await OFLIGHTS.deployed();
         addresses.ofly = oflights.address;
 
-
+    // DEPLOY ICO
         await deployer.deploy(
             ICO, 
             oflights.address, 
@@ -126,10 +139,10 @@ module.exports = async function (deployer) {
         const ico = await ICO.deployed();
         addresses.ico = ico.address;
 
-        // grant  roles to the ofly token 
+    // grant  roles to the ofly token 
         await oflights.initICO(ico.address, {from: addresses.dev});
 
-/** ---------  ICO DEPLOYMENT DONE !!!! ---------  */
+/** -------------------------------------------  */  
 
 
 /** ---------  DEPLOY FARMING CONTRACT AND ADD POOLS ---------  */
@@ -139,7 +152,7 @@ module.exports = async function (deployer) {
         FARM,
         oflights.address,                   // OFLY token
         REWARD_PER_BLOCK,                   // reward per block
-        '1622414212',                       // start time
+        FARMING_START_TIME,                // start time
     );
     const farm = await FARM.deployed();
     addresses.farm = farm.address;
@@ -191,23 +204,61 @@ module.exports = async function (deployer) {
         false,
         {from: addresses.dev}
     );
-/** ---------  FARMING DEPLOYMENT DONE !  ---------  */
+/** -------------------------------------------  */  
 
-    /* ------ TEST ONLY  ------ */
-///*
-    // Swap some BNB to get some stablecoins 
-
-    await SwapEthToToken(addresses.dai);
-    await SwapEthToToken(addresses.usdc);
-    await SwapEthToToken(addresses.usdt);
-    await SwapEthToToken(addresses.busd);
-
-    // Approve the stablecoins to the router so we can add liq easily in test 
+/** ---------  !!! TESTNET ONLY !!!  ---------  */
 //*/   
-    await dai.methods.approve(routerAddress, MAX_UINT)
-    await usdc.methods.approve(routerAddress, MAX_UINT)
-    await usdt.methods.approve(routerAddress, MAX_UINT)
-    await busd.methods.approve(routerAddress, MAX_UINT)
+    // Approve the stablecoins to the router so we can add liq easily in test 
+    await dai.approve(routerAddress, MAX_UINT)
+    await usdc.approve(routerAddress, MAX_UINT)
+    await usdt.approve(routerAddress, MAX_UINT)
+    await busd.approve(routerAddress, MAX_UINT)
+
+    // Add liquidity 
+    await ROUTER.methods.addLiquidity(
+        addresses.dai,
+        addresses.ofly,
+        '100000000000000000000',
+        '100000000000000000000',
+        '1',
+        '1',
+        addresses.dev,
+        DEADLINE,       
+    );
+
+    await ROUTER.methods.addLiquidity(
+        addresses.usdc,
+        addresses.ofly,
+        '100000000000000000000',
+        '100000000000000000000',
+        '1',
+        '1',
+        addresses.dev,
+        DEADLINE,       
+    );
+
+    await ROUTER.methods.addLiquidity(
+        addresses.usdt,
+        addresses.ofly,
+        '100000000000000000000',
+        '100000000000000000000',
+        '1',
+        '1',
+        addresses.dev,
+        DEADLINE,       
+    );
+
+    await ROUTER.methods.addLiquidity(
+        addresses.busd,
+        addresses.ofly,
+        '100000000000000000000',
+        '100000000000000000000',
+        '1',
+        '1',
+        addresses.dev,
+        DEADLINE,       
+    );
+/** -------------------------------------------  */  
 
     console.log(addresses)
     

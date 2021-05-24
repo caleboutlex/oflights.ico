@@ -18,13 +18,13 @@ This holds all the contracts for the OFLY token sale and Farming contracts.
 3. run in terminal: 
 
     TESTNET 
-        npx truffle migrate --reset --network bsc_testnet
+        truffle migrate --reset --network bsc_testnet
 
     MAINNET !!! FOR MAINNET DEPLOYMENT WE NEED TO COMMENT OUT SOME STUFF IN deploy_contracts.js 
 
     COMMENT OUT ALL STUFF THAT SAYS 'TESTNET ONLY' and UNCOMMENT all stuff that says 'MAINNET ONLY'
 
-        npx truffle migrate --reset --network bsc_mainnet 
+        truffle migrate --reset --network bsc_mainnet 
 
 
 3. INFO: Deploying Farm contracts will automaticly make pools for all the tokens  
@@ -35,9 +35,9 @@ This holds all the contracts for the OFLY token sale and Farming contracts.
 
 6. Verify Contract source code. 
 
-    TESTNET: npx truffle run etherscan OFlightsToken ICO OFlightsFarm --network bsc_testnet
+    TESTNET: truffle run etherscan OFlightsToken ICO OFlightsFarm --network bsc_testnet
 
-    MAINNET:  npx truffle run etherscan OFlightsToken ICO OFlightsFarm --network bsc_testnet
+    MAINNET: truffle run etherscan OFlightsToken ICO OFlightsFarm --network bsc_testnet
 
 
 
