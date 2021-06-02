@@ -24,8 +24,8 @@ const useFarm = (id) => {
       const info = await FARM.methods.poolInfo(id).call();
       const tokenPerBlock = await FARM.methods.oflyPerSecond().call()
       const _apy = getPoolApy(
-        '1000000000000000000',
-        '1000000000000000000',
+        '1000000000000000000', // stakingTokenPrice <--- need to change this when live
+        '1000000000000000000', // rewardTokenPrice <--- need to change this when live
         info.stakingTokenTotalAmount,
         tokenPerBlock,
       );
