@@ -1,16 +1,16 @@
 
 const addresses = {
   mainnet: {
-      dai: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
-      usdc: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
-      usdt: '0x55d398326f99059ff775485246999027b3197955',
-      busd: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-      ofly: '0xC3FfDDc44Bc01307835BB8F40860673fCFfeBde5',
-      farm: '0x14c75C09710399BbBFD926988BE7bb06013dc20E',
-      wbnb: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
-      ico: '0xDd0EcA899256Cd6e9F866Fdc1394bB8731c8e677',
-      pancakeFactory: '0xBCfCcbde45cE874adCB698cC183deBcF17952812',
-      pancakeRouter: '0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F'
+    dai: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
+    usdc: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+    usdt: '0x55d398326f99059ff775485246999027b3197955',
+    busd: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+    ofly: '0x77a521B55356c33074f0d4526cC1F083ec7D0F16',
+    ico: '0x7aF81B6F0D22ba8937D3085abE130eFE5E5e88b9',
+    farm: '0x10B66Dc631c28CCf351576842e78b840c49d0a6d',
+    wbnb: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+    pancakeFactory: '0xBCfCcbde45cE874adCB698cC183deBcF17952812',
+    pancakeRouter: '0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F'
   },
   testnet: {
     dai: '0x790BE3b79495B83a6c920002F31ccbdff803FB74',

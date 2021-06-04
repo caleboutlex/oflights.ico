@@ -35,6 +35,10 @@ const DEADLINE = "1622595257";
 module.exports = async function (deployer) {
     const accounts = await web3.eth.getAccounts();
 
+const makeContract = (abi, address) => {
+    return new web3.eth.Contract(abi, address);
+}
+
 /* TESTNET ONLY !!! */
 /*    const addresses = { 
         dev: accounts[0],
@@ -61,9 +65,7 @@ module.exports = async function (deployer) {
     
 /* ------ UTILS ------ */
 
-    const makeContract = (abi, address) => {
-        return new web3.eth.Contract(abi, address);
-    }
+   
 
     const FACTORY = makeContract(factoryAbi, factoryAddress);
     const ROUTER = makeContract(routerAbi, routerAddress);
