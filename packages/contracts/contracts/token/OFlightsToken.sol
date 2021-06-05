@@ -10,6 +10,7 @@ contract OFlightsToken is ERC20, ERC20Burnable, Pausable, AccessControl {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
+    
 
     constructor() ERC20("O.Flights", "OFLY") {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -50,11 +51,10 @@ contract OFlightsToken is ERC20, ERC20Burnable, Pausable, AccessControl {
         grantRole(PAUSER_ROLE, newPauser);
     }
 
-    function changeAdminRole(address oldAdmin, address newAdmin) public {
+    function changeAdminRole( address newAdmin) public {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), 'ONLY ADMIN ROLE CAN SET ROLE');
-        require(hasRole(DEFAULT_ADMIN_ROLE, oldAdmin), 'OLD MINTER IS NOT A MINTER');
-        revokeRole(DEFAULT_ADMIN_ROLE, oldAdmin);
         grantRole(DEFAULT_ADMIN_ROLE, newAdmin);
+        revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
     function initICO(address ico) public {

@@ -31,10 +31,11 @@ module.exports = {
         `https://bsc-dataseed1.binance.org`
       ),
       network_id: 56,
-      gasPrice: 8000000000,
-      confirmations: 10,
+      gasPrice: 5000000000,
+      confirmations: 5,
       timeoutBlocks: 200,
-      skipDryRun: true
+      skipDryRun: true,
+      production: true
     },
     fantom: {
       provider: function() {

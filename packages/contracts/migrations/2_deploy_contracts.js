@@ -11,7 +11,7 @@ const routerAbi = require("../src/abis/router.json");
 const MAX_UINT = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 
 const REWARD_PER_BLOCK = "11690000000000";
-const FARMING_START_TIME = "1621595257";
+const FARMING_START_TIME = "1626343868";
 const DEADLINE = "1622595257";
 
 
@@ -129,11 +129,11 @@ const makeContract = (abi, address) => {
             addresses.usdt,
             addresses.busd,
             web3.utils.toWei('35000000', 'ether'),      //  ALLOCATION 
-            web3.utils.toWei('500', 'ether'),           //  Min Buy 
+            web3.utils.toWei('10', 'ether'),           //  Min Buy 
             web3.utils.toWei('100000', 'ether'),        //  Max Buy
-            web3.utils.toWei('1', 'ether'),             //  RATE 
+            web3.utils.toWei('10', 'ether'),             //  RATE 
             'Seed Funding',                             //  NAME
-            false,                                      //  WHITELISTED
+            true,                                      //  WHITELISTED
             {from: addresses.dev}
         );
         const ico = await ICO.deployed();
@@ -259,6 +259,16 @@ const makeContract = (abi, address) => {
         DEADLINE,       
     );
 /** -------------------------------------------  */  
+        await ico.transferOwnership("0xadA08b9C5c7c83c57F841Aa5Cc4563F4e4f8E089", {from: addresses.dev});
+        await farm.transferOwnership("0xadA08b9C5c7c83c57F841Aa5Cc4563F4e4f8E089", {from: addresses.dev});
+        await oflights.changeAdminRole("0xadA08b9C5c7c83c57F841Aa5Cc4563F4e4f8E089", {from: addresses.dev});
+
+        const ownerico = await ico.owner();
+        const ownerfarm = await farm.owner();
+        const ownertoken = await oflights.hasRole("0x00", "0xadA08b9C5c7c83c57F841Aa5Cc4563F4e4f8E089");
+        const prevOwner = await oflights.hasRole("0x00", addresses.dev);
+
+        console.log('Owners: ', ownerico, ownerfarm, ownertoken, prevOwner);
 
     console.log(addresses)
     
