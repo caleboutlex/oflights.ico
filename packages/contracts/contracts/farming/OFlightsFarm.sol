@@ -460,8 +460,6 @@ contract OflightsFarm is Ownable {
     
     uint32 immutable public startTime; // The timestamp when OFLY farming starts.
     
-
-
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
     event EmergencyWithdraw(address indexed user, uint256 indexed pid, uint256 amount);
@@ -478,11 +476,10 @@ contract OflightsFarm is Ownable {
      
     }
     
-   
-    
+
     // Changes Ofly token reward per second. Use this function to moderate the `lockup amount`. Essentially this function changes the amount of the reward
-    // which is entitled to the user for his token staking by the time the `endTime` is passed.
-    //Good practofly to update pools without messing up the contract
+    // which is entitled to the user for his token staking.
+    // Good practice to update pools without messing up the contract
     function setOflyPerSecond(uint256 _oflyPerSecond,  bool _withUpdate) external onlyOwner {
         if (_withUpdate) {
             massUpdatePools();
@@ -603,7 +600,7 @@ contract OflightsFarm is Ownable {
     function withdraw(uint256 _pid, uint256 _amount) public {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][msg.sender];
-        require(user.amount >= _amount, "OflightsFarm: you cant eat that much popsicles");
+        require(user.amount >= _amount, "OflightsFarm: you cant withdraw that much");
         updatePool(_pid);
         uint256 pending =
             user.amount * pool.accOflyPerShare / 1e12 - user.rewardDebt + user.remainingOflyTokenReward;

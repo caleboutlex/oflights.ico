@@ -10,7 +10,8 @@ module.exports = {
     development: {
       host: "127.0.0.1",
       port: 8545,
-      network_id: "*"
+      network_id: "*",
+      gasPrice: 8000000000
     },
     bsc_testnet: {
       provider: () => new HDWalletProvider(
@@ -20,6 +21,7 @@ module.exports = {
       network_id: 97,
       confirmations: 5,
       timeoutBlocks: 200,
+      gasPrice: 8000000000,
       skipDryRun: true,
       production: true
     },
@@ -29,6 +31,7 @@ module.exports = {
         `https://bsc-dataseed1.binance.org`
       ),
       network_id: 56,
+      gasPrice: 8000000000,
       confirmations: 10,
       timeoutBlocks: 200,
       skipDryRun: true
